@@ -22,7 +22,6 @@
   "scripts": {
     "start": "set PORT=4000 && react-scripts start",
     "build": "react-scripts build",
-    "test": "npm run lint && npm run lint:fix",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint src --ext .js,.jsx --fix",
