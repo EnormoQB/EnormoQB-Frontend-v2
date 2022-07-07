@@ -5,7 +5,7 @@ import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './utils/store';
-import App from './App';
+import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
 
 const container = document.getElementById('root');
