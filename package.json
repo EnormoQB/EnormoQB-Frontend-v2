@@ -29,6 +29,9 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "prepare": "husky install"
   },
+  "lint-staged": {
+    "*.{js,jsx}": "eslint --fix"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
