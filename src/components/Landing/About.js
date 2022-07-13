@@ -1,8 +1,8 @@
 import { Flex, Box, Image, Circle } from '@chakra-ui/react';
 import '../../styles/Home/index.scss';
 
-const About = () => (
-  <Flex flexDirection='column' alignItems='center'>
+const About = ({ aboutRef }) => (
+  <Flex flexDirection='column' alignItems='center' ref={aboutRef}>
     <Flex
       flexDirection='column'
       alignItems='center'
