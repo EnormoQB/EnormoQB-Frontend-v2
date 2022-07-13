@@ -23,6 +23,7 @@
       "error",
       { "props": true, "ignorePropertyModificationsFor": ["draft", "state"] }
     ],
-    "no-console": "off"
+    "no-console": "off",
+    "arrow-body-style": "off"
   }
 }

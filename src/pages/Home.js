@@ -1,8 +1,6 @@
 import { Button, Flex, Image, Box } from '@chakra-ui/react';
 import NavBar from '../components/Navbar';
 import TopBorder from '../components/TopBorder';
-import LandingIllustration from '../assets/landing.svg';
-import SampleDashboard from '../assets/sample.png';
 import '../styles/Home/index.scss';
 
 const Hero = () => (
@@ -20,7 +18,7 @@ const Hero = () => (
         Login with Google
       </Button>
     </Flex>
-    <Image src={LandingIllustration} alt='Logo' w='50%' />
+    <Image src='/assets/landing.svg' alt='Logo' w='50%' />
   </Flex>
 );
 
@@ -29,7 +27,7 @@ const Home = () => (
     <TopBorder />
     <NavBar />
     <Hero />
-    <Image mx='10%' src={SampleDashboard} alt='Sample Dashboard' />
+    <Image mx='10%' src='/assets/sample.png' alt='Sample Dashboard' />
   </Flex>
 );
 

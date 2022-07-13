@@ -1,10 +1,9 @@
 import { Button, Flex, Box } from '@chakra-ui/react';
-import Logo from '../assets/mainLogo.svg';
 import '../styles/Home/index.scss';
 
 const NavBar = () => (
   <Flex mx='32' my='2' justifyContent='space-between' alignItems='center'>
-    <img src={Logo} style={{ height: '7rem', width: '18rem' }} alt='Logo' />
+    <img src='/assets/mainLogo.svg' style={{ height: '7rem', width: '18rem' }} alt='Logo' />
     <Flex alignItems='center'>
       <Box mr={['1', '4', '12']} fontWeight='bold' cursor='pointer' _hover={{ color: 'blue.400' }}>
         Process Flow
