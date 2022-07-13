@@ -1,37 +1,36 @@
-import React from 'react';
-// import { Flex, Icon, IconButton, Menu, MenuButton, Text } from '@chakra-ui/react';
-import { Flex, Icon, Menu, MenuButton } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-// eslint-disable-next-line no-unused-vars
-import { FaBeer } from 'react-icons/fa';
+import { Flex, Icon, Menu, MenuButton, Text } from '@chakra-ui/react';
 
-const NavItems = (navSize, title, icon, active) => (
-  <Flex
-    mt={30}
-    flexDir='column'
-    w='100%'
-    alignItems={navSize === 'small' ? 'center' : 'flex-start'}>
-    <Menu placement='right'>
-      <Link
-        to='/'
-        backgroundColor={active && '#AEC8CA'}
-        p={3}
-        borderRadius={8}
-        _hover={{ textDecor: 'none', backgroundColor: '#AEC8CA' }}
-        w={navSize === 'large' && '100%'}>
-        <MenuButton w='100%'>
-          <Flex>
+const NavItems = ({ isNavOpen, title, icon, active, headProps, onClick }) => {
+  return (
+    <Flex
+      mb='2'
+      direction='column'
+      w='100%'
+      alignItems={!isNavOpen ? 'center' : 'flex-start'}
+      px={!isNavOpen ? '2' : '4'}
+      py='2.5'
+      bg={active ? 'myGray.500' : 'none'}
+      _hover={{ backgroundColor: 'myGray.500' }}
+      {...headProps}
+      onClick={onClick}
+    >
+      <Menu placement='right'>
+        <MenuButton>
+          <Flex align='center'>
             <Icon
               as={icon}
-              fontSize='xl'
-              color={active ? '#000000' : '#gray.500'}
-              alignItems={navSize === 'small' ? 'center' : 'flex-start'}
+              fontSize='20px'
+              color='white'
+              alignItems={!isNavOpen ? 'center' : 'flex-start'}
             />
+            <Text ml='4' display={isNavOpen ? 'flex' : 'none'}>
+              {title}
+            </Text>
           </Flex>
         </MenuButton>
-      </Link>
-    </Menu>
-  </Flex>
-);
+      </Menu>
+    </Flex>
+  );
+};
 
 export default NavItems;

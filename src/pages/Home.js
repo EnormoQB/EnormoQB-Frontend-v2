@@ -11,8 +11,8 @@ const Hero = () => (
         <span className='highlight'> Simplified.</span>
       </Box>
       <Flex fontSize='xl' mt='20'>
-        Contribute board questions anonymously and generate question papers with a variety of
-        customizations.
+        Contribute board questions anonymously and generate question papers with
+        a variety of customizations.
       </Flex>
       <Button w='50%' mt='20'>
         Login with Google

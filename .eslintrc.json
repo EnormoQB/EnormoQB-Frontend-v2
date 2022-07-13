@@ -15,15 +15,20 @@
   "plugins": ["react", "prettier", "simple-import-sort", "@typescript-eslint"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "react/function-component-definition": [2, { "namedComponents": "arrow-function" }],
+    "react/function-component-definition": [
+      2,
+      { "namedComponents": "arrow-function" }
+    ],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/jsx-props-no-spreading": "off",
-    "prettier/prettier": ["error", { "semi": true }],
+    "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
     "no-param-reassign": [
       "error",
       { "props": true, "ignorePropertyModificationsFor": ["draft", "state"] }
     ],
     "no-console": "off",
-    "arrow-body-style": "off"
+    "arrow-body-style": "off",
+    "react/prop-types": "off",
+    "no-unused-vars": "warn"
   }
 }
