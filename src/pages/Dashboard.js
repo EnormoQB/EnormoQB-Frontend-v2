@@ -1,16 +1,10 @@
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
+import Sidebar from '../components/Sidebar/Sidebar';
 
-const Dashboard = () => {
-  return (
-    <div>
-      <Flex>
-        <Box color='brand.600' w='300px' />
-        <Flex grow>
-          <Box color='brand.100' />
-        </Flex>
-      </Flex>
-    </div>
-  );
-};
+const Dashboard = () => (
+  <Flex>
+    <Sidebar />
+  </Flex>
+);
 
 export default Dashboard;
