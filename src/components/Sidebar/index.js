@@ -10,12 +10,14 @@ import {
   Tooltip,
   Box,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { MdOutlineLogout } from 'react-icons/md';
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
 import NavItems from './NavItems';
 import { navItems } from './config';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const [activePage, setActivePage] = useState('/');
 
@@ -91,7 +93,10 @@ const Sidebar = () => {
               icon={item.icon}
               title={item.name}
               active={item.link === activePage}
-              onClick={() => setActivePage(item.link)}
+              onClick={() => {
+                setActivePage(item.link);
+                navigate(`/dashboard${item.link}`);
+              }}
             />
           ))}
         </Box>

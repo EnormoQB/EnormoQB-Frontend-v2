@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Button, Flex, Image, Box, Circle } from '@chakra-ui/react';
+import { Flex, Image } from '@chakra-ui/react';
 import TopBorder from '../components/TopBorder';
 import NavBar from '../components/Landing/Navbar';
 import Hero from '../components/Landing/Hero';
@@ -23,6 +23,7 @@ const Home = () => {
     footerRef.current.scrollIntoView({
       behavior: 'smooth',
     });
+
   return (
     <Flex flexDirection='column' bg='brand.100' h='100%'>
       <TopBorder borderH='0.5rem' />
