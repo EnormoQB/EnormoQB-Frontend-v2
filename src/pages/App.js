@@ -1,7 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import theme from '../styles/Home/theme';
+import theme from '../styles/theme';
 import DashboardHome from './Dashboard/home';
 import Dashboard from './Dashboard';
 import Pending from './Dashboard/pending';
