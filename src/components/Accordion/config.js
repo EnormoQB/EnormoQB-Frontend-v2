@@ -2,7 +2,7 @@
 export const Value = [
   {
     id: 1,
-    question: 'Hello world is good ?',
+    question: 'Hello world is good?',
     option1: 'No',
     option2: 'IDK',
     option3: 'Yes',
@@ -17,7 +17,7 @@ export const Value = [
   },
   {
     id: 2,
-    question: 'Hello world is good ?',
+    question: 'Hello world is bad?',
     option1: 'No',
     option2: 'IDK',
     option3: 'Yes',
@@ -32,7 +32,7 @@ export const Value = [
   },
   {
     id: 3,
-    question: 'Hello world is good ?',
+    question: 'Hello world is worse?',
     option1: 'No',
     option2: 'IDK',
     option3: 'Yes',
