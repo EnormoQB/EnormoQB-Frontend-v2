@@ -32,6 +32,7 @@ const NavBar = ({
         fontWeight='bold'
         cursor='pointer'
         _hover={{ color: 'blue.400' }}
+        onClick={executeFooterScroll}
       >
         Contact Us
       </Box>
