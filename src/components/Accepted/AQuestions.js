@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import { TiTick } from 'react-icons/ti';
 
-const Questions = ({
+const AQuestions = ({
   question,
   option1,
   option2,
@@ -46,13 +46,13 @@ const Questions = ({
                 height='30px'
                 width='30px'
                 align='center'
-                bgColor='#061727'
+                bgColor='green'
                 justifyContent='center'
                 borderRadius='30px'
                 borderBottomRightRadius='0'
                 color='white'
               >
-                !
+                <TiTick />
               </Flex>
               <Flex flexDir='column' ml='3'>
                 <Flex color='black' fontSize='18px' fontWeight='600'>
@@ -109,9 +109,6 @@ const Questions = ({
             </Flex>
             <Spacer />
             <Flex>
-              <Button variant='accept' mr='4'>
-                Accept
-              </Button>
               <Button variant='reject' ml='4' mr='100px'>
                 Reject
               </Button>
@@ -123,4 +120,4 @@ const Questions = ({
   </Flex>
 );
 
-export default Questions;
+export default AQuestions;

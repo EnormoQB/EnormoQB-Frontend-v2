@@ -1,5 +1,7 @@
+import Cards from '../../components/Stats/cards';
+
 const DashboardHome = () => {
-  return <div>DashboardHome</div>;
+  return <Cards />;
 };
 
 export default DashboardHome;
