@@ -7,10 +7,11 @@ const NavItems = ({ isNavOpen, title, icon, active, headProps, onClick }) => {
       direction='column'
       w='100%'
       alignItems={!isNavOpen ? 'center' : 'flex-start'}
-      px={!isNavOpen ? '2' : '4'}
+      px={!isNavOpen ? '2' : '5'}
       py='2.5'
       bg={active ? 'myGray.500' : 'none'}
       _hover={{ backgroundColor: 'myGray.500' }}
+      cursor='pointer'
       {...headProps}
       onClick={onClick}
     >
@@ -23,7 +24,7 @@ const NavItems = ({ isNavOpen, title, icon, active, headProps, onClick }) => {
               color='white'
               alignItems={!isNavOpen ? 'center' : 'flex-start'}
             />
-            <Text ml='4' display={isNavOpen ? 'flex' : 'none'}>
+            <Text ml='4' fontSize='15px' display={isNavOpen ? 'flex' : 'none'}>
               {title}
             </Text>
           </Flex>

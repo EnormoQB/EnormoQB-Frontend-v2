@@ -12,7 +12,7 @@ const Cards = () => {
     >
       <Flex
         h='130px'
-        w='20vw'
+        w='18vw'
         bgColor='black'
         color='white'
         borderRadius='20px'
@@ -58,7 +58,7 @@ const Cards = () => {
         </Flex> */}
       <Flex
         h='130px'
-        w='20vw'
+        w='18vw'
         borderRadius='20px'
         flexDir='column'
         border='1px solid gray'
@@ -90,7 +90,7 @@ const Cards = () => {
 
       <Flex
         h='130px'
-        w='20vw'
+        w='18vw'
         borderRadius='20px'
         flexDir='column'
         border='1px solid gray'
@@ -121,7 +121,7 @@ const Cards = () => {
       </Flex>
       <Flex
         h='130px'
-        w='20vw'
+        w='18vw'
         borderRadius='20px'
         flexDir='column'
         border='1px solid gray'

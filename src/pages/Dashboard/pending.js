@@ -1,10 +1,10 @@
 import { Box } from '@chakra-ui/react';
-import { Value } from '../../components/Accordian/config';
-import Questions from '../../components/Accordian/Questions';
+import { Value } from '../../components/Accordion/config';
+import Questions from '../../components/Accordion/Questions';
 
 const Pending = () => {
   return (
-    <Box overflowY='auto' w='full' h='100vh' p='6'>
+    <Box>
       {Value.map((value) => (
         <Questions
           key={value.id}
