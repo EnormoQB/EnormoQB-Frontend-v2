@@ -1,5 +1,6 @@
 import { Flex, Box, Image, Circle } from '@chakra-ui/react';
-import '../../styles/Home/index.scss';
+import SampleDashboard from '../../assets/sample.png';
+import NextGIF from '../../assets/next2.gif';
 
 const About = ({ aboutRef }) => (
   <Flex
@@ -15,7 +16,7 @@ const About = ({ aboutRef }) => (
       className='slanted'
       h='4xl'
     >
-      <Image src='/assets/next2.gif' w='6%' mt='24' borderRadius='100%' />
+      <Image src={NextGIF} w='6%' mt='24' borderRadius='100%' />
       <Box fontSize='2xl' fontWeight='bold' color='brand.100' my='4'>
         About Us
       </Box>
@@ -42,7 +43,7 @@ const About = ({ aboutRef }) => (
         <Circle size='4' bgColor='brand.300' mx='1' />
         <Circle size='4' bgColor='brand.300' mx='1' />
       </Flex>
-      <Image src='/assets/sample.png' alt='Sample Dashboard' />
+      <Image src={SampleDashboard} alt='Sample Dashboard' />
     </Flex>
   </Flex>
 );

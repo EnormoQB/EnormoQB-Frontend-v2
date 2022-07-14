@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { Flex, Image } from '@chakra-ui/react';
 import TopBorder from '../components/TopBorder';
 import NavBar from '../components/Landing/Navbar';
@@ -7,24 +7,28 @@ import ProcessBlock from '../components/Landing/ProcessBlock';
 import About from '../components/Landing/About';
 import FutureScopeCard from '../components/Landing/FutureScopeCard';
 import Footer from '../components/Landing/Footer';
-import '../styles/Home/index.scss';
+import SampleDashboard from '../assets/sample.png';
+import LoginImg from '../assets/login.svg';
+import PostQuestionsImg from '../assets/postQuestions.svg';
+import GenerateImg from '../assets/generatePaper.svg';
 
 const Home = () => {
   const processRef = useRef(null);
   const aboutRef = useRef(null);
   const footerRef = useRef(null);
-  const executeProcessScroll = () =>
-    processRef.current.scrollIntoView({
-      behavior: 'smooth',
-    });
-  const executeAboutScroll = () =>
-    aboutRef.current.scrollIntoView({
-      behavior: 'smooth',
-    });
-  const executeFooterScroll = () =>
-    footerRef.current.scrollIntoView({
-      behavior: 'smooth',
-    });
+
+  const executeProcessScroll = useCallback(
+    () => processRef.current.scrollIntoView({ behavior: 'smooth' }),
+    [],
+  );
+  const executeAboutScroll = useCallback(
+    () => aboutRef.current.scrollIntoView({ behavior: 'smooth' }),
+    [],
+  );
+  const executeFooterScroll = useCallback(
+    () => footerRef.current.scrollIntoView({ behavior: 'smooth' }),
+    [],
+  );
 
   return (
     <Flex flexDirection='column' bg='brand.100' h='100%'>
@@ -35,8 +39,8 @@ const Home = () => {
         executeFooterScroll={executeFooterScroll}
       />
       <Hero />
-      <Image mx='32' src='/assets/sample.png' alt='Sample Dashboard' />
-      {/* Process flow section */}
+      <Image mx='32' src={SampleDashboard} alt='Sample Dashboard' />
+      {/* Process Flow */}
       <Flex
         flexDirection='column'
         alignItems='center'
@@ -45,7 +49,7 @@ const Home = () => {
       >
         <ProcessBlock
           flexD='row'
-          imageSrc='/assets/login.svg'
+          imageSrc={LoginImg}
           animatedHead='Sign in'
           nonAnimatedHead=' to your free account'
           content='All you need is your gmail address to create an account/sign in. Lorem ipsum dolor sit
@@ -55,7 +59,7 @@ const Home = () => {
         />
         <ProcessBlock
           flexD='row-reverse'
-          imageSrc='/assets/postQuestions.svg'
+          imageSrc={PostQuestionsImg}
           animatedHead='Post questions'
           nonAnimatedHead=' for review'
           content='You can now add questions to our bank based on various filters provided. Wait for the reviewing committee to approve it. Lorem ipsum dolor sit
@@ -65,7 +69,7 @@ const Home = () => {
         />
         <ProcessBlock
           flexD='row'
-          imageSrc='/assets/generatePaper.svg'
+          imageSrc={GenerateImg}
           animatedHead='Generate'
           nonAnimatedHead=' question papers'
           content='Select the necessary filters and get a downloadable pdf of the randomly set exam paper. Lorem ipsum dolor sit

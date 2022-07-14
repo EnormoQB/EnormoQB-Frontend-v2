@@ -16,6 +16,8 @@ import { MdOutlineLogout } from 'react-icons/md';
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
 import NavItems from './NavItems';
 import { navItems } from './config';
+import LogoWhite from '../../assets/mainLogoWhite.svg';
+import LogoIcon from '../../assets/favicon.svg';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -60,7 +62,7 @@ const Sidebar = () => {
           <Image
             w='80%'
             maxH='60px'
-            src={isOpen ? '/assets/mainLogoWhite.svg' : '/assets/favicon.svg'}
+            src={isOpen ? LogoWhite : LogoIcon}
             alt='Logo'
             loading='eager'
           />
@@ -99,9 +101,9 @@ const Sidebar = () => {
               isNavOpen={isOpen}
               icon={item.icon}
               title={item.name}
-              active={`/dashboard/${item.link}` === location.pathname}
+              active={`/dashboard${item.link}` === location.pathname}
               onClick={() => {
-                navigate(`/dashboard/${item.link}`);
+                navigate(`/dashboard${item.link}`);
               }}
             />
           ))}

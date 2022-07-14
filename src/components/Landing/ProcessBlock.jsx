@@ -1,5 +1,4 @@
-import { Button, Flex, Box, Image } from '@chakra-ui/react';
-import '../../styles/Home/index.scss';
+import { Flex, Box, Image } from '@chakra-ui/react';
 import TopBorder from '../TopBorder';
 
 const ProcessBlock = ({

@@ -1,5 +1,5 @@
 import { Button, Flex, Box, Image } from '@chakra-ui/react';
-import '../../styles/Home/index.scss';
+import HeroImg from '../../assets/landing.svg';
 
 const Hero = () => (
   <Flex mx='52' my='6' justifyContent='space-between'>
@@ -16,7 +16,7 @@ const Hero = () => (
         Login with Google
       </Button>
     </Flex>
-    <Image src='/assets/landing.svg' alt='Logo' w='50%' />
+    <Image src={HeroImg} alt='Logo' w='50%' />
   </Flex>
 );
 
