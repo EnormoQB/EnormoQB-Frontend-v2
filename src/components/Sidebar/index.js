@@ -99,9 +99,9 @@ const Sidebar = () => {
               isNavOpen={isOpen}
               icon={item.icon}
               title={item.name}
-              active={`/dashboard/${item.link}` === location.pathname}
+              active={`/dashboard${item.link}` === location.pathname}
               onClick={() => {
-                navigate(`/dashboard/${item.link}`);
+                navigate(`/dashboard${item.link}`);
               }}
             />
           ))}
