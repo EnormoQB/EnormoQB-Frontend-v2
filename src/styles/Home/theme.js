@@ -43,6 +43,14 @@ const theme = extendTheme({
           bg: 'brand.500',
           color: 'brand.200',
         },
+        accept: {
+          bg: 'green',
+          color: 'white',
+        },
+        reject: {
+          bg: 'red',
+          color: 'white',
+        },
       },
       defaultProps: {
         variant: 'base',
