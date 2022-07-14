@@ -23,6 +23,25 @@ body {
   animation: gradient-x 7s ease 3s infinite;
 }
 
+.highlightSecond {
+  -webkit-background-clip: text;
+  background-clip: text;
+  --tw-bg-opacity: 1;
+  background-color: rgba(244, 63, 94, var(--tw-bg-opacity));
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    #eef4ff 25%,
+    #7caef8 0,
+    #005ce6 50%,
+    #4e8ff1 0,
+    #2272eb 75%,
+    #eef4ff 0
+  );
+  background-size: 400%;
+  animation: gradient-x 7s ease 3s infinite;
+}
+
 @keyframes gradient-x {
   0% {
     background-position: 100% 0;
@@ -35,4 +54,8 @@ body {
   99% {
     background-position: 0 0;
   }
+}
+
+.slanted {
+  clip-path: polygon(0 10%, 100% 0, 100% 80%, 0 100%);
 }

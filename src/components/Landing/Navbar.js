@@ -1,11 +1,14 @@
 import { Button, Flex, Box } from '@chakra-ui/react';
-import '../styles/Home/index.scss';
 
-const NavBar = () => (
-  <Flex mx='32' my='2' justifyContent='space-between' alignItems='center'>
+const NavBar = ({
+  executeProcessScroll,
+  executeAboutScroll,
+  executeFooterScroll,
+}) => (
+  <Flex mx='32' my='4' justifyContent='space-between' alignItems='center'>
     <img
       src='/assets/mainLogo.svg'
-      style={{ height: '7rem', width: '18rem' }}
+      style={{ height: '5rem', width: '12rem' }}
       alt='Logo'
     />
     <Flex alignItems='center'>
@@ -14,6 +17,7 @@ const NavBar = () => (
         fontWeight='bold'
         cursor='pointer'
         _hover={{ color: 'blue.400' }}
+        onClick={executeProcessScroll}
       >
         Process Flow
       </Box>
@@ -22,6 +26,7 @@ const NavBar = () => (
         fontWeight='bold'
         cursor='pointer'
         _hover={{ color: 'blue.400' }}
+        onClick={executeAboutScroll}
       >
         About Us
       </Box>

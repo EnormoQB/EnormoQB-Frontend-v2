@@ -1,34 +1,79 @@
-import { Button, Flex, Image, Box } from '@chakra-ui/react';
-import NavBar from '../components/Navbar';
+import { useRef } from 'react';
+import { Button, Flex, Image, Box, Circle } from '@chakra-ui/react';
 import TopBorder from '../components/TopBorder';
+import NavBar from '../components/Landing/Navbar';
+import Hero from '../components/Landing/Hero';
+import ProcessBlock from '../components/Landing/ProcessBlock';
+import About from '../components/Landing/About';
 import '../styles/Home/index.scss';
 
-const Hero = () => (
-  <Flex mx='52' justifyContent='space-between'>
-    <Flex flexDirection='column' w='40%'>
-      <Box fontSize='4xl' fontWeight='bold' mt='10'>
-        Setting Question Papers.
-        <span className='highlight'> Simplified.</span>
-      </Box>
-      <Flex fontSize='xl' mt='20'>
-        Contribute board questions anonymously and generate question papers with
-        a variety of customizations.
+const Home = () => {
+  const processRef = useRef(null);
+  const aboutRef = useRef(null);
+  const footerRef = useRef(null);
+  const executeProcessScroll = () =>
+    processRef.current.scrollIntoView({
+      behavior: 'smooth',
+    });
+  const executeAboutScroll = () =>
+    aboutRef.current.scrollIntoView({
+      behavior: 'smooth',
+    });
+  const executeFooterScroll = () =>
+    footerRef.current.scrollIntoView({
+      behavior: 'smooth',
+    });
+  return (
+    <Flex flexDirection='column' bg='brand.100' h='100%'>
+      <TopBorder borderH='0.5rem' />
+      <NavBar
+        executeProcessScroll={executeProcessScroll}
+        executeAboutScroll={executeAboutScroll}
+        executeFooterScroll={executeFooterScroll}
+      />
+      <Hero />
+      <Image mx='32' src='/assets/sample.png' alt='Sample Dashboard' />
+      {/* Process Flow */}
+      <Flex
+        flexDirection='column'
+        alignItems='center'
+        color='brand.600'
+        ref={processRef}
+      >
+        <ProcessBlock
+          flexD='row'
+          imageSrc='/assets/login.svg'
+          animatedHead='Sign in'
+          nonAnimatedHead=' to your free account'
+          content='All you need is your gmail address to create an account/sign in. Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.'
+        />
+        <ProcessBlock
+          flexD='row-reverse'
+          imageSrc='/assets/postQuestions.svg'
+          animatedHead='Post questions'
+          nonAnimatedHead=' for review'
+          content='You can now add questions to our bank based on various filters provided. Wait for the reviewing committee to approve it. Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.'
+        />
+        <ProcessBlock
+          flexD='row'
+          imageSrc='/assets/generatePaper.svg'
+          animatedHead='Generate'
+          nonAnimatedHead=' question papers'
+          content='Select the necessary filters and get a downloadable pdf of the randomly set exam paper. Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.'
+        />
       </Flex>
-      <Button w='50%' mt='20'>
-        Login with Google
-      </Button>
+      <About aboutRef={aboutRef} />
     </Flex>
-    <Image src='/assets/landing.svg' alt='Logo' w='50%' />
-  </Flex>
-);
-
-const Home = () => (
-  <Flex flexDirection='column' bg='brand.100' h='100%'>
-    <TopBorder />
-    <NavBar />
-    <Hero />
-    <Image mx='10%' src='/assets/sample.png' alt='Sample Dashboard' />
-  </Flex>
-);
+  );
+};
 
 export default Home;
