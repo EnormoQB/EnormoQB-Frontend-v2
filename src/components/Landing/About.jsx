@@ -2,7 +2,12 @@ import { Flex, Box, Image, Circle } from '@chakra-ui/react';
 import '../../styles/Home/index.scss';
 
 const About = ({ aboutRef }) => (
-  <Flex flexDirection='column' alignItems='center' ref={aboutRef}>
+  <Flex
+    flexDirection='column'
+    alignItems='center'
+    ref={aboutRef}
+    pos='relative'
+  >
     <Flex
       flexDirection='column'
       alignItems='center'
@@ -30,7 +35,7 @@ const About = ({ aboutRef }) => (
       bgColor='blue.100'
       borderRadius='lg'
       position='absolute'
-      bottom='-40'
+      top='30rem'
     >
       <Flex p='4'>
         <Circle size='4' bgColor='brand.300' mx='1' />

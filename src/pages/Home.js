@@ -5,6 +5,8 @@ import NavBar from '../components/Landing/Navbar';
 import Hero from '../components/Landing/Hero';
 import ProcessBlock from '../components/Landing/ProcessBlock';
 import About from '../components/Landing/About';
+import FutureScopeCard from '../components/Landing/FutureScopeCard';
+import Footer from '../components/Landing/Footer';
 import '../styles/Home/index.scss';
 
 const Home = () => {
@@ -34,7 +36,7 @@ const Home = () => {
       />
       <Hero />
       <Image mx='32' src='/assets/sample.png' alt='Sample Dashboard' />
-      {/* Process Flow */}
+      {/* Process flow section */}
       <Flex
         flexDirection='column'
         alignItems='center'
@@ -73,6 +75,20 @@ const Home = () => {
         />
       </Flex>
       <About aboutRef={aboutRef} />
+      {/* Future scope section */}
+      <Flex mt='44' justifyContent='center' flexWrap='wrap'>
+        <FutureScopeCard
+          heading='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+          content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore.'
+        />
+        <FutureScopeCard
+          heading='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+          content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore.'
+        />
+      </Flex>
+      <Footer footerRef={footerRef} />
     </Flex>
   );
 };

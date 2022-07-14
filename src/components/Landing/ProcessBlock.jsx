@@ -9,7 +9,7 @@ const ProcessBlock = ({
   nonAnimatedHead,
   content,
 }) => (
-  <Flex w='80%' my='4' flexDirection={flexD}>
+  <Flex w='80%' flexDirection={flexD}>
     <Image src={imageSrc} alt='Login Illustration' w='50%' p='7' />
     <Flex flexDirection='column' justifyContent='center' w='50%' p='14'>
       <Box fontSize='2xl' fontWeight='bold'>
