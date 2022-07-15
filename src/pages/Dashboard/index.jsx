@@ -8,7 +8,7 @@ const Dashboard = () => {
       <Box position='relative'>
         <Sidebar />
       </Box>
-      <Box overflowY='auto' w='full' h='100vh' p='8'>
+      <Box overflowY='auto' w='full' h='100vh' py='8' px='12'>
         <Outlet />
       </Box>
     </Flex>
