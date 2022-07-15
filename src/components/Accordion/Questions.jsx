@@ -10,7 +10,6 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import React from 'react';
-import { TiTick } from 'react-icons/ti';
 
 const Questions = ({
   question,

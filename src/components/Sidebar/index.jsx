@@ -18,11 +18,19 @@ import NavItems from './NavItems';
 import { navItems } from './config';
 import LogoWhite from '../../assets/mainLogoWhite.svg';
 import LogoIcon from '../../assets/favicon.svg';
+import { useLogoutUserMutation } from '../../redux/services/userApi';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
+  const [logoutUser, { isLoading, isSuccess }] = useLogoutUserMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/', { replace: true });
+    }
+  }, [isLoading]);
 
   const handleDrawer = useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -113,7 +121,9 @@ const Sidebar = () => {
           icon={MdOutlineLogout}
           title='Logout'
           headProps={{ mt: 'auto' }}
-          onClick={() => navigate(`/`)}
+          onClick={async () => {
+            logoutUser();
+          }}
         />
       </Flex>
       <Flex

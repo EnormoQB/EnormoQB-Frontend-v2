@@ -1,4 +1,4 @@
-import { Flex, Progress } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 
 const Cards = () => {
