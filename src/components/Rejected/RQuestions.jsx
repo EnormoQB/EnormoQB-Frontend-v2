@@ -10,9 +10,9 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import React from 'react';
-import { TiTick } from 'react-icons/ti';
+import { MdClear } from 'react-icons/md';
 
-const Questions = ({
+const RQuestions = ({
   question,
   option1,
   option2,
@@ -46,12 +46,13 @@ const Questions = ({
                 height='30px'
                 width='30px'
                 align='center'
-                bgColor='green'
+                bgColor='#ce0202'
                 justifyContent='center'
                 borderRadius='30px'
                 borderBottomRightRadius='0'
+                color='white'
               >
-                <TiTick />
+                <MdClear />
               </Flex>
               <Flex flexDir='column' ml='3'>
                 <Flex color='black' fontSize='18px' fontWeight='600'>
@@ -108,11 +109,8 @@ const Questions = ({
             </Flex>
             <Spacer />
             <Flex>
-              <Button variant='accept' mr='4'>
+              <Button variant='accept' ml='4' mr='100px'>
                 Accept
-              </Button>
-              <Button variant='reject' ml='4' mr='100px'>
-                Reject
               </Button>
             </Flex>
           </Flex>
@@ -122,4 +120,4 @@ const Questions = ({
   </Flex>
 );
 
-export default Questions;
+export default RQuestions;

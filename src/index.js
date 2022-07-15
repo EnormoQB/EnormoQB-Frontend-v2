@@ -1,24 +1,22 @@
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import { ColorModeScript } from '@chakra-ui/react';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import store from './utils/store';
+import { BrowserRouter } from 'react-router-dom';
+import { store } from './redux/store';
 import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
+import './styles/index.scss';
 
 const container = document.getElementById('root');
-const queryClient = new QueryClient();
 
 ReactDOM.render(
   <StrictMode>
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
         <ColorModeScript />
         <App />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      </BrowserRouter>
     </Provider>
   </StrictMode>,
   container,

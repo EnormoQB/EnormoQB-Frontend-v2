@@ -16,7 +16,7 @@ import {
   FormHelperText,
 } from '@chakra-ui/react';
 import { MdDelete } from 'react-icons/md';
-import ContributeQuesImage from './contributeQues.png';
+import ContributeQuesImage from '../../assets/contributeQues.png';
 import RadioCard from '../../components/Contribute/radioCard';
 
 // Difficulty
