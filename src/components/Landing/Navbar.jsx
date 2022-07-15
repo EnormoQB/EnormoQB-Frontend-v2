@@ -1,6 +1,7 @@
 import { Button, Flex, Box } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { userApi } from '../../redux/services/userApi';
+import Logo from '../../assets/mainLogo.svg';
 
 const NavBar = ({
   executeProcessScroll,
@@ -15,11 +16,7 @@ const NavBar = ({
     });
   return (
     <Flex mx='32' my='4' justifyContent='space-between' alignItems='center'>
-      <img
-        src='/assets/mainLogo.svg'
-        style={{ height: '5rem', width: '12rem' }}
-        alt='Logo'
-      />
+      <img src={Logo} style={{ height: '5rem', width: '12rem' }} alt='Logo' />
       <Flex alignItems='center'>
         <Box
           mr={['1', '4', '12']}
@@ -44,6 +41,7 @@ const NavBar = ({
           fontWeight='bold'
           cursor='pointer'
           _hover={{ color: 'blue.400' }}
+          onClick={executeFooterScroll}
         >
           Contact Us
         </Box>
