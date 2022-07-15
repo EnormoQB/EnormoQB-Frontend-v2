@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import theme from '../styles/theme';
 import DashboardHome from './Dashboard/home';
 import Dashboard from './Dashboard';
@@ -9,6 +9,7 @@ import Approved from './Dashboard/approved';
 import Rejected from './Dashboard/rejected';
 import Generate from './Dashboard/generate';
 import Contribute from './Dashboard/contribute';
+import ProtectedRoute from '../HOC/ProtectedRoute';
 import Home from './Home';
 
 const App = () => {
@@ -17,21 +18,68 @@ const App = () => {
       <Helmet>
         <title>EnormoQB</title>
       </Helmet>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/'>
-            <Route index element={<Home />} />
-            <Route path='dashboard' element={<Dashboard />}>
-              <Route index element={<DashboardHome />} />
-              <Route path='pending' element={<Pending />} />
-              <Route path='approved' element={<Approved />} />
-              <Route path='rejected' element={<Rejected />} />
-              <Route path='generate' element={<Generate />} />
-              <Route path='contribute' element={<Contribute />} />
-            </Route>
+      <Routes>
+        <Route path='/'>
+          <Route index element={<Home />} />
+          <Route
+            path='dashboard'
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          >
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <DashboardHome />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='pending'
+              element={
+                <ProtectedRoute>
+                  <Pending />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='approved'
+              element={
+                <ProtectedRoute>
+                  <Approved />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='rejected'
+              element={
+                <ProtectedRoute>
+                  <Rejected />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='generate'
+              element={
+                <ProtectedRoute>
+                  <Generate />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='contribute'
+              element={
+                <ProtectedRoute>
+                  <Contribute />
+                </ProtectedRoute>
+              }
+            />
           </Route>
-        </Routes>
-      </BrowserRouter>
+        </Route>
+      </Routes>
     </ChakraProvider>
   );
 };
