@@ -9,15 +9,28 @@ import {
   Image,
   Tooltip,
   Box,
+  Kbd,
 } from '@chakra-ui/react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MdOutlineLogout } from 'react-icons/md';
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
 import NavItems from './NavItems';
 import { navItems } from './config';
+import LogoWhite from '../../assets/mainLogoWhite.svg';
+import LogoIcon from '../../assets/favicon.svg';
+import { useLogoutUserMutation } from '../../redux/services/userApi';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
-  const [activePage, setActivePage] = useState('/');
+  const [logoutUser, { isLoading, isSuccess }] = useLogoutUserMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/', { replace: true });
+    }
+  }, [isLoading]);
 
   const handleDrawer = useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -44,7 +57,7 @@ const Sidebar = () => {
       justifyContent='space-between'
       bg='brand.600'
       color='white'
-      py='6'
+      py='7'
       overflow='hidden'
     >
       <Flex
@@ -53,17 +66,23 @@ const Sidebar = () => {
         as='nav'
         grow='1'
       >
-        <Flex w='100%' px={!isOpen ? '2' : '4'}>
+        <Flex w='100%' px={!isOpen ? '2' : '5'}>
           <Image
-            w='90%'
+            w='80%'
             maxH='60px'
-            src={isOpen ? '/assets/mainLogoWhite.svg' : '/assets/favicon.svg'}
+            src={isOpen ? LogoWhite : LogoIcon}
             alt='Logo'
             loading='eager'
           />
         </Flex>
         <Tooltip
-          label='Press Esc to toggle'
+          label={
+            <span>
+              Press&ensp;
+              <Kbd color='brand.600'>Esc</Kbd>
+              &ensp;to toggle
+            </span>
+          }
           fontSize='xs'
           bg='brand.600'
           placement={isOpen ? 'bottom' : 'right'}
@@ -90,8 +109,10 @@ const Sidebar = () => {
               isNavOpen={isOpen}
               icon={item.icon}
               title={item.name}
-              active={item.link === activePage}
-              onClick={() => setActivePage(item.link)}
+              active={`/dashboard${item.link}` === location.pathname}
+              onClick={() => {
+                navigate(`/dashboard${item.link}`);
+              }}
             />
           ))}
         </Box>
@@ -100,12 +121,14 @@ const Sidebar = () => {
           icon={MdOutlineLogout}
           title='Logout'
           headProps={{ mt: 'auto' }}
-          onClick={() => setActivePage('/logout')}
+          onClick={async () => {
+            logoutUser();
+          }}
         />
       </Flex>
       <Flex
         pt='1'
-        px={!isOpen ? '2' : '4'}
+        px={!isOpen ? '2' : '5'}
         flexDir='column'
         alignItems={!isOpen ? 'center' : 'flex-start'}
       >

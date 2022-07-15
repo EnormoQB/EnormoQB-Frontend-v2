@@ -9,6 +9,9 @@ const colors = {
     500: '#005CE6',
     600: '#1B1C1E',
   },
+  hover: {
+    600: '#1B1C1E22',
+  },
   myGray: {
     500: '#3A3C40',
   },
@@ -42,6 +45,14 @@ const theme = extendTheme({
         base: {
           bg: 'brand.500',
           color: 'brand.200',
+        },
+        accept: {
+          bg: 'green',
+          color: 'white',
+        },
+        reject: {
+          bg: 'red',
+          color: 'white',
         },
       },
       defaultProps: {

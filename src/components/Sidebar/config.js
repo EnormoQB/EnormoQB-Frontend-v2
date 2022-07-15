@@ -9,7 +9,7 @@ import { RiFileEditFill } from 'react-icons/ri';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navItems = [
-  { id: 1, name: 'Home', icon: AiFillHome, link: '/' },
+  { id: 1, name: 'Home', icon: AiFillHome, link: '' },
   {
     id: 2,
     name: 'Pending Questions',
