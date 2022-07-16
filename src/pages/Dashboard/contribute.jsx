@@ -5,7 +5,6 @@ import {
   Input,
   Flex,
   Box,
-  Image,
   HStack,
   Select,
   useRadioGroup,
@@ -16,7 +15,7 @@ import {
   FormHelperText,
 } from '@chakra-ui/react';
 import { MdDelete } from 'react-icons/md';
-import ContributeQuesImage from '../../assets/contributeQues.png';
+// import ContributeQuesImage from '../../assets/contributeQues.png';
 import RadioCard from '../../components/Contribute/radioCard';
 
 // Difficulty
@@ -84,7 +83,7 @@ const Contribute = () => {
         </mark>
       </Heading>
       <Flex justify='space-between'>
-        <Box borderRadius='5px' w='65%' flexShrink={0} rounded='md'>
+        <Box borderRadius='5px' w='49%' flexShrink={0} rounded='md'>
           {/* Form Starts */}
           {/* Class */}
           <FormControl mb={6} isRequired>
@@ -104,6 +103,43 @@ const Contribute = () => {
               <option>XII</option>
             </Select>
           </FormControl>
+          <FormControl isRequired mb={6}>
+            <FormLabel fontSize={19} htmlFor='topic'>
+              Topic
+            </FormLabel>
+            <Input
+              id='topic'
+              placeholder='Enter Topic'
+              boxShadow='md'
+              onChange={(e) => setTopic(e.target.value)}
+            />
+          </FormControl>
+          <FormControl isRequired mb={6}>
+            <FormLabel fontSize={19} htmlFor='question'>
+              Question
+            </FormLabel>
+            <Textarea
+              id='question'
+              placeholder='Enter Question'
+              w='100%'
+              h='150px'
+              boxShadow='md'
+              onChange={(e) => setQuestion(e.target.value)}
+            />
+          </FormControl>
+          <FormControl isRequired mb={6} mt={-2}>
+            <FormLabel fontSize={19} htmlFor='answer'>
+              Answer
+            </FormLabel>
+            <Input
+              id='answer'
+              placeholder='Enter Answer'
+              boxShadow='md'
+              onChange={(e) => setAnswer(e.target.value)}
+            />
+          </FormControl>
+        </Box>
+        <Box borderRadius='5px' w='49%' flexShrink={0} rounded='md'>
           {/* Subject */}
           <FormControl isRequired mb={6}>
             <FormLabel fontSize={19} htmlFor='subject'>
@@ -114,18 +150,6 @@ const Contribute = () => {
               placeholder='Enter Subject'
               boxShadow='md'
               onChange={(e) => setSubject(e.target.value)}
-            />
-          </FormControl>
-          {/* Topic */}
-          <FormControl isRequired mb={6}>
-            <FormLabel fontSize={19} htmlFor='topic'>
-              Topic
-            </FormLabel>
-            <Input
-              id='topic'
-              placeholder='Enter Topic'
-              boxShadow='md'
-              onChange={(e) => setTopic(e.target.value)}
             />
           </FormControl>
           {/* Difficulty */}
@@ -143,20 +167,6 @@ const Contribute = () => {
                 );
               })}
             </HStack>
-          </FormControl>
-          {/* Question */}
-          <FormControl isRequired mb={6}>
-            <FormLabel fontSize={19} htmlFor='question'>
-              Question
-            </FormLabel>
-            <Textarea
-              id='question'
-              placeholder='Enter Question'
-              w='100%'
-              h='150px'
-              boxShadow='md'
-              onChange={(e) => setQuestion(e.target.value)}
-            />
           </FormControl>
           {/* Options */}
           <FormControl isRequired mb={6}>
@@ -199,35 +209,13 @@ const Contribute = () => {
               </Button>
             ) : null}
           </FormControl>
-          {/* Anser */}
-          <FormControl isRequired mb={6} mt={-2}>
-            <FormLabel fontSize={19} htmlFor='answer'>
-              Answer
-            </FormLabel>
-            <Input
-              id='answer'
-              placeholder='Enter Answer'
-              boxShadow='md'
-              onChange={(e) => setAnswer(e.target.value)}
-            />
-          </FormControl>
-          {/* Submit */}
-          <Button mt={5} alignItems='center' w='full' h={50}>
-            Submit
-          </Button>
         </Box>
-        {/* Image */}
-        <Flex
-          w='27%'
-          h='95%'
-          position='fixed'
-          top='47%'
-          right='3.5%'
-          transform='translateY(-50%)'
-          mr={-8}
-        >
-          <Image src={ContributeQuesImage} alt='' w='full' />
-        </Flex>
+      </Flex>
+      {/* Submit */}
+      <Flex justify='center'>
+        <Button mt={5} w={300} h={50}>
+          Submit
+        </Button>
       </Flex>
     </Box>
   );
