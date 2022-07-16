@@ -200,7 +200,7 @@ const Contribute = () => {
             ) : null}
           </FormControl>
           {/* Anser */}
-          <FormControl isRequired mb={6}>
+          <FormControl isRequired mb={6} mt={-2}>
             <FormLabel fontSize={19} htmlFor='answer'>
               Answer
             </FormLabel>
@@ -218,11 +218,11 @@ const Contribute = () => {
         </Box>
         {/* Image */}
         <Flex
-          w='29%'
+          w='27%'
           h='95%'
           position='fixed'
-          top='50%'
-          right='2.5%'
+          top='47%'
+          right='3.5%'
           transform='translateY(-50%)'
           mr={-8}
         >
