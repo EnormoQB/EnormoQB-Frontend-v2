@@ -1,12 +1,14 @@
 import { Box } from '@chakra-ui/react';
-import AQuestions from '../../components/Accepted/AQuestions';
-import { Value } from '../../components/Accepted/config';
+import { Value } from '../../components/Accordion/config';
+import Questions from '../../components/Accordion/Questions';
+// eslint-disable-next-line import/order
+import { TiTick } from 'react-icons/ti';
 
 const Approved = () => {
   return (
     <Box>
       {Value.map((value) => (
-        <AQuestions
+        <Questions
           key={value.id}
           question={value.question}
           option1={value.option1}
@@ -20,6 +22,9 @@ const Approved = () => {
           difficulty={value.difficulty}
           imageurl={value.imageurl}
           alt={value.alt}
+          color='green'
+          iconused={<TiTick />}
+          pending='0'
         />
       ))}
     </Box>
