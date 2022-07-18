@@ -1,12 +1,14 @@
 import { Box } from '@chakra-ui/react';
-import RQuestions from '../../components/Rejected/RQuestions';
-import { Value } from '../../components/Rejected/config';
+import { Value } from '../../components/Accordion/config';
+import Questions from '../../components/Accordion/Questions';
+// eslint-disable-next-line import/order
+import { MdClear } from 'react-icons/md';
 
 const Rejected = () => {
   return (
     <Box>
       {Value.map((value) => (
-        <RQuestions
+        <Questions
           key={value.id}
           question={value.question}
           option1={value.option1}
@@ -20,6 +22,9 @@ const Rejected = () => {
           difficulty={value.difficulty}
           imageurl={value.imageurl}
           alt={value.alt}
+          color='#ce0202'
+          iconused={<MdClear />}
+          pending='0'
         />
       ))}
     </Box>

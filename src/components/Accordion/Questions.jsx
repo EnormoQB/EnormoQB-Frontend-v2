@@ -8,6 +8,7 @@ import {
   Button,
   Image,
   Spacer,
+  Icon,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -24,6 +25,9 @@ const Questions = ({
   difficulty,
   imageurl,
   alt,
+  color,
+  iconused,
+  pending,
 }) => (
   <Flex>
     <Accordion allowMultiple w='full'>
@@ -45,13 +49,13 @@ const Questions = ({
                 height='30px'
                 width='30px'
                 align='center'
-                bgColor='#061727'
+                bgColor={color}
                 justifyContent='center'
                 borderRadius='30px'
                 borderBottomRightRadius='0'
                 color='white'
               >
-                !
+                {iconused}
               </Flex>
               <Flex flexDir='column' ml='3'>
                 <Flex color='black' fontSize='18px' fontWeight='600'>
@@ -107,7 +111,7 @@ const Questions = ({
               Answer : {answer}
             </Flex>
             <Spacer />
-            <Flex>
+            <Flex display={pending === '1' ? 'flex' : 'none'}>
               <Button variant='accept' mr='4'>
                 Accept
               </Button>

@@ -1,6 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import { Value } from '../../components/Accordion/config';
 import Questions from '../../components/Accordion/Questions';
+// eslint-disable-next-line import/order
+import { BsExclamation } from 'react-icons/bs';
 
 const Pending = () => {
   return (
@@ -20,6 +22,9 @@ const Pending = () => {
           difficulty={value.difficulty}
           imageurl={value.imageurl}
           alt={value.alt}
+          color='#061727'
+          iconused={<BsExclamation />}
+          pending='1'
         />
       ))}
     </Box>
