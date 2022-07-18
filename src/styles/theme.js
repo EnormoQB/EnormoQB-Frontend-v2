@@ -47,12 +47,20 @@ const theme = extendTheme({
           color: 'brand.200',
         },
         accept: {
-          bg: 'green',
-          color: 'white',
+          bg: 'green.300',
+          color: 'brand.600',
+          _hover: {
+            bg: 'green.400',
+            color: 'brand.600',
+          },
         },
         reject: {
-          bg: 'red',
-          color: 'white',
+          bg: 'gray.400',
+          color: 'brand.600',
+          _hover: {
+            bg: 'gray.500',
+            color: 'brand.600',
+          },
         },
       },
       defaultProps: {

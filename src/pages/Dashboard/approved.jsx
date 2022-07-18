@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { Value } from '../../components/Accordion/config';
 import Questions from '../../components/Accordion/Questions';
 // eslint-disable-next-line import/order
-import { TiTick } from 'react-icons/ti';
+import { BsCheck } from 'react-icons/bs';
 
 const Approved = () => {
   return (
@@ -22,8 +22,9 @@ const Approved = () => {
           difficulty={value.difficulty}
           imageurl={value.imageurl}
           alt={value.alt}
-          color='green'
-          iconused={<TiTick />}
+          // color='green'
+          color='green.400'
+          iconused={<BsCheck />}
           pending='0'
         />
       ))}

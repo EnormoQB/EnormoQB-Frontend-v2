@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { Value } from '../../components/Accordion/config';
 import Questions from '../../components/Accordion/Questions';
 // eslint-disable-next-line import/order
-import { MdClear } from 'react-icons/md';
+import { BsX } from 'react-icons/bs';
 
 const Rejected = () => {
   return (
@@ -22,8 +22,9 @@ const Rejected = () => {
           difficulty={value.difficulty}
           imageurl={value.imageurl}
           alt={value.alt}
-          color='#ce0202'
-          iconused={<MdClear />}
+          // color='#ce0202'
+          color='gray.400'
+          iconused={<BsX />}
           pending='0'
         />
       ))}
