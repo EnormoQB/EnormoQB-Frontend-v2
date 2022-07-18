@@ -15,8 +15,33 @@ import {
   FormHelperText,
 } from '@chakra-ui/react';
 import { MdDelete } from 'react-icons/md';
-// import ContributeQuesImage from '../../assets/contributeQues.png';
+import { FaCheck } from 'react-icons/fa';
 import RadioCard from '../../components/Contribute/radioCard';
+
+export const class12 = [
+  'Physics',
+  'Chemistry',
+  'Maths',
+  'Biology',
+  'English',
+  'Hindi',
+  'History',
+  'Geography',
+  'Economics',
+  'Accountancy',
+  'Computer Science',
+  'Business Studies',
+  'Physical Education',
+];
+
+export const class10 = [
+  'Maths',
+  'English',
+  'Hindi',
+  'Science',
+  'Social Studies',
+  'General Knowledge',
+];
 
 // Difficulty
 
@@ -34,10 +59,20 @@ const Contribute = () => {
   const group = getRootProps();
   const [options, setOptions] = useState(['', '', '', '']);
   const [standard, setStandard] = useState('');
+  const [subjects, setSubjects] = useState([]);
   const [subject, setSubject] = useState('');
   const [topic, setTopic] = useState('');
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
+
+  const onSelectClass = (val) => {
+    setStandard(val);
+    if (val === 'X') {
+      setSubjects(class10);
+    } else {
+      setSubjects(class12);
+    }
+  };
 
   const handleOptionChange = (idx, e) => {
     setOptions((prevState) => {
@@ -50,7 +85,13 @@ const Contribute = () => {
   // MCQ
 
   const handleRemoveOption = (idx) => {
-    setOptions((prevState) => prevState.filter((option, id) => id !== idx));
+    // eslint-disable-next-line no-unused-expressions
+    options.length > 2
+      ? setOptions(
+          (prevState) => prevState.filter((option, id) => id !== idx),
+          setAnswer(''),
+        )
+      : null;
   };
 
   const handleAddOption = () => {
@@ -59,8 +100,13 @@ const Contribute = () => {
     }
   };
 
+  const handleSelectAnswer = (idx) => {
+    setAnswer(options.filter((option, id) => id === idx)[0]);
+  };
+
   console.log(standard);
   console.log(topic);
+  console.log(subjects);
   console.log(subject);
   console.log(question);
   console.log(options);
@@ -96,13 +142,33 @@ const Contribute = () => {
               boxShadow='md'
               border='gray.200'
               borderWidth={1}
-              onChange={(e) => setStandard(e.target.value)}
+              onChange={(e) => onSelectClass(e.target.value)}
               // color='gray.400'
             >
               <option>X</option>
               <option>XII</option>
             </Select>
           </FormControl>
+          {/* Subject */}
+          <FormControl isRequired mb={6}>
+            <FormLabel fontSize={19} htmlFor='subject'>
+              Subject
+            </FormLabel>
+            <Select
+              variant='outline'
+              placeholder='Select Subject'
+              boxShadow='md'
+              border='gray.200'
+              borderWidth={1}
+              onChange={(e) => setSubject(e.target.value)}
+              // color='gray.400'
+            >
+              {subjects.map((value, i) => (
+                <option key={i}>{value}</option>
+              ))}
+            </Select>
+          </FormControl>
+          {/* Topic */}
           <FormControl isRequired mb={6}>
             <FormLabel fontSize={19} htmlFor='topic'>
               Topic
@@ -112,44 +178,6 @@ const Contribute = () => {
               placeholder='Enter Topic'
               boxShadow='md'
               onChange={(e) => setTopic(e.target.value)}
-            />
-          </FormControl>
-          <FormControl isRequired mb={6}>
-            <FormLabel fontSize={19} htmlFor='question'>
-              Question
-            </FormLabel>
-            <Textarea
-              id='question'
-              placeholder='Enter Question'
-              w='100%'
-              h='150px'
-              boxShadow='md'
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-          </FormControl>
-          <FormControl isRequired mb={6} mt={-2}>
-            <FormLabel fontSize={19} htmlFor='answer'>
-              Answer
-            </FormLabel>
-            <Input
-              id='answer'
-              placeholder='Enter Answer'
-              boxShadow='md'
-              onChange={(e) => setAnswer(e.target.value)}
-            />
-          </FormControl>
-        </Box>
-        <Box borderRadius='5px' w='49%' flexShrink={0} rounded='md'>
-          {/* Subject */}
-          <FormControl isRequired mb={6}>
-            <FormLabel fontSize={19} htmlFor='subject'>
-              Subject
-            </FormLabel>
-            <Input
-              id='subject'
-              placeholder='Enter Subject'
-              boxShadow='md'
-              onChange={(e) => setSubject(e.target.value)}
             />
           </FormControl>
           {/* Difficulty */}
@@ -168,26 +196,49 @@ const Contribute = () => {
               })}
             </HStack>
           </FormControl>
+        </Box>
+        <Box borderRadius='5px' w='49%' flexShrink={0} rounded='md'>
+          {/* Question */}
+          <FormControl isRequired mb={6}>
+            <FormLabel fontSize={19} htmlFor='question'>
+              Question
+            </FormLabel>
+            <Textarea
+              id='question'
+              placeholder='Enter Question'
+              w='100%'
+              h='150px'
+              boxShadow='md'
+              onChange={(e) => setQuestion(e.target.value)}
+            />
+          </FormControl>
           {/* Options */}
           <FormControl isRequired mb={6}>
-            <FormLabel fontSize={19} htmlFor='options'>
-              Options
-            </FormLabel>
+            <HStack mb={1}>
+              <FormLabel fontSize={19} htmlFor='options'>
+                Options
+              </FormLabel>
+              {options.length < 4 ? (
+                <Button p={3} onClick={() => handleAddOption()}>
+                  Add Option
+                </Button>
+              ) : null}
+            </HStack>
             <FormHelperText mt={-1} mb={3}>
               Minimum 2 options are required
             </FormHelperText>
             <Flex justify='space-between' wrap='wrap'>
               {options.map((option, idx) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <Fragment key={idx}>
-                  <Box w={48} mr={20} mb={7}>
+                  <Box w={48} mr='12%' mb={7}>
                     <FormLabel htmlFor={`options[${idx + 1}]`}>
                       {`Option ${idx + 1}`}
                     </FormLabel>
                     <Flex>
                       <Input
                         placeholder={`Option ${idx + 1}`}
-                        w={40}
+                        w={170}
+                        minW='unset'
                         boxShadow='md'
                         value={option}
                         onChange={(e) => handleOptionChange(idx, e)}
@@ -196,18 +247,32 @@ const Contribute = () => {
                         aria-label='Delete option'
                         icon={<MdDelete />}
                         ml={2}
+                        // borderRightRadius={0}
                         onClick={() => handleRemoveOption(idx)}
+                      />
+                      <IconButton
+                        aria-label='Select Answer'
+                        icon={<FaCheck />}
+                        bg='green'
+                        // borderLeftRadius={0}
+                        ml={1}
+                        _hover={{
+                          backgroundColor: '#A0D995',
+                          borderColor: 'brand.400',
+                          color: 'black',
+                        }}
+                        onClick={() => handleSelectAnswer(idx)}
                       />
                     </Flex>
                   </Box>
                 </Fragment>
               ))}
             </Flex>
-            {options.length < 4 ? (
-              <Button mt={5} onClick={() => handleAddOption()}>
-                Add Option
-              </Button>
-            ) : null}
+          </FormControl>
+          <FormControl>
+            <FormLabel fontSize={19} htmlFor='answer'>
+              Answer: {answer}
+            </FormLabel>
           </FormControl>
         </Box>
       </Flex>

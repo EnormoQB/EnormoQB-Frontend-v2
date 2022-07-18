@@ -30,6 +30,7 @@
     "arrow-body-style": "off",
     "react/prop-types": "off",
     "no-unused-vars": "warn",
-    "react/destructuring-assignment":"off"
+    "react/destructuring-assignment": "off",
+    "react/no-array-index-key": "off"
   }
 }
