@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import { HiOutlineDocumentText } from 'react-icons/hi';
+// import { HiOutlineDocumentText } from 'react-icons/hi';
 
 const Cards = ({ background, color, number, comment, iconcolor, iconused }) => {
   return (

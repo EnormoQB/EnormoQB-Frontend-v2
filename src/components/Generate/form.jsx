@@ -1,14 +1,33 @@
 import { useState } from 'react';
-import { FormControl, FormLabel, Box, Select } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormLabel,
+  Box,
+  Select,
+  HStack,
+  Text,
+  Input,
+  Flex,
+  Button,
+  NumberInput,
+  NumberInputStepper,
+  NumberInputField,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from '@chakra-ui/react';
 import { class10, class12 } from '../../pages/Dashboard/contribute';
+
+const difficulties = ['Easy', 'Medium', 'Hard'];
 
 const GenerateForm = () => {
   const [standard, setStandard] = useState('');
   const [subjects, setSubjects] = useState([]);
   const [subject, setSubject] = useState('');
+  const [board, setBoard] = useState('');
 
   console.log(standard);
   console.log(subject);
+  console.log(board);
 
   const onSelectClass = (val) => {
     setStandard(val);
@@ -57,6 +76,53 @@ const GenerateForm = () => {
           ))}
         </Select>
       </FormControl>
+      {/* Board */}
+      <FormControl mb={6} isRequired>
+        <FormLabel fontSize={19} htmlFor='class'>
+          Class
+        </FormLabel>
+        <Select
+          variant='outline'
+          placeholder='Select Board'
+          boxShadow='md'
+          border='gray.200'
+          borderWidth={1}
+          onChange={(e) => setBoard(e.target.value)}
+          // color='gray.400'
+        >
+          <option>CBSE</option>
+          <option>ICSE</option>
+        </Select>
+      </FormControl>
+      <FormControl mb={6} isRequired>
+        <FormLabel>Number Of Questions</FormLabel>
+        <HStack spacing={175}>
+          {difficulties.map((value, i) => {
+            return (
+              <Box key={i}>
+                <Text>{value}</Text>
+                <NumberInput defaultValue={0} allowMouseWheel>
+                  <NumberInputField boxShadow='md' />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </Box>
+            );
+          })}
+        </HStack>
+      </FormControl>
+      <FormControl mb={6} isRequired>
+        <FormLabel>Topics</FormLabel>
+        <Input placeholder='Enter Topics' boxShadow='md' />
+      </FormControl>
+      {/* Submit */}
+      <Flex justify='center'>
+        <Button mt={5} w={300} h={50}>
+          Submit
+        </Button>
+      </Flex>
     </Box>
   );
 };
