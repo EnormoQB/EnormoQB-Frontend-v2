@@ -1,10 +1,10 @@
 import {
-  Text,
   Tabs,
   TabList,
   TabPanels,
   Box,
   TabPanel,
+  Heading,
 } from '@chakra-ui/react';
 import CustomTab from '../../components/Generate/customTab';
 import GenerateForm from '../../components/Generate/form';
@@ -13,9 +13,19 @@ import GenerateResult from '../../components/Generate/result';
 const Generate = () => {
   return (
     <div>
-      <Text as='h1' fontSize='4xl' fontWeight='bold' mb='5'>
-        Generate Question Paper
-      </Text>
+      <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
+        Generate
+        <mark
+          style={{
+            backgroundColor: '#C3D0F9',
+            borderRadius: '25px',
+            padding: '0 12px',
+            marginLeft: '3px',
+          }}
+        >
+          Question Paper
+        </mark>
+      </Heading>
       <Box w='full'>
         <Tabs isLazy defaultIndex={1} size='lg'>
           <TabList>
