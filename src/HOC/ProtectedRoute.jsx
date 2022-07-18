@@ -7,9 +7,7 @@ const ProtectedRoute = ({ children }) => {
 
   const { isLoading, isFetching } = userApi.endpoints.getUserData.useQuery(
     null,
-    {
-      skip: false,
-    },
+    { skip: false },
   );
 
   const loading = isLoading || isFetching;

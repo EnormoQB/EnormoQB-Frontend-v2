@@ -9,7 +9,6 @@ import Approved from './Dashboard/approved';
 import Rejected from './Dashboard/rejected';
 import Generate from './Dashboard/generate';
 import Contribute from './Dashboard/contribute';
-import ProtectedRoute from '../HOC/ProtectedRoute';
 import Home from './Home';
 
 const App = () => {
@@ -21,62 +20,13 @@ const App = () => {
       <Routes>
         <Route path='/'>
           <Route index element={<Home />} />
-          <Route
-            path='dashboard'
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          >
-            <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <DashboardHome />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='pending'
-              element={
-                <ProtectedRoute>
-                  <Pending />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='approved'
-              element={
-                <ProtectedRoute>
-                  <Approved />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='rejected'
-              element={
-                <ProtectedRoute>
-                  <Rejected />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='generate'
-              element={
-                <ProtectedRoute>
-                  <Generate />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='contribute'
-              element={
-                <ProtectedRoute>
-                  <Contribute />
-                </ProtectedRoute>
-              }
-            />
+          <Route path='dashboard' element={<Dashboard />}>
+            <Route index element={<DashboardHome />} />
+            <Route path='pending' element={<Pending />} />
+            <Route path='approved' element={<Approved />} />
+            <Route path='rejected' element={<Rejected />} />
+            <Route path='generate' element={<Generate />} />
+            <Route path='contribute' element={<Contribute />} />
           </Route>
         </Route>
       </Routes>
