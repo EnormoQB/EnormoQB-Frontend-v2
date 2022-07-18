@@ -5,7 +5,6 @@ import {
   Input,
   Flex,
   Box,
-  Image,
   HStack,
   Select,
   useRadioGroup,
@@ -16,7 +15,7 @@ import {
   FormHelperText,
 } from '@chakra-ui/react';
 import { MdDelete } from 'react-icons/md';
-import ContributeQuesImage from '../../assets/contributeQues.png';
+// import ContributeQuesImage from '../../assets/contributeQues.png';
 import RadioCard from '../../components/Contribute/radioCard';
 
 // Difficulty
@@ -83,7 +82,7 @@ const Contribute = () => {
           Question
         </mark>
       </Heading>
-      <Flex justify='space-between'>
+      <Flex>
         <Box borderRadius='5px' w='65%' flexShrink={0} rounded='md'>
           {/* Form Starts */}
           {/* Class */}
@@ -217,7 +216,7 @@ const Contribute = () => {
           </Button>
         </Box>
         {/* Image */}
-        <Flex
+        {/* <Flex
           w='27%'
           h='95%'
           position='fixed'
@@ -227,7 +226,7 @@ const Contribute = () => {
           mr={-8}
         >
           <Image src={ContributeQuesImage} alt='' w='full' />
-        </Flex>
+        </Flex> */}
       </Flex>
     </Box>
   );
