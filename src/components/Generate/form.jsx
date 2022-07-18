@@ -37,6 +37,7 @@ const GenerateForm = () => {
       setSubjects(class12);
     }
   };
+
   return (
     <Box>
       {/* Class */}
@@ -69,10 +70,9 @@ const GenerateForm = () => {
           border='gray.200'
           borderWidth={1}
           onChange={(e) => setSubject(e.target.value)}
-          // color='gray.400'
         >
-          {subjects.map((value, i) => (
-            <option key={i}>{value}</option>
+          {subjects.map((value) => (
+            <option key={value}>{value}</option>
           ))}
         </Select>
       </FormControl>
