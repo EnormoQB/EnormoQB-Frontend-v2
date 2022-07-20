@@ -19,6 +19,23 @@ import { BiExpand } from 'react-icons/bi';
 import Option from './option';
 import Tag from './tag';
 
+const DifficultyTag = ({ content, isExpanded }) => {
+  return (
+    <Flex
+      bgColor={isExpanded ? 'brand.300' : 'brand.400'}
+      color={isExpanded ? 'brand.600' : 'brand.600'}
+      fontSize='xs'
+      fontWeight='400'
+      py='1'
+      px='1.5'
+      ml='2'
+      borderRadius='md'
+    >
+      {content}
+    </Flex>
+  );
+};
+
 const Question = ({
   question,
   option1,
@@ -32,8 +49,6 @@ const Question = ({
   difficulty,
   imageurl,
   alt,
-  color,
-  iconused,
   pending,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -66,37 +81,27 @@ const Question = ({
                   >
                     <Flex>
                       <Flex
-                        height='22px'
-                        width='22px'
-                        align='center'
-                        bgColor={isExpanded ? 'brand.300' : color}
-                        justifyContent='center'
-                        borderRadius='30px'
-                        borderBottomRightRadius='0'
-                        mt='1'
-                        color={isExpanded ? 'brand.600' : 'brand.100'}
-                      >
-                        {iconused}
-                      </Flex>
-                      <Flex
                         color={isExpanded ? 'brand.100' : 'brand.600'}
                         fontWeight='600'
                         fontSize='lg'
                         pl='2'
-                        w='95%'
+                        // w='95%'
                       >
                         {question}
                       </Flex>
+                      <DifficultyTag
+                        content={difficulty}
+                        isExpanded={isExpanded}
+                      />
                     </Flex>
 
-                    <Flex ml='6'>
+                    <Flex ml='1'>
                       <Tag
                         content={`Class ${standard}`}
                         isExpanded={isExpanded}
                       />
                       <Tag content={subject} isExpanded={isExpanded} />
                       <Tag content={chapter} isExpanded={isExpanded} />
-                      <Tag content={difficulty} isExpanded={isExpanded} />
                     </Flex>
                   </Flex>
                   <Flex mr='6' display={pending === '1' ? 'flex' : 'none'}>
@@ -121,16 +126,13 @@ const Question = ({
                   />
                 </AccordionButton>
               </h2>
-              <AccordionPanel
-                pb={4}
-                bgColor='brand.300'
-                borderBottomRadius='lg'
-              >
+              <AccordionPanel borderBottomRadius='lg' pb='2'>
                 <Flex
                   flexDir='row'
                   width='100%'
                   pl='2'
                   justifyContent='space-between'
+                  alignItems='center'
                 >
                   <Flex fontWeight='medium' flexDir='column' w='70%'>
                     <Option choice='A.' option={option1} answer={answer} />

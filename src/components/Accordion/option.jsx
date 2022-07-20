@@ -6,6 +6,7 @@ const Option = ({ choice, option, answer }) => {
     <Flex my='1.5'>
       <BsCheckCircleFill
         size='1.5rem'
+        style={{ marginLeft: '0.5rem' }}
         visibility={option === answer ? 'visible' : 'hidden'}
       />
       <Box ml='3'>{choice}</Box>
