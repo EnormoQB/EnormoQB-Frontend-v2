@@ -1,7 +1,6 @@
 import { Flex } from '@chakra-ui/react';
-import { HiOutlineDocumentText } from 'react-icons/hi';
 
-const Cards = ({ background, number, comment, iconcolor, iconused }) => {
+const Cards = ({ background, number, comment, iconColor, iconUsed }) => {
   return (
     <Flex
       h='130px'
@@ -10,13 +9,13 @@ const Cards = ({ background, number, comment, iconcolor, iconused }) => {
       color={background === 'brand.600' ? 'brand.100' : 'brand.600'}
       borderRadius='xl'
       flexDir='column'
-      boxShadow='0 4px 12px #00000022'
+      boxShadow='rgba(0, 0, 0, 0.16) 0px 1px 4px'
     >
       <Flex
         h='130px'
         alignItems='center'
         flexDir='row'
-        justifyContent='space-around'
+        justifyContent='space-between'
         p='4'
       >
         <Flex justifyContent='flex-start' flexDir='column'>
@@ -32,16 +31,16 @@ const Cards = ({ background, number, comment, iconcolor, iconused }) => {
           </Flex>
         </Flex>
         <Flex
-          bgColor={iconcolor}
+          bgColor={iconColor}
           h='50px'
           w='50px'
           color='brand.100'
           alignItems='center'
           justifyContent='space-evenly'
           borderRadius='10px'
-          m='4'
+          ml='4'
         >
-          {iconused}
+          {iconUsed}
         </Flex>
       </Flex>
     </Flex>

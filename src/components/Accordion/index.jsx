@@ -7,7 +7,6 @@ import {
   AccordionIcon,
   Button,
   Image,
-  Box,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -15,46 +14,12 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { BsCheckCircleFill } from 'react-icons/bs';
+import { useState } from 'react';
 import { BiExpand } from 'react-icons/bi';
+import Option from './option';
+import Tag from './tag';
 
-const Tag = ({ content, isExpanded }) => {
-  return (
-    <Flex
-      bgColor={isExpanded ? 'brand.300' : 'brand.400'}
-      color={isExpanded ? 'brand.600' : 'brand.600'}
-      // bgColor='brand.400'
-      // color='brand.600'
-      fontSize='sm'
-      fontWeight='400'
-      py='1'
-      px='1.5'
-      ml='2'
-      mt='1'
-      borderRadius='md'
-    >
-      {content}
-    </Flex>
-  );
-};
-
-const Option = ({ choice, option, answer }) => {
-  return (
-    <Flex my='1.5'>
-      <BsCheckCircleFill
-        size='1.5rem'
-        visibility={option === answer ? 'visible' : 'hidden'}
-      />
-      <Box ml='3'>{choice}</Box>
-      <Box ml='2' w='90%'>
-        {option}
-      </Box>
-    </Flex>
-  );
-};
-
-const Questions = ({
+const Question = ({
   question,
   option1,
   option2,
@@ -76,7 +41,6 @@ const Questions = ({
   return (
     <Flex>
       <Accordion allowMultiple w='full'>
-        {/* allowMultiple */}
         <AccordionItem
           borderTop='none'
           borderBottom='none'
@@ -91,10 +55,7 @@ const Questions = ({
                   borderTopRadius='lg'
                   borderBottomRadius='none'
                   _focus={{}}
-                  _expanded={{
-                    color: 'brand.100',
-                    bg: 'brand.600',
-                  }}
+                  _expanded={{ color: 'brand.100', bg: 'brand.600' }}
                 >
                   <Flex
                     flex='1'
@@ -232,4 +193,4 @@ const Questions = ({
   );
 };
 
-export default Questions;
+export default Question;

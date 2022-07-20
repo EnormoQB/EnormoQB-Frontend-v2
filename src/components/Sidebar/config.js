@@ -35,4 +35,16 @@ export const navItems = [
     icon: RiFileEditFill,
     link: '/contribute',
   },
+  {
+    id: 7,
+    name: 'Previous Year Question Paper',
+    icon: RiFileEditFill,
+    link: '/previouspapers',
+  },
+  {
+    id: 8,
+    name: 'Generated Question Paper',
+    icon: RiFileEditFill,
+    link: '/generatedpapers',
+  },
 ];

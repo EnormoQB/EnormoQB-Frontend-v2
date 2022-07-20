@@ -1,14 +1,13 @@
 import { Box } from '@chakra-ui/react';
-import { Value } from '../../components/Accordion/config';
-import Questions from '../../components/Accordion/Questions';
-// eslint-disable-next-line import/order
 import { BsX } from 'react-icons/bs';
+import { Value } from '../../components/Accordion/config';
+import Question from '../../components/Accordion';
 
 const Rejected = () => {
   return (
     <Box>
       {Value.map((value) => (
-        <Questions
+        <Question
           key={value.id}
           question={value.question}
           option1={value.option1}
@@ -22,7 +21,6 @@ const Rejected = () => {
           difficulty={value.difficulty}
           imageurl={value.imageurl}
           alt={value.alt}
-          // color='#ce0202'
           color='gray.400'
           iconused={<BsX />}
           pending='0'
