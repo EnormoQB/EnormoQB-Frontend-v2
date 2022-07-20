@@ -20,7 +20,7 @@ const NavItems = ({ isNavOpen, title, icon, active, headProps, onClick }) => {
           <Flex align='center'>
             <Icon
               as={icon}
-              fontSize='20px'
+              fontSize='21px'
               color='white'
               alignItems={!isNavOpen ? 'center' : 'flex-start'}
             />

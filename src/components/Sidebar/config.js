@@ -3,7 +3,7 @@ import {
   MdOutlineHourglassTop,
   MdRemoveDone,
 } from 'react-icons/md';
-import { AiFillHome } from 'react-icons/ai';
+import { AiFillHome, AiFillFileUnknown } from 'react-icons/ai';
 import { BsFillFilePdfFill } from 'react-icons/bs';
 import { RiFileEditFill } from 'react-icons/ri';
 
@@ -38,7 +38,7 @@ export const navItems = [
   {
     id: 7,
     name: 'Question Papers',
-    icon: RiFileEditFill,
+    icon: AiFillFileUnknown,
     link: '/questionpapers',
   },
 ];
