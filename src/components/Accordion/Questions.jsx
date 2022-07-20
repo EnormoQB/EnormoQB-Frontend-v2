@@ -19,20 +19,32 @@ import React, { useState } from 'react';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { BiExpand } from 'react-icons/bi';
 
-const Tag = ({ content, isExpanded }) => {
+const DifficultyTag = ({ content, isExpanded }) => {
   return (
     <Flex
       bgColor={isExpanded ? 'brand.300' : 'brand.400'}
       color={isExpanded ? 'brand.600' : 'brand.600'}
-      // bgColor='brand.400'
-      // color='brand.600'
-      fontSize='sm'
+      fontSize='xs'
       fontWeight='400'
       py='1'
       px='1.5'
       ml='2'
-      mt='1'
       borderRadius='md'
+    >
+      {content}
+    </Flex>
+  );
+};
+
+const Tag = ({ content, isExpanded }) => {
+  return (
+    <Flex
+      color={isExpanded ? 'brand.100' : 'gray.500'}
+      fontSize='xs'
+      fontWeight='400'
+      p='1'
+      mr='2'
+      mt='1'
     >
       {content}
     </Flex>
@@ -44,6 +56,7 @@ const Option = ({ choice, option, answer }) => {
     <Flex my='1.5'>
       <BsCheckCircleFill
         size='1.5rem'
+        style={{ marginLeft: '0.5rem' }}
         visibility={option === answer ? 'visible' : 'hidden'}
       />
       <Box ml='3'>{choice}</Box>
@@ -105,37 +118,27 @@ const Questions = ({
                   >
                     <Flex>
                       <Flex
-                        height='22px'
-                        width='22px'
-                        align='center'
-                        bgColor={isExpanded ? 'brand.300' : color}
-                        justifyContent='center'
-                        borderRadius='30px'
-                        borderBottomRightRadius='0'
-                        mt='1'
-                        color={isExpanded ? 'brand.600' : 'brand.100'}
-                      >
-                        {iconused}
-                      </Flex>
-                      <Flex
                         color={isExpanded ? 'brand.100' : 'brand.600'}
                         fontWeight='600'
                         fontSize='lg'
                         pl='2'
-                        w='95%'
+                        // w='95%'
                       >
                         {question}
                       </Flex>
+                      <DifficultyTag
+                        content={difficulty}
+                        isExpanded={isExpanded}
+                      />
                     </Flex>
 
-                    <Flex ml='6'>
+                    <Flex ml='1'>
                       <Tag
                         content={`Class ${standard}`}
                         isExpanded={isExpanded}
                       />
                       <Tag content={subject} isExpanded={isExpanded} />
                       <Tag content={chapter} isExpanded={isExpanded} />
-                      <Tag content={difficulty} isExpanded={isExpanded} />
                     </Flex>
                   </Flex>
                   <Flex mr='6' display={pending === '1' ? 'flex' : 'none'}>
@@ -160,16 +163,13 @@ const Questions = ({
                   />
                 </AccordionButton>
               </h2>
-              <AccordionPanel
-                pb={4}
-                bgColor='brand.300'
-                borderBottomRadius='lg'
-              >
+              <AccordionPanel borderBottomRadius='lg' pb='2'>
                 <Flex
                   flexDir='row'
                   width='100%'
                   pl='2'
                   justifyContent='space-between'
+                  alignItems='center'
                 >
                   <Flex fontWeight='medium' flexDir='column' w='70%'>
                     <Option choice='A.' option={option1} answer={answer} />
