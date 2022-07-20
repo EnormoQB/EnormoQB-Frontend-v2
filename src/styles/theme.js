@@ -51,19 +51,19 @@ const theme = extendTheme({
           color: 'brand.200',
         },
         accept: {
-          bg: 'green.300',
-          color: 'brand.600',
+          bg: 'blue.300',
+          color: 'brand.100',
           _hover: {
-            bg: 'green.400',
-            color: 'brand.600',
+            bg: 'blue.400',
+            color: 'brand.100',
           },
         },
         reject: {
-          bg: 'gray.400',
-          color: 'brand.600',
+          bg: 'gray.500',
+          color: 'brand.100',
           _hover: {
-            bg: 'gray.500',
-            color: 'brand.600',
+            bg: 'gray.600',
+            color: 'brand.100',
           },
         },
       },

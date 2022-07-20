@@ -12,8 +12,7 @@ export const Value = [
     subject: 'biology',
     chapter: 'Plant Kingdom',
     difficulty: 'Hard',
-    imageurl: 'https://bit.ly/dan-abramov',
-    alt: 'Image Photo',
+    imageurl: 'https://i.stack.imgur.com/i4yek.png',
   },
   {
     id: 2,
@@ -27,8 +26,6 @@ export const Value = [
     subject: 'Math',
     chapter: 'Calculus',
     difficulty: 'Easy',
-    imageurl: '',
-    alt: '',
   },
   {
     id: 3,
@@ -42,7 +39,5 @@ export const Value = [
     subject: 'History',
     chapter: 'Maharaja',
     difficulty: 'Easy',
-    imageurl: 'https://bit.ly/dan-abramov',
-    alt: 'Image Photo',
   },
 ];
