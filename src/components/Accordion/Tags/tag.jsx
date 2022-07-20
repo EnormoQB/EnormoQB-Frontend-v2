@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react';
+import TagDivider from './divider';
 
 const Tag = ({ content, isExpanded }) => {
   return (
@@ -6,11 +7,10 @@ const Tag = ({ content, isExpanded }) => {
       color={isExpanded ? 'brand.100' : 'gray.500'}
       fontSize='xs'
       fontWeight='400'
-      p='1'
-      mr='2'
-      mt='1'
+      alignItems='center'
     >
       {content}
+      <TagDivider />
     </Flex>
   );
 };

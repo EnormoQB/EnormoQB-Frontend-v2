@@ -1,18 +1,15 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { BsCheckCircleFill } from 'react-icons/bs';
 
-const Option = ({ choice, option, answer }) => {
+const Option = ({ index, option, isAnswer }) => {
   return (
     <Flex my='1.5'>
+      <Text>{`${String.fromCharCode(65 + index)}. ${option}`}</Text>
       <BsCheckCircleFill
         size='1.5rem'
-        style={{ marginLeft: '0.5rem' }}
-        visibility={option === answer ? 'visible' : 'hidden'}
+        style={{ marginLeft: '0.7rem' }}
+        visibility={isAnswer ? 'visible' : 'hidden'}
       />
-      <Box ml='3'>{choice}</Box>
-      <Box ml='2' w='90%'>
-        {option}
-      </Box>
     </Flex>
   );
 };

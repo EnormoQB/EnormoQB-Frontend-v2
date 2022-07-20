@@ -37,14 +37,8 @@ export const navItems = [
   },
   {
     id: 7,
-    name: 'Previous Year Question Paper',
+    name: 'Question Papers',
     icon: RiFileEditFill,
-    link: '/previouspapers',
-  },
-  {
-    id: 8,
-    name: 'Generated Question Paper',
-    icon: RiFileEditFill,
-    link: '/generatedpapers',
+    link: '/questionpapers',
   },
 ];
