@@ -9,10 +9,10 @@ import {
 } from '@chakra-ui/react';
 import { Draggable } from 'react-beautiful-dnd';
 import { MdDelete } from 'react-icons/md';
+import { AiOutlineMenu } from 'react-icons/ai';
 
-const QuestionTab = ({ data, index }) => {
+const QuestionTab = ({ data, index, isDragging }) => {
   return (
-    // eslint-disable-next-line no-underscore-dangle
     <Draggable draggableId={data._id.$oid} index={index}>
       {(provided) => (
         <div
@@ -24,10 +24,19 @@ const QuestionTab = ({ data, index }) => {
             px='5'
             py='6'
             borderRadius='10'
+            bg='brand.100'
+            boxShadow={
+              isDragging === index ? 'rgba(0, 0, 0, 0.16) 0px 1px 4px' : ''
+            }
             _hover={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px' }}
             role='group'
           >
-            <Box w='85%'>
+            <Tooltip label='Drag to reorder' fontSize='xs'>
+              <Box alignSelf='center' mr='6'>
+                <AiOutlineMenu />
+              </Box>
+            </Tooltip>
+            <Box w='75%'>
               <Text as='h3' fontWeight='semibold' fontSize='17px'>
                 {`Q${index + 1}. ${data.question}`}
               </Text>

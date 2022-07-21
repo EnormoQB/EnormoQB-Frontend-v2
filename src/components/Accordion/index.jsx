@@ -53,7 +53,7 @@ const Question = ({ data }) => {
                   <Flex mt='2' alignItems='center' wrap='wrap'>
                     <Tag content={`Class ${data.standard}`} />
                     <Tag content={data.subject} />
-                    {data.topics.map((topic) => (
+                    {data.topics?.map((topic) => (
                       <Tag key={topic} content={topic} />
                     ))}
                     <DifficultyTag
