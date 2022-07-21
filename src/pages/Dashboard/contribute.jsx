@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useRef } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -7,7 +6,6 @@ import {
   Flex,
   Box,
   HStack,
-  Select,
   useRadioGroup,
   Textarea,
   Heading,
@@ -17,82 +15,53 @@ import {
   InputGroup,
   InputRightElement,
   Tooltip,
-  Code,
   useToast,
 } from '@chakra-ui/react';
-import { Select as Select2 } from 'chakra-react-select';
+import { Select } from 'chakra-react-select';
 import { MdDelete } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
 import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
-
-export const class12 = [
-  'Physics',
-  'Chemistry',
-  'Maths',
-  'Biology',
-  'English',
-  'Hindi',
-  'History',
-  'Geography',
-  'Economics',
-  'Accountancy',
-  'Computer Science',
-  'Business Studies',
-  'Physical Education',
-];
-
-export const class10 = [
-  'Maths',
-  'English',
-  'Hindi',
-  'Science',
-  'Social Studies',
-  'General Knowledge',
-];
+import classData from '../../data/classData';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
 const Contribute = () => {
   const toast = useToast();
-  const { getRootProps, getRadioProps } = useRadioGroup({
+  const {
+    getRootProps,
+    getRadioProps,
+    value: difficulty,
+  } = useRadioGroup({
     name: 'difficulty',
     defaultValue: 'Easy',
-    onChange: console.log,
   });
 
   const group = getRootProps();
-  const [options, setOptions] = useState(['', '', '', '']);
-  const [standard, setStandard] = useState(null);
-  const [subjects, setSubjects] = useState([]);
-  const [subject, setSubject] = useState(null);
-  const [topics, setTopics] = useState([]);
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState(null);
-  const [image, setImage] = useState(null);
 
-  const onSelectClass = (val) => {
-    setStandard(val);
-    if (val === 'X') {
-      setSubjects(class10);
-    } else {
-      setSubjects(class12);
-    }
-  };
+  const [options, setOptions] = useState(
+    Array(4).fill({ value: '', isCorrect: false }),
+  );
+  const [standard, setStandard] = useState({ value: '10', label: 'X' });
+  const [subject, setSubject] = useState('');
+  const [topics, setTopics] = useState('');
+  const [image, setImage] = useState(null);
+  const question = useRef();
+  const answer = useRef();
 
   const handleOptionChange = (idx, e) => {
     setOptions((prevState) => {
       const newState = [...prevState];
-      newState[idx] = e.target.value;
+      newState[idx].value = e.target.value;
+      if (e.target.value === '') newState[idx].isCorrect = false;
       return newState;
     });
   };
 
   const handleRemoveOption = (idx) => {
     if (options.length > 2) {
-      setOptions(
-        (prevState) => prevState.filter((option, id) => id !== idx),
-        setAnswer(''),
+      setOptions((prevState) =>
+        prevState.filter((option, index) => index !== idx),
       );
     } else if (!toast.isActive('option-limit')) {
       toast({
@@ -109,16 +78,15 @@ const Contribute = () => {
 
   const handleAddOption = () => {
     if (options.length < 4) {
-      setOptions((prevState) => [...prevState, '']);
+      setOptions((prevState) => [
+        ...prevState,
+        { value: '', isCorrect: false },
+      ]);
     }
   };
 
-  const handleTopics = (list) => {
-    setTopics(list.map((item) => item.label));
-  };
-
   const handleAnswer = (idx) => {
-    if (options[idx] === '') {
+    if (options[idx].value === '') {
       if (!toast.isActive('answer')) {
         toast({
           id: 'answer',
@@ -132,7 +100,32 @@ const Contribute = () => {
       }
       return;
     }
-    setAnswer(idx);
+    setOptions((prevValue) => {
+      const newState = [...prevValue];
+      newState[idx] = {
+        ...prevValue[idx],
+        isCorrect: !prevValue[idx].isCorrect,
+      };
+      return newState;
+    });
+  };
+
+  const onSubmit = () => {
+    const data = {
+      standard: standard.value,
+      subject: subject.value,
+      topics: topics.map((topic) => topic.value),
+      difficulty,
+      question: question.current.value,
+      answerExplaination: answer.current.value,
+      options,
+    };
+
+    const formData = new FormData();
+    formData.append('data', data);
+    formData.append('image', image);
+
+    console.log(data);
   };
 
   return (
@@ -144,14 +137,14 @@ const Contribute = () => {
             style={{
               backgroundColor: '#C3D0F9',
               borderRadius: '25px',
-              padding: '0 12px',
+              padding: '0 12px 2px 12px',
               marginLeft: '3px',
             }}
           >
             Question
           </mark>
         </Heading>
-        <Button w={150} h={45}>
+        <Button onClick={onSubmit} w={150} h={45}>
           Submit
         </Button>
       </Flex>
@@ -162,50 +155,78 @@ const Contribute = () => {
               Class
             </FormLabel>
             <Select
-              variant='outline'
+              options={[
+                { value: '10', label: 'X' },
+                { value: '12', label: 'XII' },
+              ]}
               placeholder='Select Class'
-              boxShadow='base'
-              border='gray.200'
-              borderWidth={1}
-              onChange={(e) => onSelectClass(e.target.value)}
-            >
-              <option>X</option>
-              <option>XII</option>
-            </Select>
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+              value={standard}
+              onChange={(e) => {
+                setStandard(e);
+                setSubject('');
+                setTopics([]);
+              }}
+            />
           </FormControl>
           <FormControl isRequired mb={6}>
             <FormLabel fontSize={18} htmlFor='subject'>
               Subject
             </FormLabel>
             <Select
-              variant='outline'
+              options={Object.keys(classData[standard.value]).map((value) => ({
+                value,
+                label: value,
+              }))}
               placeholder='Select Subject'
-              boxShadow='base'
-              border='gray.200'
-              borderWidth={1}
-              onChange={(e) => setSubject(e.target.value)}
-            >
-              {subjects.map((value) => (
-                <option key={value}>{value}</option>
-              ))}
-            </Select>
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+              value={subject}
+              onChange={(e) => {
+                setSubject(e);
+                setTopics([]);
+              }}
+            />
           </FormControl>
           <FormControl isRequired mb={6}>
             <FormLabel fontSize={18} htmlFor='topics'>
               Topic
             </FormLabel>
-            <Select2
+            <Select
               isMulti
-              options={[
-                { value: 'WI', label: 'Wisconsin' },
-                { value: 'WY', label: 'Wyoming' },
-              ]}
+              options={
+                classData &&
+                classData[standard.value] &&
+                classData[standard.value][subject.value]
+                  ? classData[standard.value][subject.value].map((value) => ({
+                      value,
+                      label: value,
+                    }))
+                  : []
+              }
               placeholder='Select Topics'
-              boxShadow='base'
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+              value={topics}
+              onChange={(e) => {
+                setTopics(e);
+              }}
               closeMenuOnSelect={false}
               selectedOptionStyle='check'
               hideSelectedOptions={false}
-              onChange={handleTopics}
             />
           </FormControl>
           <FormControl mb={6}>
@@ -242,7 +263,7 @@ const Contribute = () => {
               rows='3'
               boxShadow='base'
               resize='none'
-              onChange={(e) => setQuestion(e.target.value)}
+              ref={question}
             />
           </FormControl>
           <FormControl isRequired>
@@ -258,10 +279,13 @@ const Contribute = () => {
               {options.length < 4 && (
                 <Button
                   p={3}
-                  onClick={() => handleAddOption()}
+                  onClick={handleAddOption}
                   bg='brand.300'
                   color='brand.600'
-                  _hover={{ backgroundColor: 'brand.500', color: 'brand.100' }}
+                  _hover={{
+                    backgroundColor: 'brand.500',
+                    color: 'brand.100',
+                  }}
                   size='sm'
                 >
                   Add Option
@@ -270,7 +294,6 @@ const Contribute = () => {
             </Flex>
             <Flex justify='space-between' wrap='wrap'>
               {options.map((option, idx) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <Fragment key={idx}>
                   <Box w='43%' mb={7}>
                     <Flex alignItems='center' justify='space-between' mb='1.5'>
@@ -297,7 +320,7 @@ const Contribute = () => {
                         w='full'
                         minW='unset'
                         boxShadow='base'
-                        value={option}
+                        value={option.value}
                         onChange={(e) => handleOptionChange(idx, e)}
                         pr='0'
                       />
@@ -309,8 +332,8 @@ const Contribute = () => {
                           <IconButton
                             aria-label='Select Answer'
                             icon={<FaCheck />}
-                            bg={idx === answer ? 'green.300' : 'gray.300'}
-                            color={idx === answer ? 'brand.100' : 'brand.100'}
+                            bg={option.isCorrect ? 'green.300' : 'gray.300'}
+                            color={option.isCorrect ? 'brand.100' : 'brand.100'}
                             _hover={{ backgroundColor: 'green.300' }}
                             borderLeftRadius='0'
                             onClick={() => handleAnswer(idx)}
@@ -334,7 +357,7 @@ const Contribute = () => {
               rows='3'
               boxShadow='base'
               resize='none'
-              onChange={(e) => setQuestion(e.target.value)}
+              ref={answer}
             />
           </FormControl>
         </Box>
