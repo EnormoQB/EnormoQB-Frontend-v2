@@ -29,7 +29,7 @@ const GenerateForm = () => {
         <Select
           variant='outline'
           placeholder='Select Class'
-          boxShadow='md'
+          boxShadow='base'
           border='gray.200'
           borderWidth={1}
           // onChange={(e) => onSelectClass(e.target.value)}
@@ -47,7 +47,7 @@ const GenerateForm = () => {
         <Select
           variant='outline'
           placeholder='Select Subject'
-          boxShadow='md'
+          boxShadow='base'
           border='gray.200'
           borderWidth={1}
           onChange={(e) => setSubject(e.target.value)}

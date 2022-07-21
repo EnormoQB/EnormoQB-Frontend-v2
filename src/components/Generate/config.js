@@ -36,7 +36,7 @@ export const dummy = [
   {
     _id: { $oid: '6237907cdbf12400166ed1ee' },
     options: ['5', '10', '7', '2'],
-    status: 'rejected',
+    status: 'pending',
     difficulty: 'Medium',
     question:
       'How many water molecules does hydrated cal-cium sulphate contain?',
@@ -127,12 +127,12 @@ export const dummy = [
     __v: { $numberInt: '0' },
   },
   {
-    _id: { $oid: '6237923edbf12400166ed2de' },
+    _id: { $oid: '6237923edbf1240016anks6ed2de' },
     options: ['Akbar', 'Aurangzeb', 'Babur', 'Shahjehan'],
-    status: 'pending',
+    status: 'approved',
     difficulty: 'Easy',
     question: 'Who made Persian as the Court language of the Mughal Court?',
-    answer: 'Akbar',
+    answer: 'A. Akbar',
     standard: 'XII',
     subject: 'History',
     topics: ['Kings and Chronicles: The Mughal Courts'],

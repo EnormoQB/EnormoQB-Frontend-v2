@@ -6,7 +6,6 @@ const Pending = () => {
   return (
     <Box>
       {dummy.map((ques) => (
-        // eslint-disable-next-line no-underscore-dangle
         <Question key={ques._id.$oid} data={ques} />
       ))}
     </Box>
