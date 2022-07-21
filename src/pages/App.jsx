@@ -9,6 +9,7 @@ import Approved from './Dashboard/approved';
 import Rejected from './Dashboard/rejected';
 import Generate from './Dashboard/generate';
 import Contribute from './Dashboard/contribute';
+import QuestionPapers from './Dashboard/questionPapers';
 import Home from './Home';
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
             <Route path='rejected' element={<Rejected />} />
             <Route path='generate' element={<Generate />} />
             <Route path='contribute' element={<Contribute />} />
+            <Route path='questionpapers' element={<QuestionPapers />} />
           </Route>
         </Route>
       </Routes>

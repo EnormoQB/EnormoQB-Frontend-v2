@@ -1,38 +1,46 @@
 import { Flex } from '@chakra-ui/react';
-import { HiOutlineDocumentText } from 'react-icons/hi';
 
-const Cards = ({ background, color, number, comment, iconcolor, iconused }) => {
+const Cards = ({ background, number, comment, iconColor, iconUsed }) => {
   return (
     <Flex
       h='130px'
       w='22%'
       bgColor={background}
-      color={color}
-      borderRadius='20px'
+      color={background === 'brand.600' ? 'brand.100' : 'brand.600'}
+      borderRadius='xl'
       flexDir='column'
-      boxShadow='0 4px 12px #00000022'
+      boxShadow='rgba(0, 0, 0, 0.16) 0px 1px 4px'
     >
       <Flex
         h='130px'
         alignItems='center'
         flexDir='row'
-        justifyContent='space-around'
+        justifyContent='space-between'
+        p='4'
       >
-        <Flex alignItems='center' justifyContent='flex-start' flexDir='column'>
-          <Flex fontSize='30px'>
-            <strong>{number}</strong>
+        <Flex justifyContent='flex-start' flexDir='column'>
+          <Flex fontSize='xl' fontWeight='semibold'>
+            {number}
           </Flex>
-          <Flex>{comment}</Flex>
+          <Flex
+            fontSize='sm'
+            my='1'
+            color={background === 'brand.600' ? 'brand.100' : 'gray.500'}
+          >
+            {comment}
+          </Flex>
         </Flex>
         <Flex
-          bgColor={iconcolor}
+          bgColor={iconColor}
           h='50px'
           w='50px'
+          color='brand.100'
           alignItems='center'
           justifyContent='space-evenly'
           borderRadius='10px'
+          ml='4'
         >
-          {iconused}
+          {iconUsed}
         </Flex>
       </Flex>
     </Flex>

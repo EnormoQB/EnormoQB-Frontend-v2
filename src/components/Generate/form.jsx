@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FormControl, FormLabel, Box, Select } from '@chakra-ui/react';
-import { class10, class12 } from '../../pages/Dashboard/contribute';
+import classData from '../../data/classData';
 
 const GenerateForm = () => {
   const [standard, setStandard] = useState('');
@@ -10,14 +10,14 @@ const GenerateForm = () => {
   console.log(standard);
   console.log(subject);
 
-  const onSelectClass = (val) => {
-    setStandard(val);
-    if (val === 'X') {
-      setSubjects(class10);
-    } else {
-      setSubjects(class12);
-    }
-  };
+  // const onSelectClass = (val) => {
+  //   setStandard(val);
+  //   if (val === 'X') {
+  //     setSubjects(class10);
+  //   } else {
+  //     setSubjects(class12);
+  //   }
+  // };
 
   return (
     <Box>
@@ -29,10 +29,10 @@ const GenerateForm = () => {
         <Select
           variant='outline'
           placeholder='Select Class'
-          boxShadow='md'
+          boxShadow='base'
           border='gray.200'
           borderWidth={1}
-          onChange={(e) => onSelectClass(e.target.value)}
+          // onChange={(e) => onSelectClass(e.target.value)}
           // color='gray.400'
         >
           <option>X</option>
@@ -47,7 +47,7 @@ const GenerateForm = () => {
         <Select
           variant='outline'
           placeholder='Select Subject'
-          boxShadow='md'
+          boxShadow='base'
           border='gray.200'
           borderWidth={1}
           onChange={(e) => setSubject(e.target.value)}
