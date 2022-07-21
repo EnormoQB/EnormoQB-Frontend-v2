@@ -36,7 +36,7 @@ export const dummy = [
   {
     _id: { $oid: '6237907cdbf12400166ed1ee' },
     options: ['5', '10', '7', '2'],
-    status: 'rejected',
+    status: 'pending',
     difficulty: 'Medium',
     question:
       'How many water molecules does hydrated cal-cium sulphate contain?',
@@ -126,23 +126,23 @@ export const dummy = [
     updatedAt: { $date: { $numberLong: '1647808696168' } },
     __v: { $numberInt: '0' },
   },
-  // {
-  //   _id: { $oid: '6237923edbf12400166ed2de' },
-  //   options: ['Akbar', 'Aurangzeb', 'Babur', 'Shahjehan'],
-  //   status: 'approved',
-  //   difficulty: 'Easy',
-  //   question: 'Who made Persian as the Court language of the Mughal Court?',
-  //   answer: 'A. Akbar',
-  //   standard: 'XII',
-  //   subject: 'History',
-  //   topic: 'Kings and Chronicles: The Mughal Courts',
-  //   imageUrl:
-  //     'https://firebasestorage.googleapis.com/v0/b/enormo-c2678.appspot.com/o/questionImage%2FFbF6s0ros3gJxtYorHcB92zDy6p2?alt=media&token=0294c3f6-8e6b-48ce-8c48-d7f48d8826d8',
-  //   userId: 'rFhbHTO4cJO1mjvaC0s29PUwOKy2',
-  //   createdAt: { $date: { $numberLong: '1647809086927' } },
-  //   updatedAt: { $date: { $numberLong: '1647812756783' } },
-  //   __v: { $numberInt: '0' },
-  // },
+  {
+    _id: { $oid: '6237923edbf1240016anks6ed2de' },
+    options: ['Akbar', 'Aurangzeb', 'Babur', 'Shahjehan'],
+    status: 'approved',
+    difficulty: 'Easy',
+    question: 'Who made Persian as the Court language of the Mughal Court?',
+    answer: 'A. Akbar',
+    standard: 'XII',
+    subject: 'History',
+    topics: ['Kings and Chronicles: The Mughal Courts'],
+    imageUrl:
+      'https://firebasestorage.googleapis.com/v0/b/enormo-c2678.appspot.com/o/questionImage%2FFbF6s0ros3gJxtYorHcB92zDy6p2?alt=media&token=0294c3f6-8e6b-48ce-8c48-d7f48d8826d8',
+    userId: 'rFhbHTO4cJO1mjvaC0s29PUwOKy2',
+    createdAt: { $date: { $numberLong: '1647809086927' } },
+    updatedAt: { $date: { $numberLong: '1647812756783' } },
+    __v: { $numberInt: '0' },
+  },
   {
     _id: { $oid: '6237a05c2d310f001607b5a2' },
     options: [
