@@ -6,7 +6,6 @@ import {
   Select,
   HStack,
   Text,
-  Input,
   Flex,
   Button,
   NumberInput,
@@ -15,6 +14,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from '@chakra-ui/react';
+import { Select as Select2 } from 'chakra-react-select';
 import { class10, class12 } from '../../pages/Dashboard/contribute';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
@@ -24,6 +24,7 @@ const GenerateForm = () => {
   const [subjects, setSubjects] = useState([]);
   const [subject, setSubject] = useState('');
   const [board, setBoard] = useState('');
+  // const [topics, setTopics] = useState([]);
 
   console.log(standard);
   console.log(subject);
@@ -48,7 +49,7 @@ const GenerateForm = () => {
         <Select
           variant='outline'
           placeholder='Select Class'
-          boxShadow='md'
+          boxShadow='base'
           border='gray.200'
           borderWidth={1}
           onChange={(e) => onSelectClass(e.target.value)}
@@ -66,7 +67,7 @@ const GenerateForm = () => {
         <Select
           variant='outline'
           placeholder='Select Subject'
-          boxShadow='md'
+          boxShadow='base'
           border='gray.200'
           borderWidth={1}
           onChange={(e) => setSubject(e.target.value)}
@@ -79,12 +80,12 @@ const GenerateForm = () => {
       {/* Board */}
       <FormControl mb={6} isRequired>
         <FormLabel fontSize={19} htmlFor='class'>
-          Class
+          Board
         </FormLabel>
         <Select
           variant='outline'
           placeholder='Select Board'
-          boxShadow='md'
+          boxShadow='base'
           border='gray.200'
           borderWidth={1}
           onChange={(e) => setBoard(e.target.value)}
@@ -95,14 +96,16 @@ const GenerateForm = () => {
         </Select>
       </FormControl>
       <FormControl mb={6} isRequired>
-        <FormLabel>Number Of Questions</FormLabel>
+        <FormLabel fontSize={19} htmlFor='noOfQues'>
+          Number Of Questions
+        </FormLabel>
         <HStack spacing={175}>
           {difficulties.map((value, i) => {
             return (
               <Box key={i}>
                 <Text>{value}</Text>
                 <NumberInput defaultValue={0} allowMouseWheel>
-                  <NumberInputField boxShadow='md' />
+                  <NumberInputField boxShadow='base' />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
@@ -114,8 +117,44 @@ const GenerateForm = () => {
         </HStack>
       </FormControl>
       <FormControl mb={6} isRequired>
-        <FormLabel>Topics</FormLabel>
-        <Input placeholder='Enter Topics' boxShadow='md' />
+        <FormLabel fontSize={19} htmlFor='topics'>
+          Topics
+        </FormLabel>
+        {/* <Input placeholder='Enter Topics' boxShadow='md' /> */}
+        <Flex justify='space-between'>
+          <Box w='85%'>
+            <Select2
+              options={[
+                { value: 'topic1', label: 'topic1' },
+                { value: 'topic2', label: 'topic2' },
+              ]}
+              placeholder='Select Topic'
+              selectedOptionStyle='color'
+              selectedOptionColor='blue'
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+            />
+          </Box>
+          <Box w='30%' ml={10}>
+            <NumberInput allowMouseWheel>
+              <NumberInputField
+                boxShadow='base'
+                placeholder='Number Of Questions'
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </Box>
+          <Box ml={100}>
+            <Button w={100}>Add</Button>
+          </Box>
+        </Flex>
       </FormControl>
       {/* Submit */}
       <Flex justify='center'>
