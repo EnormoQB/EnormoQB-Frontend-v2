@@ -15,7 +15,9 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react';
 import { Select as Select2 } from 'chakra-react-select';
-import { class10, class12 } from '../../pages/Dashboard/contribute';
+// import { class10, class12 } from '../../pages/Dashboard/contribute';
+// import { FormControl, FormLabel, Box, Select } from '@chakra-ui/react';
+import classData from '../../data/classData';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
@@ -30,14 +32,14 @@ const GenerateForm = () => {
   console.log(subject);
   console.log(board);
 
-  const onSelectClass = (val) => {
-    setStandard(val);
-    if (val === 'X') {
-      setSubjects(class10);
-    } else {
-      setSubjects(class12);
-    }
-  };
+  // const onSelectClass = (val) => {
+  //   setStandard(val);
+  //   if (val === 'X') {
+  //     setSubjects(class10);
+  //   } else {
+  //     setSubjects(class12);
+  //   }
+  // };
 
   return (
     <Box>
@@ -52,7 +54,7 @@ const GenerateForm = () => {
           boxShadow='base'
           border='gray.200'
           borderWidth={1}
-          onChange={(e) => onSelectClass(e.target.value)}
+          // onChange={(e) => onSelectClass(e.target.value)}
           // color='gray.400'
         >
           <option>X</option>
