@@ -145,7 +145,7 @@ const Contribute = () => {
           </mark>
         </Heading>
         <Button onClick={onSubmit} w={150} h={45}>
-          Submit
+          SUBMIT
         </Button>
       </Flex>
       <Flex justify='space-between'>
@@ -320,7 +320,7 @@ const Contribute = () => {
                         w='full'
                         minW='unset'
                         boxShadow='base'
-                        value={option.value}
+                        // value={option.value}
                         onChange={(e) => handleOptionChange(idx, e)}
                         pr='0'
                       />
