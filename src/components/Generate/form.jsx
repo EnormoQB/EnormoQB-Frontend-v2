@@ -2,8 +2,8 @@ import { useState } from 'react';
 import {
   FormControl,
   FormLabel,
+  FormHelperText,
   Box,
-  Select,
   HStack,
   Text,
   Flex,
@@ -13,155 +13,297 @@ import {
   NumberInputField,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  Wrap,
 } from '@chakra-ui/react';
-import { Select as Select2 } from 'chakra-react-select';
-// import { class10, class12 } from '../../pages/Dashboard/contribute';
-// import { FormControl, FormLabel, Box, Select } from '@chakra-ui/react';
+import { Select } from 'chakra-react-select';
+import { FaPlus } from 'react-icons/fa';
 import classData from '../../data/classData';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
 const GenerateForm = () => {
-  const [standard, setStandard] = useState('');
-  const [subjects, setSubjects] = useState([]);
+  const [title, setTitle] = useState('');
+  const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
   const [board, setBoard] = useState('');
-  // const [topics, setTopics] = useState([]);
+  const [topic, setTopic] = useState('');
+  const [topicQuesCount, setTopicQuesCount] = useState('');
+  const [topicsList, setTopicsList] = useState([]);
 
-  console.log(standard);
-  console.log(subject);
-  console.log(board);
+  const handleAddTopic = () => {
+    if (topicsList.filter((item) => item.name === topic.value).length === 0) {
+      setTopicsList((prev) => [
+        ...prev,
+        {
+          name: topic.value,
+          count: topicQuesCount,
+        },
+      ]);
+    }
 
-  // const onSelectClass = (val) => {
-  //   setStandard(val);
-  //   if (val === 'X') {
-  //     setSubjects(class10);
-  //   } else {
-  //     setSubjects(class12);
-  //   }
-  // };
+    setTopicQuesCount('');
+    setTopic('');
+  };
 
   return (
     <Box>
-      {/* Class */}
-      <FormControl mb={6} isRequired>
-        <FormLabel fontSize={19} htmlFor='class'>
-          Class
-        </FormLabel>
-        <Select
-          variant='outline'
-          placeholder='Select Class'
-          boxShadow='base'
-          border='gray.200'
-          borderWidth={1}
-          // onChange={(e) => onSelectClass(e.target.value)}
-          // color='gray.400'
-        >
-          <option>X</option>
-          <option>XII</option>
-        </Select>
-      </FormControl>
-      {/* Subject */}
-      <FormControl isRequired mb={6}>
-        <FormLabel fontSize={19} htmlFor='subject'>
-          Subject
-        </FormLabel>
-        <Select
-          variant='outline'
-          placeholder='Select Subject'
-          boxShadow='base'
-          border='gray.200'
-          borderWidth={1}
-          onChange={(e) => setSubject(e.target.value)}
-        >
-          {subjects.map((value) => (
-            <option key={value}>{value}</option>
-          ))}
-        </Select>
-      </FormControl>
-      {/* Board */}
-      <FormControl mb={6} isRequired>
-        <FormLabel fontSize={19} htmlFor='class'>
-          Board
-        </FormLabel>
-        <Select
-          variant='outline'
-          placeholder='Select Board'
-          boxShadow='base'
-          border='gray.200'
-          borderWidth={1}
-          onChange={(e) => setBoard(e.target.value)}
-          // color='gray.400'
-        >
-          <option>CBSE</option>
-          <option>ICSE</option>
-        </Select>
-      </FormControl>
-      <FormControl mb={6} isRequired>
-        <FormLabel fontSize={19} htmlFor='noOfQues'>
-          Number Of Questions
-        </FormLabel>
-        <HStack spacing={175}>
-          {difficulties.map((value, i) => {
-            return (
-              <Box key={i}>
-                <Text>{value}</Text>
-                <NumberInput defaultValue={0} allowMouseWheel>
-                  <NumberInputField boxShadow='base' />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </Box>
-            );
-          })}
-        </HStack>
-      </FormControl>
-      <FormControl mb={6} isRequired>
-        <FormLabel fontSize={19} htmlFor='topics'>
-          Topics
-        </FormLabel>
-        {/* <Input placeholder='Enter Topics' boxShadow='md' /> */}
-        <Flex justify='space-between'>
-          <Box w='85%'>
-            <Select2
+      <Flex justify='space-between'>
+        <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
+          <FormControl mb={6} isRequired>
+            <FormLabel fontSize={19} htmlFor='board'>
+              Title
+            </FormLabel>
+            <Select
               options={[
-                { value: 'topic1', label: 'topic1' },
-                { value: 'topic2', label: 'topic2' },
+                { value: 'Class Test', label: 'Class Test' },
+                { value: 'Board', label: 'Board' },
+                { value: 'Pre-Board', label: 'Pre-Board' },
               ]}
-              placeholder='Select Topic'
-              selectedOptionStyle='color'
-              selectedOptionColor='blue'
+              placeholder='Select Title'
               chakraStyles={{
                 control: (provided) => ({
                   ...provided,
                   boxShadow: 'base',
                 }),
               }}
+              value={title}
+              onChange={(e) => {
+                setTitle(e);
+              }}
             />
-          </Box>
-          <Box w='30%' ml={10}>
-            <NumberInput allowMouseWheel>
-              <NumberInputField
-                boxShadow='base'
-                placeholder='Number Of Questions'
-              />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </Box>
-          <Box ml={100}>
-            <Button w={100}>Add</Button>
-          </Box>
-        </Flex>
-      </FormControl>
-      {/* Submit */}
+          </FormControl>
+          <FormControl mb={6} isRequired>
+            <FormLabel fontSize={19} htmlFor='board'>
+              Board
+            </FormLabel>
+            <Select
+              options={[
+                { value: 'CBSE', label: 'CBSE' },
+                { value: 'ICSE', label: 'ICSE' },
+              ]}
+              placeholder='Select Board'
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+              value={board}
+              onChange={(e) => {
+                setBoard(e);
+              }}
+            />
+          </FormControl>
+          <FormControl mb={6} isRequired>
+            <FormLabel fontSize={19} htmlFor='noOfQues'>
+              Number Of Questions
+            </FormLabel>
+            <HStack spacing={50}>
+              {difficulties.map((value, i) => {
+                return (
+                  <Box key={i}>
+                    <Text>{value}</Text>
+                    <NumberInput defaultValue={0} min={0} allowMouseWheel>
+                      <NumberInputField boxShadow='base' />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </Box>
+                );
+              })}
+            </HStack>
+          </FormControl>
+          <FormControl mb={6} isRequired>
+            <FormLabel fontSize={19} htmlFor='noOfQues'>
+              Total
+            </FormLabel>
+            <HStack spacing={50}>
+              {['Marks', 'Time'].map((value, i) => {
+                return (
+                  <Box key={i}>
+                    <Text>{value}</Text>
+                    <NumberInput
+                      defaultValue={0}
+                      min={0}
+                      allowMouseWheel
+                      step={5}
+                    >
+                      <NumberInputField boxShadow='base' />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </Box>
+                );
+              })}
+            </HStack>
+          </FormControl>
+        </Box>
+        <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
+          <FormControl mb={6} isRequired>
+            <FormLabel fontSize={19} htmlFor='class'>
+              Class
+            </FormLabel>
+            <Select
+              options={[
+                { value: '10', label: 'X' },
+                { value: '12', label: 'XII' },
+              ]}
+              placeholder='Select Class'
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+              value={standard}
+              onChange={(e) => {
+                setStandard(e);
+                setSubject('');
+              }}
+            />
+          </FormControl>
+          <FormControl isRequired mb={6}>
+            <FormLabel fontSize={19} htmlFor='subject'>
+              Subject
+            </FormLabel>
+            <Select
+              options={Object.keys(classData[standard.value]).map((value) => ({
+                value,
+                label: value,
+              }))}
+              placeholder='Select Subject'
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+              value={subject}
+              onChange={(e) => {
+                if (subject.value !== e.value) {
+                  setTopicsList([]);
+                  setSubject(e);
+                }
+              }}
+            />
+          </FormControl>
+          <FormControl mb={6} isRequired>
+            <FormLabel fontSize={19} htmlFor='noOfQues'>
+              Marks Per Question
+            </FormLabel>
+            <HStack spacing={50}>
+              {difficulties.map((value, i) => {
+                return (
+                  <Box key={i}>
+                    <Text>{value}</Text>
+                    <NumberInput defaultValue={0} min={0} allowMouseWheel>
+                      <NumberInputField boxShadow='base' />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </Box>
+                );
+              })}
+            </HStack>
+          </FormControl>
+          <FormControl mb={6} isRequired>
+            <FormLabel fontSize={19} htmlFor='topics'>
+              Topics
+            </FormLabel>
+            <FormHelperText fontSize={14} mb={1}>
+              Select 1 topic at a time. To add a topic press + button.
+            </FormHelperText>
+            <Flex justify='space-between'>
+              <Box w='85%'>
+                <Select
+                  options={
+                    classData &&
+                    classData[standard.value] &&
+                    classData[standard.value][subject.value]
+                      ? classData[standard.value][subject.value].map(
+                          (value) => ({
+                            value,
+                            label: value,
+                          }),
+                        )
+                      : []
+                  }
+                  placeholder='Select Topics'
+                  chakraStyles={{
+                    control: (provided) => ({
+                      ...provided,
+                      boxShadow: 'base',
+                    }),
+                  }}
+                  value={topic}
+                  onChange={(val) => setTopic(val)}
+                  selectedOptionStyle='check'
+                />
+              </Box>
+              <Box w='55%' ml={4}>
+                <NumberInput
+                  allowMouseWheel
+                  min={1}
+                  value={topicQuesCount}
+                  onChange={(val) => setTopicQuesCount(val)}
+                >
+                  <NumberInputField
+                    boxShadow='base'
+                    placeholder='Total Questions'
+                  />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </Box>
+              <Box ml={4}>
+                <Button onClick={handleAddTopic}>
+                  <FaPlus />
+                </Button>
+              </Box>
+            </Flex>
+          </FormControl>
+          <Wrap spacing={4}>
+            {topicsList.map((item, i) => (
+              <Tag
+                size='md'
+                key={i}
+                borderRadius='full'
+                variant='solid'
+                // colorScheme='blue'
+                bg='#C3D0F9'
+              >
+                <TagLabel
+                  color='black'
+                  bg='#C3D0F9'
+                  fontSize={15}
+                >{`${item.name} : ${item.count}`}</TagLabel>
+                <TagCloseButton
+                  color='black'
+                  onClick={() => {
+                    setTopicsList((prevValue) =>
+                      prevValue.filter((val, idx) => idx !== i),
+                    );
+                  }}
+                />
+              </Tag>
+            ))}
+          </Wrap>
+        </Box>
+      </Flex>
       <Flex justify='center'>
         <Button mt={5} w={300} h={50}>
-          Submit
+          SUBMIT
         </Button>
       </Flex>
     </Box>

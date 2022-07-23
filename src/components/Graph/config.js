@@ -49,8 +49,9 @@ export const doughnutGraph = {
       {
         label: '# of Votes',
         data: [60, 40],
-        backgroundColor: ['#335DE6', '#1B1C1E'],
-        borderColor: ['#DEE3F5', '#000000'],
+        color: '#005CE6',
+        backgroundColor: ['#005CE6', '#DEE3F5'],
+        borderColor: ['#005CE6', '#DEE3F5'],
         borderWidth: 1,
       },
     ],
