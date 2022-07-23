@@ -27,7 +27,7 @@ const Generate = () => {
         </mark>
       </Heading>
       <Box w='full'>
-        <Tabs isLazy defaultIndex={1} size='lg'>
+        <Tabs isLazy defaultIndex={0} size='lg'>
           <TabList>
             <CustomTab>Form</CustomTab>
             <CustomTab>Result</CustomTab>
