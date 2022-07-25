@@ -1,4 +1,4 @@
-import { useState, Fragment, useRef } from 'react';
+import { useState, Fragment, useRef, useMemo, useEffect } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -17,6 +17,7 @@ import {
   Tooltip,
   useToast,
 } from '@chakra-ui/react';
+import debounce from 'lodash.debounce';
 import { Select } from 'chakra-react-select';
 import { MdDelete } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
@@ -42,6 +43,11 @@ const Contribute = () => {
   const [options, setOptions] = useState(
     Array(4).fill({ value: '', isCorrect: false }),
   );
+
+  useEffect(() => {
+    console.log(options);
+  }, [options]);
+
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
@@ -49,19 +55,34 @@ const Contribute = () => {
   const question = useRef();
   const answer = useRef();
 
-  const handleOptionChange = (idx, e) => {
-    setOptions((prevState) => {
-      const newState = [...prevState];
-      newState[idx].value = e.target.value;
-      if (e.target.value === '') newState[idx].isCorrect = false;
-      return newState;
-    });
+  const changeHandler = (idx, e) => {
+    console.log(idx, e.target.value);
+    setOptions((prevState) =>
+      prevState.map((val, i) => {
+        let newVal = val;
+        if (i === idx) {
+          newVal = {
+            ...val,
+            value: e.target.value,
+            isCorrect: e.target.value === '' ? false : val.isCorrect,
+          };
+        }
+
+        return newVal;
+      }),
+    );
   };
 
+  const handleOptionChange = useMemo(() => debounce(changeHandler, 150), []);
+
   const handleRemoveOption = (idx) => {
+    console.log(idx);
     if (options.length > 2) {
       setOptions((prevState) =>
-        prevState.filter((option, index) => index !== idx),
+        prevState.filter((option, index) => {
+          console.log(index, idx, index !== idx);
+          return index !== idx;
+        }),
       );
     } else if (!toast.isActive('option-limit')) {
       toast({
@@ -101,11 +122,10 @@ const Contribute = () => {
       return;
     }
     setOptions((prevValue) => {
-      const newState = [...prevValue];
-      newState[idx] = {
-        ...prevValue[idx],
-        isCorrect: !prevValue[idx].isCorrect,
-      };
+      const newState = prevValue.map((val, i) => ({
+        ...val,
+        isCorrect: i === idx ? !val.isCorrect : false,
+      }));
       return newState;
     });
   };
@@ -294,7 +314,7 @@ const Contribute = () => {
             </Flex>
             <Flex justify='space-between' wrap='wrap'>
               {options.map((option, idx) => (
-                <Fragment key={idx}>
+                <Fragment key={`${option.value} ${idx}`}>
                   <Box w='43%' mb={7}>
                     <Flex alignItems='center' justify='space-between' mb='1.5'>
                       <FormLabel htmlFor={`options[${idx + 1}]`} mb='0'>
