@@ -1,4 +1,4 @@
-import { useState, Fragment, useRef, useMemo, useEffect } from 'react';
+import { useState, Fragment, useRef, useMemo } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -40,13 +40,12 @@ const Contribute = () => {
 
   const group = getRootProps();
 
-  const [options, setOptions] = useState(
-    Array(4).fill({ value: '', isCorrect: false }),
-  );
-
-  useEffect(() => {
-    console.log(options);
-  }, [options]);
+  const [options, setOptions] = useState([
+    { value: '', isCorrect: false, id: Math.random() * 100 },
+    { value: '', isCorrect: false, id: Math.random() * 100 },
+    { value: '', isCorrect: false, id: Math.random() * 100 },
+    { value: '', isCorrect: false, id: Math.random() * 100 },
+  ]);
 
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
@@ -56,7 +55,6 @@ const Contribute = () => {
   const answer = useRef();
 
   const changeHandler = (idx, e) => {
-    console.log(idx, e.target.value);
     setOptions((prevState) =>
       prevState.map((val, i) => {
         let newVal = val;
@@ -76,11 +74,9 @@ const Contribute = () => {
   const handleOptionChange = useMemo(() => debounce(changeHandler, 150), []);
 
   const handleRemoveOption = (idx) => {
-    console.log(idx);
     if (options.length > 2) {
       setOptions((prevState) =>
         prevState.filter((option, index) => {
-          console.log(index, idx, index !== idx);
           return index !== idx;
         }),
       );
@@ -101,7 +97,7 @@ const Contribute = () => {
     if (options.length < 4) {
       setOptions((prevState) => [
         ...prevState,
-        { value: '', isCorrect: false },
+        { value: '', isCorrect: false, id: Math.random() * 100 },
       ]);
     }
   };
@@ -314,7 +310,7 @@ const Contribute = () => {
             </Flex>
             <Flex justify='space-between' wrap='wrap'>
               {options.map((option, idx) => (
-                <Fragment key={`${option.value} ${idx}`}>
+                <Fragment key={option.id}>
                   <Box w='43%' mb={7}>
                     <Flex alignItems='center' justify='space-between' mb='1.5'>
                       <FormLabel htmlFor={`options[${idx + 1}]`} mb='0'>
