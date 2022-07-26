@@ -19,7 +19,7 @@ const Generate = () => {
           style={{
             backgroundColor: '#C3D0F9',
             borderRadius: '25px',
-            padding: '0 12px',
+            padding: '0 12px 2px 12px',
             marginLeft: '3px',
           }}
         >

@@ -9,10 +9,7 @@ import {
   Flex,
   Button,
   NumberInput,
-  NumberInputStepper,
   NumberInputField,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Tag,
   TagLabel,
   TagCloseButton,
@@ -57,12 +54,7 @@ const GenerateForm = () => {
         </FormLabel>
         <Input
           placeholder='Enter Institution Name'
-          chakraStyles={{
-            control: (provided) => ({
-              ...provided,
-              boxShadow: 'base',
-            }),
-          }}
+          boxShadow='base'
           value={title}
           onChange={(e) => {}}
         />
