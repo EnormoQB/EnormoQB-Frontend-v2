@@ -158,7 +158,7 @@ const GenerateForm = () => {
         <Flex justify='space-between'>
           {difficulties.map((value, i) => {
             return (
-              <Box key={i} w='24%'>
+              <Box key={i} w='29%'>
                 <Text>{value}</Text>
                 <Flex boxShadow='base' borderRadius='6'>
                   <NumberInput min={0} defaultValue={0} allowMouseWheel>
@@ -191,35 +191,39 @@ const GenerateForm = () => {
               </Box>
             );
           })}
-          <Box w='15%'>
-            <Text>Total Marks</Text>
-            <Flex
-              px='2'
-              h='40px'
-              border='1px'
-              bg='gray.100'
-              borderColor='gray.200'
-              boxShadow='base'
-              alignItems='center'
-              fontSize='sm'
-              borderRadius='6px'
-            >
-              0
-            </Flex>
-          </Box>
         </Flex>
       </FormControl>
-      <FormControl mb={6} isRequired>
-        <FormLabel fontSize={19} htmlFor='examTime'>
-          Total Time&nbsp;
-          <Box display='inline' fontSize='15'>
-            (in mins)
-          </Box>
-        </FormLabel>
-        <NumberInput defaultValue={0} min={0} allowMouseWheel step={5}>
-          <NumberInputField boxShadow='base' />
-        </NumberInput>
-      </FormControl>
+      <Flex justify='space-between'>
+        <Box w='48%'>
+          <Text fontSize={19} mb='8px' fontWeight={500}>
+            Total Marks
+          </Text>
+          <Flex
+            px='2'
+            h='40px'
+            border='1px'
+            bg='gray.100'
+            borderColor='gray.200'
+            boxShadow='base'
+            alignItems='center'
+            fontSize='sm'
+            borderRadius='6px'
+          >
+            0
+          </Flex>
+        </Box>
+        <FormControl mb={6} isRequired w='48%'>
+          <FormLabel fontSize={19} htmlFor='examTime'>
+            Total Time&nbsp;
+            <Box display='inline' fontSize='15'>
+              (in mins)
+            </Box>
+          </FormLabel>
+          <NumberInput defaultValue={0} min={0} allowMouseWheel step={5}>
+            <NumberInputField boxShadow='base' />
+          </NumberInput>
+        </FormControl>
+      </Flex>
       <FormControl mb={6}>
         <FormLabel fontSize={19} htmlFor='topics'>
           <Box display='inline-flex' alignItems='center' gap='2'>
@@ -289,14 +293,11 @@ const GenerateForm = () => {
             key={i}
             borderRadius='full'
             variant='solid'
-            // colorScheme='blue'
             bg='#C3D0F9'
           >
-            <TagLabel
-              color='black'
-              bg='#C3D0F9'
-              fontSize={15}
-            >{`${item.name} : ${item.count}`}</TagLabel>
+            <TagLabel color='black' bg='#C3D0F9' fontSize={15}>
+              {`${item.name} : ${item.count}`}
+            </TagLabel>
             <TagCloseButton
               color='black'
               onClick={() => {
@@ -309,7 +310,7 @@ const GenerateForm = () => {
         ))}
       </Wrap>
       <Flex justify='center'>
-        <Button mt={5} w={300} h={50}>
+        <Button mt={7} w={300} h={50}>
           SUBMIT
         </Button>
       </Flex>
