@@ -86,8 +86,6 @@ const Sidebar = () => {
               &ensp;to toggle
             </span>
           }
-          fontSize='xs'
-          bg='brand.600'
           placement={isOpen ? 'bottom' : 'right'}
         >
           <IconButton
