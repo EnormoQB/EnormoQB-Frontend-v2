@@ -29,6 +29,9 @@
     "no-console": "off",
     "arrow-body-style": "off",
     "react/prop-types": "off",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "react/destructuring-assignment": "off",
+    "react/no-array-index-key": "off",
+    "no-underscore-dangle": "off"
   }
 }

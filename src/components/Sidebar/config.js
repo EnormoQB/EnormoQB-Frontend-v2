@@ -3,13 +3,13 @@ import {
   MdOutlineHourglassTop,
   MdRemoveDone,
 } from 'react-icons/md';
-import { AiFillHome } from 'react-icons/ai';
+import { AiFillHome, AiFillFileUnknown } from 'react-icons/ai';
 import { BsFillFilePdfFill } from 'react-icons/bs';
 import { RiFileEditFill } from 'react-icons/ri';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navItems = [
-  { id: 1, name: 'Home', icon: AiFillHome, link: '/' },
+  { id: 1, name: 'Home', icon: AiFillHome, link: '' },
   {
     id: 2,
     name: 'Pending Questions',
@@ -34,5 +34,11 @@ export const navItems = [
     name: 'Contribute Question',
     icon: RiFileEditFill,
     link: '/contribute',
+  },
+  {
+    id: 7,
+    name: 'Question Papers',
+    icon: AiFillFileUnknown,
+    link: '/questionpapers',
   },
 ];
