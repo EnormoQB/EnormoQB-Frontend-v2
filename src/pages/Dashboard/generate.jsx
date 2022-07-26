@@ -30,7 +30,7 @@ const Generate = () => {
         <Tabs isLazy defaultIndex={0} size='lg'>
           <TabList>
             <CustomTab>Form</CustomTab>
-            <CustomTab>Result</CustomTab>
+            <CustomTab>Preview</CustomTab>
           </TabList>
           <TabPanels>
             <TabPanel>

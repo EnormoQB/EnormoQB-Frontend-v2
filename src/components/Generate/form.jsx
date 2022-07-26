@@ -17,6 +17,7 @@ import {
   TagLabel,
   TagCloseButton,
   Wrap,
+  Input,
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { FaPlus } from 'react-icons/fa';
@@ -50,11 +51,27 @@ const GenerateForm = () => {
 
   return (
     <Box>
+      <FormControl mb={6} isRequired>
+        <FormLabel fontSize={19} htmlFor='board'>
+          Institution Name
+        </FormLabel>
+        <Input
+          placeholder='Enter Institution Name'
+          chakraStyles={{
+            control: (provided) => ({
+              ...provided,
+              boxShadow: 'base',
+            }),
+          }}
+          value={title}
+          onChange={(e) => {}}
+        />
+      </FormControl>
       <Flex justify='space-between'>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
           <FormControl mb={6} isRequired>
             <FormLabel fontSize={19} htmlFor='board'>
-              Title
+              Exam Type
             </FormLabel>
             <Select
               options={[
@@ -62,7 +79,7 @@ const GenerateForm = () => {
                 { value: 'Board', label: 'Board' },
                 { value: 'Pre-Board', label: 'Pre-Board' },
               ]}
-              placeholder='Select Title'
+              placeholder='Select Exam Type'
               chakraStyles={{
                 control: (provided) => ({
                   ...provided,
@@ -108,10 +125,6 @@ const GenerateForm = () => {
                     <Text>{value}</Text>
                     <NumberInput defaultValue={0} min={0} allowMouseWheel>
                       <NumberInputField boxShadow='base' />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
                     </NumberInput>
                   </Box>
                 );
@@ -134,10 +147,6 @@ const GenerateForm = () => {
                       step={5}
                     >
                       <NumberInputField boxShadow='base' />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
                     </NumberInput>
                   </Box>
                 );
@@ -205,10 +214,6 @@ const GenerateForm = () => {
                     <Text>{value}</Text>
                     <NumberInput defaultValue={0} min={0} allowMouseWheel>
                       <NumberInputField boxShadow='base' />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
                     </NumberInput>
                   </Box>
                 );
@@ -260,10 +265,6 @@ const GenerateForm = () => {
                     boxShadow='base'
                     placeholder='Total Questions'
                   />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
                 </NumberInput>
               </Box>
               <Box ml={4}>
