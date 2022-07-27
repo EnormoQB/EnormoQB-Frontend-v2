@@ -147,7 +147,7 @@ const Contribute = () => {
     // formData.append('image', image);
     // console.log(data);
     await addQuestion(data)
-      .then((response) => {
+      .then(() => {
         toast({
           id: 'Contribute',
           title: 'success',
