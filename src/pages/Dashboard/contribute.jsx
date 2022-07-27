@@ -1,4 +1,5 @@
 import { useState, Fragment, useRef, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import {
   FormControl,
   FormLabel,
@@ -24,6 +25,7 @@ import { FaCheck } from 'react-icons/fa';
 import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
 import classData from '../../data/classData';
+import { useAddQuestionsMutation } from '../../redux/services/questionApi';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
@@ -46,13 +48,14 @@ const Contribute = () => {
     { value: '', isCorrect: false, id: Math.random() * 100 },
     { value: '', isCorrect: false, id: Math.random() * 100 },
   ]);
-
+  const user = useSelector((state) => state.userState.user);
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
   const [image, setImage] = useState(null);
   const question = useRef();
   const answer = useRef();
+  const [addQuestion] = useAddQuestionsMutation();
 
   const changeHandler = (idx, e) => {
     setOptions((prevState) =>
@@ -126,7 +129,7 @@ const Contribute = () => {
     });
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const data = {
       standard: standard.value,
       subject: subject.value,
@@ -135,13 +138,42 @@ const Contribute = () => {
       question: question.current.value,
       answerExplaination: answer.current.value,
       options,
+      userId: user._id,
+      imageUrl: image,
     };
 
-    const formData = new FormData();
-    formData.append('data', data);
-    formData.append('image', image);
-
-    console.log(data);
+    // const formData = new FormData();
+    // formData.append('data', data);
+    // formData.append('image', image);
+    // console.log(data);
+    await addQuestion(data)
+      .then((response) => {
+        toast({
+          id: 'Contribute',
+          title: 'success',
+          position: 'top-right',
+          description: 'Successfully contributed the question!',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+        setImage(null);
+        setOptions([
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+        ]);
+        setStandard({ value: '10', label: 'X' });
+        setSubject('');
+        setTopics('');
+        question.current.value = '';
+        answer.current.value = '';
+        group.current.value = 'Easy';
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
