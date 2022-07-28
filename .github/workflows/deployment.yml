@@ -2,14 +2,14 @@ name: Deployment
 
 on:
   push: 
-    branch: [main]
+    branches: [ main ]
 
 jobs:
   job_one:
     name: Deploy
-    runs-on: Ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
-      name: Pull latest code and build
+    - name: Pull latest code and build
       uses: appleboy/ssh-action@master
       with:
         host: 74.220.20.80
