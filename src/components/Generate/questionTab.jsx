@@ -11,7 +11,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { MdDelete } from 'react-icons/md';
 import { AiOutlineMenu } from 'react-icons/ai';
 
-const QuestionTab = ({ data, index, isDragging }) => {
+const QuestionTab = ({ data, index, isDragging, onDelete }) => {
   return (
     <Draggable draggableId={data._id.$oid} index={index}>
       {(provided) => (
@@ -37,7 +37,7 @@ const QuestionTab = ({ data, index, isDragging }) => {
               </Box>
             </Tooltip>
             <Box w='75%'>
-              <Text as='h3' fontWeight='semibold' fontSize='17px'>
+              <Text as='h3' fontWeight='semibold' fontSize='17px' mr='2'>
                 {`Q${index + 1}. ${data.question}`}
               </Text>
               <Flex wrap='wrap' mt='2.5'>
@@ -71,6 +71,7 @@ const QuestionTab = ({ data, index, isDragging }) => {
                   _groupHover={{ opacity: 1 }}
                   opacity='0'
                   transition='opacity ease-in-out 200ms'
+                  onClick={onDelete}
                 />
               </Tooltip>
             </Flex>

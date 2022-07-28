@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Box } from '@chakra-ui/react';
 import CustomQuestion from './customQues';
@@ -26,6 +26,11 @@ const GenerateResult = () => {
     setInitialData(items);
   };
 
+  const handleDelete = useCallback((idx) => {
+    console.log('delete running');
+    setInitialData((prev) => prev.filter((item, index) => idx !== index));
+  }, []);
+
   return (
     <Box>
       <CustomQuestion />
@@ -42,6 +47,7 @@ const GenerateResult = () => {
                   index={idx}
                   data={ques}
                   isDragging={isDragging}
+                  onDelete={() => handleDelete(idx)}
                 />
               ))}
               {provided.placeholder}

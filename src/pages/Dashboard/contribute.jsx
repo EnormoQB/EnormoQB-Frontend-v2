@@ -49,7 +49,7 @@ const Contribute = () => {
   const [topics, setTopics] = useState('');
   const [image, setImage] = useState(null);
   const question = useRef();
-  const answer = useRef();
+  const explanation = useRef();
 
   const changeHandler = (idx, e) => {
     setOptions((prevState) =>
@@ -113,31 +113,39 @@ const Contribute = () => {
       }
       return;
     }
-    setOptions((prevValue) => {
-      const newState = prevValue.map((val, i) => ({
+    setOptions((prevValue) =>
+      prevValue.map((val, i) => ({
         ...val,
         isCorrect: i === idx ? !val.isCorrect : false,
-      }));
-      return newState;
-    });
+      })),
+    );
   };
 
   const onSubmit = () => {
+    let answer = null;
+    const opts = [];
+
+    options.forEach((item) => {
+      opts.push(item.value);
+      if (item.isCorrect) answer = item.value;
+    });
+
     const data = {
       standard: standard.value,
       subject: subject.value,
       topics: topics.map((topic) => topic.value),
       difficulty,
       question: question.current.value,
-      answerExplaination: answer.current.value,
-      options,
+      answerExplanation: explanation.current.value,
+      answer,
+      options: opts,
     };
 
     const formData = new FormData();
     formData.append('data', data);
     formData.append('image', image);
 
-    console.log(data);
+    console.log(data, image);
   };
 
   return (
@@ -267,7 +275,7 @@ const Contribute = () => {
               rows='3'
               boxShadow='base'
               resize='none'
-              ref={answer}
+              ref={explanation}
             />
           </FormControl>
         </Box>
