@@ -31,7 +31,7 @@ const QuestionTab = ({ data, index, isDragging }) => {
             _hover={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px' }}
             role='group'
           >
-            <Tooltip label='Drag to reorder' fontSize='xs'>
+            <Tooltip label='Drag to reorder'>
               <Box alignSelf='center' mr='6'>
                 <AiOutlineMenu />
               </Box>
