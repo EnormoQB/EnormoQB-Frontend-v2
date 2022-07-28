@@ -94,13 +94,29 @@ const CustomQuestion = () => {
       }
       return;
     }
-    setOptions((prevValue) => {
-      const newState = prevValue.map((val, i) => ({
+    setOptions((prevValue) =>
+      prevValue.map((val, i) => ({
         ...val,
         isCorrect: i === idx ? !val.isCorrect : false,
-      }));
-      return newState;
+      })),
+    );
+  };
+
+  const handleSubmit = () => {
+    let answer = null;
+    const opts = [];
+
+    options.forEach((item) => {
+      opts.push(item.value);
+      if (item.isCorrect) answer = item.value;
     });
+
+    const data = {
+      question: question.current.value,
+      answer,
+      options: opts,
+    };
+    console.log(data);
   };
 
   return (
@@ -157,10 +173,7 @@ const CustomQuestion = () => {
                     onClick={handleAddOption}
                     bg='brand.300'
                     color='brand.600'
-                    _hover={{
-                      backgroundColor: 'brand.500',
-                      color: 'brand.100',
-                    }}
+                    _hover={{ backgroundColor: 'brand.400' }}
                     size='sm'
                   >
                     Add Option
@@ -233,6 +246,7 @@ const CustomQuestion = () => {
                 color='brand.600'
                 _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
                 size='sm'
+                onClick={handleSubmit}
               >
                 Add
               </Button>
