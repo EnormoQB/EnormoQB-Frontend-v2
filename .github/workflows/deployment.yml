@@ -20,5 +20,6 @@ jobs:
           cd EnormoQB/Frontend
           git checkout main
           git pull
+          npm ci
           npm run build
 
