@@ -35,10 +35,7 @@ const Contribute = () => {
     getRootProps,
     getRadioProps,
     value: difficulty,
-  } = useRadioGroup({
-    name: 'difficulty',
-    defaultValue: 'Easy',
-  });
+  } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
 
   const group = getRootProps();
 
@@ -68,7 +65,6 @@ const Contribute = () => {
             isCorrect: e.target.value === '' ? false : val.isCorrect,
           };
         }
-
         return newVal;
       }),
     );

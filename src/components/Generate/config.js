@@ -1,4 +1,21 @@
-// eslint-disable-next-line import/prefer-default-export
+export const difficulties = ['Easy', 'Medium', 'Hard'];
+
+export const classOptions = [
+  { value: '10', label: 'X' },
+  { value: '12', label: 'XII' },
+];
+
+export const boardOptions = [
+  { value: 'CBSE', label: 'CBSE' },
+  { value: 'ICSE', label: 'ICSE' },
+];
+
+export const examTypes = [
+  { value: 'Class Test', label: 'Class Test' },
+  { value: 'Board', label: 'Board' },
+  { value: 'Pre-Board', label: 'Pre-Board' },
+];
+
 export const dummy = [
   {
     _id: { $oid: '62378fcadbf12400166ed1d8' },
