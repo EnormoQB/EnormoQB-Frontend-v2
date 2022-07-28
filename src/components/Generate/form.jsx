@@ -55,7 +55,7 @@ const GenerateForm = () => {
           placeholder='Enter Institution Name (optional)'
           boxShadow='base'
           value={title}
-          onChange={(e) => {}}
+          onChange={() => {}}
         />
       </FormControl>
       <Flex justify='space-between'>
