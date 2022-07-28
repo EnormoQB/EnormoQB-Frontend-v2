@@ -10,6 +10,9 @@ export const questionsApi = createApi({
       query: (question) => ({
         url: ApiEndpoints.questions.add.url,
         method: 'post',
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
         data: question,
       }),
     }),

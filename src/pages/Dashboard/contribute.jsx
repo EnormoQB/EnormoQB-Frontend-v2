@@ -129,6 +129,27 @@ const Contribute = () => {
     });
   };
 
+  function buildFormData(formData, data, parentKey) {
+    if (
+      data &&
+      typeof data === 'object' &&
+      !(data instanceof Date) &&
+      !(data instanceof File)
+    ) {
+      Object.keys(data).forEach((key) => {
+        buildFormData(
+          formData,
+          data[key],
+          parentKey ? `${parentKey}[${key}]` : key,
+        );
+      });
+    } else {
+      const value = data == null ? '' : data;
+
+      formData.append(parentKey, value);
+    }
+  }
+
   const onSubmit = async () => {
     const data = {
       standard: standard.value,
@@ -139,14 +160,14 @@ const Contribute = () => {
       answerExplaination: answer.current.value,
       options,
       userId: user._id,
-      imageUrl: image,
     };
 
-    // const formData = new FormData();
-    // formData.append('data', data);
-    // formData.append('image', image);
-    // console.log(data);
-    await addQuestion(data)
+    const formData = new FormData();
+    buildFormData(formData, data);
+    formData.append('image', image);
+    console.log(formData);
+    // await addQuestion(data)
+    await addQuestion(formData)
       .then(() => {
         toast({
           id: 'Contribute',
