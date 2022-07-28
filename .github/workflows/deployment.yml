@@ -17,6 +17,9 @@ jobs:
         key: ${{ secrets.SSH_SECRET }}
         port: 22
         script: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
+          npm --help
           cd EnormoQB/Frontend
           git checkout main
           git pull
