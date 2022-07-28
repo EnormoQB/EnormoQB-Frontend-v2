@@ -125,7 +125,7 @@ const CustomQuestion = () => {
             <AccordionIcon />
           </AccordionButton>
         </h2>
-        <AccordionPanel pb={4} borderBottom='1px' borderColor='brand.300'>
+        <AccordionPanel pb={4} borderBottom='2px' borderColor='brand.300'>
           <Box>
             <FormControl isRequired mb={6} mt='2'>
               <FormLabel fontSize={18} htmlFor='question'>
