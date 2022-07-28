@@ -162,108 +162,6 @@ const Contribute = () => {
       </Flex>
       <Flex justify='space-between'>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
-          <FormControl mb={6} isRequired>
-            <FormLabel fontSize={18} htmlFor='class'>
-              Class
-            </FormLabel>
-            <Select
-              options={[
-                { value: '10', label: 'X' },
-                { value: '12', label: 'XII' },
-              ]}
-              placeholder='Select Class'
-              chakraStyles={{
-                control: (provided) => ({
-                  ...provided,
-                  boxShadow: 'base',
-                }),
-              }}
-              value={standard}
-              onChange={(e) => {
-                setStandard(e);
-                setSubject('');
-                setTopics([]);
-              }}
-            />
-          </FormControl>
-          <FormControl isRequired mb={6}>
-            <FormLabel fontSize={18} htmlFor='subject'>
-              Subject
-            </FormLabel>
-            <Select
-              options={Object.keys(classData[standard.value]).map((value) => ({
-                value,
-                label: value,
-              }))}
-              placeholder='Select Subject'
-              chakraStyles={{
-                control: (provided) => ({
-                  ...provided,
-                  boxShadow: 'base',
-                }),
-              }}
-              value={subject}
-              onChange={(e) => {
-                setSubject(e);
-                setTopics([]);
-              }}
-            />
-          </FormControl>
-          <FormControl isRequired mb={6}>
-            <FormLabel fontSize={18} htmlFor='topics'>
-              Topic
-            </FormLabel>
-            <Select
-              isMulti
-              options={
-                classData &&
-                classData[standard.value] &&
-                classData[standard.value][subject.value]
-                  ? classData[standard.value][subject.value].map((value) => ({
-                      value,
-                      label: value,
-                    }))
-                  : []
-              }
-              placeholder='Select Topics'
-              chakraStyles={{
-                control: (provided) => ({
-                  ...provided,
-                  boxShadow: 'base',
-                }),
-              }}
-              value={topics}
-              onChange={(e) => {
-                setTopics(e);
-              }}
-              closeMenuOnSelect={false}
-              selectedOptionStyle='check'
-              hideSelectedOptions={false}
-            />
-          </FormControl>
-          <FormControl mb={6}>
-            <FormLabel fontSize={18} htmlFor='difficulty'>
-              Difficulty Level
-            </FormLabel>
-            <HStack {...group} size='sm'>
-              {difficulties.map((value) => {
-                const radio = getRadioProps({ value });
-                return (
-                  <RadioCard key={value} {...radio}>
-                    {value}
-                  </RadioCard>
-                );
-              })}
-            </HStack>
-          </FormControl>
-          <FormControl mb={6}>
-            <FormLabel fontSize={18} htmlFor='difficulty'>
-              Upload Image
-            </FormLabel>
-            <ImageUploader setImage={setImage} />
-          </FormControl>
-        </Box>
-        <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
           <FormControl isRequired mb={6}>
             <FormLabel fontSize={18} htmlFor='question'>
               Question
@@ -371,6 +269,108 @@ const Contribute = () => {
               resize='none'
               ref={answer}
             />
+          </FormControl>
+        </Box>
+        <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
+          <FormControl mb={6} isRequired>
+            <FormLabel fontSize={18} htmlFor='class'>
+              Class
+            </FormLabel>
+            <Select
+              options={[
+                { value: '10', label: 'X' },
+                { value: '12', label: 'XII' },
+              ]}
+              placeholder='Select Class'
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+              value={standard}
+              onChange={(e) => {
+                setStandard(e);
+                setSubject('');
+                setTopics([]);
+              }}
+            />
+          </FormControl>
+          <FormControl isRequired mb={6}>
+            <FormLabel fontSize={18} htmlFor='subject'>
+              Subject
+            </FormLabel>
+            <Select
+              options={Object.keys(classData[standard.value]).map((value) => ({
+                value,
+                label: value,
+              }))}
+              placeholder='Select Subject'
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+              value={subject}
+              onChange={(e) => {
+                setSubject(e);
+                setTopics([]);
+              }}
+            />
+          </FormControl>
+          <FormControl isRequired mb={6}>
+            <FormLabel fontSize={18} htmlFor='topics'>
+              Topic
+            </FormLabel>
+            <Select
+              isMulti
+              options={
+                classData &&
+                classData[standard.value] &&
+                classData[standard.value][subject.value]
+                  ? classData[standard.value][subject.value].map((value) => ({
+                      value,
+                      label: value,
+                    }))
+                  : []
+              }
+              placeholder='Select Topics'
+              chakraStyles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: 'base',
+                }),
+              }}
+              value={topics}
+              onChange={(e) => {
+                setTopics(e);
+              }}
+              closeMenuOnSelect={false}
+              selectedOptionStyle='check'
+              hideSelectedOptions={false}
+            />
+          </FormControl>
+          <FormControl mb={6}>
+            <FormLabel fontSize={18} htmlFor='difficulty'>
+              Difficulty Level
+            </FormLabel>
+            <HStack {...group} size='sm'>
+              {difficulties.map((value) => {
+                const radio = getRadioProps({ value });
+                return (
+                  <RadioCard key={value} {...radio}>
+                    {value}
+                  </RadioCard>
+                );
+              })}
+            </HStack>
+          </FormControl>
+          <FormControl mb={6}>
+            <FormLabel fontSize={18} htmlFor='difficulty'>
+              Upload Image
+            </FormLabel>
+            <ImageUploader setImage={setImage} />
           </FormControl>
         </Box>
       </Flex>
