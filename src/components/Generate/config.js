@@ -116,7 +116,7 @@ export const dummy = [
       'AT is a tangent to the circle with centre O such that OT = 4 cm and ∠OTA = 30°. Then AT is equal to',
     answer: '4√3 cm',
     standard: 'X',
-    subject: 'Science',
+    subject: 'Maths',
     topics: ['Circles'],
     imageUrl:
       'https://firebasestorage.googleapis.com/v0/b/enormo-c2678.appspot.com/o/questionImage%2FFbF6s0ros3gJxtYorHcB92zDy6p2?alt=media&token=0294c3f6-8e6b-48ce-8c48-d7f48d8826d8',
