@@ -19,10 +19,10 @@ jobs:
         script: |
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
-          npm --help
           cd EnormoQB/Frontend
           git checkout main
           git pull
           npm ci
           npm run build
+          sudo systemctl restart nginx
 
