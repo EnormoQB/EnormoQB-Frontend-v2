@@ -1,7 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { Routes, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import theme from '../styles/theme';
 import DashboardHome from './Dashboard/home';
 import Dashboard from './Dashboard';
@@ -12,13 +11,8 @@ import Generate from './Dashboard/generate';
 import Contribute from './Dashboard/contribute';
 import QuestionPapers from './Dashboard/questionPapers';
 import Home from './Home';
-import { questionsApi } from '../redux/services/questionApi';
 
 const App = () => {
-  const response = questionsApi.endpoints.getQuestions.useQuery(
-    ({}, { refetchOnMountOrArgChange: true, refetchOnFocus: true }),
-  );
-  console.log(response);
   return (
     <ChakraProvider theme={theme}>
       <Helmet>

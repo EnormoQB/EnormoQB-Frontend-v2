@@ -1,24 +1,26 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box } from '@chakra-ui/react';
-import {
-  questionsApi,
-  useGetQuestionsQuery,
-} from '../../redux/services/questionApi';
+import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import Question from '../../components/Accordion';
+import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
 const Approved = () => {
-  const response = questionsApi.endpoints.getQuestions.useQuery(
-    ({}, { refetchOnMountOrArgChange: true, refetchOnFocus: true }),
-  );
-  // const { data = [] } = useGetQuestionsQuery();
-  const [questions] = useState(response.data.data.items);
+  const [questions, setQuestions] = useState([]);
+  const { data, isLoading, isFetching } = useGetQuestionsQuery();
 
-  console.log(questions);
+  useEffect(() => {
+    if (data) {
+      setQuestions(data.data.items);
+    }
+  }, [data]);
+
   return (
     <Box>
-      {questions.map((ques) => (
-        <Question key={ques._id} data={ques} />
-      ))}
+      {isLoading || isFetching || questions.length === 0 ? (
+        <DashboardLoader />
+      ) : (
+        questions.map((ques) => <Question key={ques._id} data={ques} />)
+      )}
     </Box>
   );
 };

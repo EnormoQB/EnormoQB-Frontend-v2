@@ -12,9 +12,7 @@ export const questionsApi = createApi({
       query: (question) => ({
         url: ApiEndpoints.questions.add.url,
         method: 'post',
-        headers: {
-          'content-type': 'multipart/form-data',
-        },
+        headers: { 'content-type': 'multipart/form-data' },
         data: question,
       }),
     }),
@@ -23,27 +21,16 @@ export const questionsApi = createApi({
         url: `${ApiEndpoints.questions.accept.url}`,
         method: 'get',
         providesTags: ['Questions'],
-        async onQueryStarted(
-          arg,
-          {
-            dispatch,
-            getState,
-            extra,
-            requestId,
-            queryFulfilled,
-            getCacheEntry,
-            updateCachedData,
-          },
-        ) {
-          try {
-            const data = await queryFulfilled;
-            console.log(data);
-            // dispatch(setQuestion(data.data.data.items));
-          } catch (error) {
-            console.log(error);
-          }
-        },
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+          dispatch(setQuestion(data.data.items));
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
   }),
 });
