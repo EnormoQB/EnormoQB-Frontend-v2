@@ -1,4 +1,5 @@
 import { useState, Fragment, useRef, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import {
   FormControl,
   FormLabel,
@@ -24,6 +25,7 @@ import { FaCheck } from 'react-icons/fa';
 import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
 import classData from '../../data/classData';
+import { useAddQuestionsMutation } from '../../redux/services/questionApi';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
@@ -43,13 +45,14 @@ const Contribute = () => {
     { value: '', isCorrect: false, id: Math.random() * 100 },
     { value: '', isCorrect: false, id: Math.random() * 100 },
   ]);
-
+  const user = useSelector((state) => state.userState.user);
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
   const [image, setImage] = useState(null);
   const question = useRef();
   const explanation = useRef();
+  const [addQuestion] = useAddQuestionsMutation();
 
   const changeHandler = (idx, e) => {
     setOptions((prevState) =>
@@ -121,7 +124,28 @@ const Contribute = () => {
     );
   };
 
-  const onSubmit = () => {
+  const buildFormData = (formData, data, parentKey) => {
+    if (
+      data &&
+      typeof data === 'object' &&
+      !(data instanceof Date) &&
+      !(data instanceof File)
+    ) {
+      Object.keys(data).forEach((key) => {
+        buildFormData(
+          formData,
+          data[key],
+          parentKey ? `${parentKey}[${key}]` : key,
+        );
+      });
+    } else {
+      const value = data == null ? '' : data;
+
+      formData.append(parentKey, value);
+    }
+  };
+
+  const onSubmit = async () => {
     let answer = null;
     const opts = [];
 
@@ -139,13 +163,41 @@ const Contribute = () => {
       answerExplanation: explanation.current.value,
       answer,
       options: opts,
+      userId: user._id,
     };
 
     const formData = new FormData();
-    formData.append('data', data);
+    buildFormData(formData, data);
     formData.append('image', image);
-
-    console.log(data, image);
+    console.log(formData);
+    await addQuestion(formData)
+      .then(() => {
+        toast({
+          id: 'Contribute',
+          title: 'success',
+          position: 'top-right',
+          description: 'Successfully contributed the question!',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+        setImage(null);
+        setOptions([
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+        ]);
+        setStandard({ value: '10', label: 'X' });
+        setSubject('');
+        setTopics('');
+        question.current.value = '';
+        answer.current.value = '';
+        group.current.value = 'Easy';
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (

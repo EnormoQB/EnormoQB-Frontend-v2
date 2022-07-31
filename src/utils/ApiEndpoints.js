@@ -13,6 +13,16 @@ const ApiEndpoints = {
       url: '/auth/user',
     },
   },
+  questions: {
+    add: {
+      method: 'POST',
+      url: 'api/questions/add',
+    },
+    accept: {
+      method: 'GET',
+      url: 'api/questions/list',
+    },
+  },
 };
 
 export default ApiEndpoints;
