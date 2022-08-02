@@ -29,7 +29,11 @@ const Filter = () => {
             }),
           }}
           value={standard}
-          onChange={(e) => setStandard(e)}
+          onChange={(e) => {
+            setStandard(e);
+            setSubject('');
+            setTopics([]);
+          }}
         />
       </FormControl>
       <FormControl w='15%' flexShrink='0'>
