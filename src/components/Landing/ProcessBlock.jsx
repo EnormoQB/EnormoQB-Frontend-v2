@@ -8,14 +8,37 @@ const ProcessBlock = ({
   nonAnimatedHead,
   content,
 }) => (
-  <Flex w='80%' flexDirection={flexD}>
-    <Image src={imageSrc} alt='Login Illustration' w='50%' p='7' />
-    <Flex flexDirection='column' justifyContent='center' w='50%' p='14'>
-      <Box fontSize='2xl' fontWeight='bold'>
+  <Flex
+    w={['100%', '90%', '85%', '80%']}
+    alignItems={['center', 'center', 'normal']}
+    flexDirection={['column', 'column', flexD]}
+  >
+    <Image
+      src={imageSrc}
+      alt='Login Illustration'
+      w={['65%', '60%', '50%']}
+      p={['2', '2', '4', '7']}
+    />
+    <Flex
+      flexDirection='column'
+      justifyContent='center'
+      w={['100%', '100%', '50%']}
+      px={['8', '6', '8', '12', '14']}
+      py={['2', '6', '12', '14']}
+    >
+      <Box
+        fontSize={['lg', 'xl', '2xl']}
+        fontWeight='bold'
+        textAlign={['center', 'center', 'left']}
+      >
         <span className='highlight'>{animatedHead}</span>
         {nonAnimatedHead}
       </Box>
-      <Box fontSize='md' my='8'>
+      <Box
+        fontSize={['sm', 'md']}
+        my={['4', '6', '8']}
+        textAlign={['center', 'center', 'left']}
+      >
         {content}
       </Box>
       <TopBorder borderH='0.35rem' />

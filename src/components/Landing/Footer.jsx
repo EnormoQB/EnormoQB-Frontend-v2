@@ -18,18 +18,31 @@ const Footer = ({ footerRef }) => {
       bgColor='brand.600'
       mt='8'
     >
-      <Flex alignItems='center' w='100%' px='16' py='10'>
+      <Flex
+        alignItems='center'
+        w='100%'
+        px={['10', '10', '16']}
+        py={['6', '8', '10']}
+      >
         <Flex
           w='50%'
           flexDir='column'
           justifyContent='space-between'
           alignItems='center'
+          mr={['4', '4', null]}
         >
           <Flex fontSize='md' fontWeight='semibold' m='2'>
             EnormoQB
           </Flex>
-          <Flex fontSize='md'>Revolutionizing Examination Systems</Flex>
-          <Flex mt='4' py='4' justifyContent='space-between' w='30%'>
+          <Flex fontSize={['sm', 'md']} textAlign='center'>
+            Revolutionizing Examination Systems
+          </Flex>
+          <Flex
+            mt={['0', '2', '4']}
+            py='4'
+            justifyContent='space-between'
+            w={['100%', '70%', '60%', '45%', '30%']}
+          >
             <FaFacebookF size={20} style={{ cursor: 'pointer' }} />
             <FaEnvelope size={20} style={{ cursor: 'pointer' }} />
             <FaInstagram size={20} style={{ cursor: 'pointer' }} />

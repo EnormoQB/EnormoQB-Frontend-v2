@@ -4,10 +4,10 @@ const FutureScopeCard = ({ heading, content }) => {
   return (
     <Flex
       flexDir='column'
-      w='40%'
-      p='14'
+      w={['80%', '80%', '40%']}
+      p={['6', '6', '10', '14']}
       mx='4'
-      my='6'
+      my={['2', '4', '6']}
       bgColor='white'
       borderColor='gray.100'
       borderWidth='thin'
@@ -23,10 +23,15 @@ const FutureScopeCard = ({ heading, content }) => {
       >
         COMING SOON
       </Box>
-      <Box fontSize='xl' fontWeight='bold' my='6' color='brand.500'>
+      <Box
+        fontSize={['lg', 'lg', 'xl']}
+        fontWeight='bold'
+        my={['4', '5', '6']}
+        color='brand.500'
+      >
         {heading}
       </Box>
-      <Box>{content}</Box>
+      <Box fontSize={['sm', 'sm', 'md']}>{content}</Box>
     </Flex>
   );
 };
