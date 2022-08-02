@@ -39,7 +39,11 @@ const Home = () => {
         executeFooterScroll={executeFooterScroll}
       />
       <Hero />
-      <Image mx='32' src={SampleDashboard} alt='Sample Dashboard' />
+      <Image
+        mx={['4', '10', '16', '32']}
+        src={SampleDashboard}
+        alt='Sample Dashboard'
+      />
       {/* Process Flow */}
       <Flex
         flexDirection='column'
@@ -80,7 +84,13 @@ const Home = () => {
       </Flex>
       <About aboutRef={aboutRef} />
       {/* Future scope section */}
-      <Flex mt='44' justifyContent='center' flexWrap='wrap'>
+      <Flex
+        mt={['24', '40', '44', '52', '44']}
+        justifyContent='center'
+        flexDirection={['column', 'column', 'row']}
+        alignItems={['center', 'center', 'normal']}
+        flexWrap='wrap'
+      >
         <FutureScopeCard
           heading='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
           content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
