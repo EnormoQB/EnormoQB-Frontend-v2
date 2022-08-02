@@ -12,8 +12,9 @@ export const boardOptions = [
 
 export const examTypes = [
   { value: 'Class Test', label: 'Class Test' },
-  { value: 'Board', label: 'Board' },
-  { value: 'Pre-Board', label: 'Pre-Board' },
+  { value: 'Semi-Finals', label: 'Semi-Finals' },
+  { value: 'Pre-Finals', label: 'Pre-Finals' },
+  { value: 'Finals', label: 'Finals' },
 ];
 
 export const dummy = [

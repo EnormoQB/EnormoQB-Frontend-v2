@@ -10,6 +10,7 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
+  Image,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -41,12 +42,10 @@ const NavBar = ({
       zIndex='10'
       bgColor='brand.100'
     >
-      <img
+      <Image
         src={Logo}
-        style={{
-          height: '5rem',
-          width: '12rem',
-        }}
+        h={['4rem', '5rem']}
+        w={['10rem', '12rem']}
         alt='Logo'
       />
       <Flex alignItems='center' display={['none', 'none', 'flex']}>
