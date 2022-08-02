@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import CustomQuestion from './customQues';
 import QuestionTab from './questionTab';
 import { dummy } from './config';
@@ -34,6 +34,9 @@ const GenerateResult = () => {
   return (
     <Box>
       <CustomQuestion />
+      <Box>
+        <Text>Central Board of Secondary Education</Text>
+      </Box>
       <DragDropContext
         onDragEnd={handleOnDragEnd}
         onDragStart={handleOnDragStart}

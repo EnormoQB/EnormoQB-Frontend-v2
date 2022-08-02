@@ -12,19 +12,6 @@ import Filter from '../../components/Filters';
 const DashboardHome = () => {
   return (
     <div>
-      <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
-        Contribution
-        <mark
-          style={{
-            backgroundColor: '#C3D0F9',
-            borderRadius: '25px',
-            padding: '0 12px 2px 12px',
-            marginLeft: '3px',
-          }}
-        >
-          Stats
-        </mark>
-      </Heading>
       <Flex flexDir='row' alignItems='center' justifyContent='space-between'>
         <Cards
           background='brand.600'
@@ -72,8 +59,8 @@ const DashboardHome = () => {
           <DoughnutGraph />
         </Box>
       </Flex>
-      <Box mt={20}>
-        <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
+      <Box mt={12}>
+        <Heading as='h2' fontSize='3xl' fontWeight='bold' mb={10}>
           Question
           <mark
             style={{
