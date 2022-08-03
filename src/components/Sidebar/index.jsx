@@ -14,13 +14,16 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MdOutlineLogout } from 'react-icons/md';
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
+import { useSelector } from 'react-redux';
 import NavItems from './NavItems';
 import { navItems } from './config';
 import LogoWhite from '../../assets/mainLogoWhite.svg';
 import LogoIcon from '../../assets/favicon.svg';
 import { useLogoutUserMutation } from '../../redux/services/userApi';
+import { titleCase } from '../../utils/helpers';
 
 const Sidebar = () => {
+  const user = useSelector((state) => state.userState.user);
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
@@ -83,8 +86,6 @@ const Sidebar = () => {
               &ensp;to toggle
             </span>
           }
-          fontSize='xs'
-          bg='brand.600'
           placement={isOpen ? 'bottom' : 'right'}
         >
           <IconButton
@@ -110,9 +111,7 @@ const Sidebar = () => {
               icon={item.icon}
               title={item.name}
               active={`/dashboard${item.link}` === location.pathname}
-              onClick={() => {
-                navigate(`/dashboard${item.link}`);
-              }}
+              onClick={() => navigate(`/dashboard${item.link}`)}
             />
           ))}
         </Box>
@@ -135,14 +134,14 @@ const Sidebar = () => {
         <Divider display={!isOpen ? 'none' : 'flex'} />
         <Flex mt={4} align='center'>
           <Box w='35px'>
-            <Avatar size='full' src='' />
+            <Avatar size='full' src={user ? user.image : ''} />
           </Box>
           <Flex flexDir='column' ml='4' display={!isOpen ? 'none' : 'flex'}>
             <Heading as='h2' fontSize='18px'>
-              Enormo QB
+              {user ? user.username : 'Guest'}
             </Heading>
             <Text color='gray' fontSize='sm' mt='0.5'>
-              Admin
+              {user ? titleCase(user.userType) : 'Member'}
             </Text>
           </Flex>
         </Flex>

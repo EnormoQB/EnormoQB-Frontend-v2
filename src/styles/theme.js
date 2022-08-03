@@ -71,6 +71,12 @@ const theme = extendTheme({
         variant: 'base',
       },
     },
+    Tooltip: {
+      baseStyle: {
+        bg: 'brand.600',
+        fontSize: 'xs',
+      },
+    },
   },
 });
 export default theme;

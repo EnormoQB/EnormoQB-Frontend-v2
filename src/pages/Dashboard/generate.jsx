@@ -19,7 +19,7 @@ const Generate = () => {
           style={{
             backgroundColor: '#C3D0F9',
             borderRadius: '25px',
-            padding: '0 12px',
+            padding: '0 12px 2px 12px',
             marginLeft: '3px',
           }}
         >
@@ -27,10 +27,10 @@ const Generate = () => {
         </mark>
       </Heading>
       <Box w='full'>
-        <Tabs isLazy defaultIndex={1} size='lg'>
+        <Tabs isLazy defaultIndex={0} size='lg'>
           <TabList>
             <CustomTab>Form</CustomTab>
-            <CustomTab>Result</CustomTab>
+            <CustomTab>Preview</CustomTab>
           </TabList>
           <TabPanels>
             <TabPanel>

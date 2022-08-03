@@ -1,4 +1,5 @@
-import { useState, Fragment, useRef } from 'react';
+import { useState, Fragment, useRef, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import {
   FormControl,
   FormLabel,
@@ -17,12 +18,14 @@ import {
   Tooltip,
   useToast,
 } from '@chakra-ui/react';
+import debounce from 'lodash.debounce';
 import { Select } from 'chakra-react-select';
 import { MdDelete } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
 import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
 import classData from '../../data/classData';
+import { useAddQuestionsMutation } from '../../redux/services/questionApi';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
@@ -32,36 +35,49 @@ const Contribute = () => {
     getRootProps,
     getRadioProps,
     value: difficulty,
-  } = useRadioGroup({
-    name: 'difficulty',
-    defaultValue: 'Easy',
-  });
+  } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
 
   const group = getRootProps();
 
-  const [options, setOptions] = useState(
-    Array(4).fill({ value: '', isCorrect: false }),
-  );
+  const [options, setOptions] = useState([
+    { value: '', isCorrect: false, id: Math.random() * 100 },
+    { value: '', isCorrect: false, id: Math.random() * 100 },
+    { value: '', isCorrect: false, id: Math.random() * 100 },
+    { value: '', isCorrect: false, id: Math.random() * 100 },
+  ]);
+  const user = useSelector((state) => state.userState.user);
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
   const [image, setImage] = useState(null);
   const question = useRef();
-  const answer = useRef();
+  const explanation = useRef();
+  const [addQuestion] = useAddQuestionsMutation();
 
-  const handleOptionChange = (idx, e) => {
-    setOptions((prevState) => {
-      const newState = [...prevState];
-      newState[idx].value = e.target.value;
-      if (e.target.value === '') newState[idx].isCorrect = false;
-      return newState;
-    });
+  const changeHandler = (idx, e) => {
+    setOptions((prevState) =>
+      prevState.map((val, i) => {
+        let newVal = val;
+        if (i === idx) {
+          newVal = {
+            ...val,
+            value: e.target.value,
+            isCorrect: e.target.value === '' ? false : val.isCorrect,
+          };
+        }
+        return newVal;
+      }),
+    );
   };
+
+  const handleOptionChange = useMemo(() => debounce(changeHandler, 150), []);
 
   const handleRemoveOption = (idx) => {
     if (options.length > 2) {
       setOptions((prevState) =>
-        prevState.filter((option, index) => index !== idx),
+        prevState.filter((option, index) => {
+          return index !== idx;
+        }),
       );
     } else if (!toast.isActive('option-limit')) {
       toast({
@@ -80,7 +96,7 @@ const Contribute = () => {
     if (options.length < 4) {
       setOptions((prevState) => [
         ...prevState,
-        { value: '', isCorrect: false },
+        { value: '', isCorrect: false, id: Math.random() * 100 },
       ]);
     }
   };
@@ -100,32 +116,88 @@ const Contribute = () => {
       }
       return;
     }
-    setOptions((prevValue) => {
-      const newState = [...prevValue];
-      newState[idx] = {
-        ...prevValue[idx],
-        isCorrect: !prevValue[idx].isCorrect,
-      };
-      return newState;
-    });
+    setOptions((prevValue) =>
+      prevValue.map((val, i) => ({
+        ...val,
+        isCorrect: i === idx ? !val.isCorrect : false,
+      })),
+    );
   };
 
-  const onSubmit = () => {
+  const buildFormData = (formData, data, parentKey) => {
+    if (
+      data &&
+      typeof data === 'object' &&
+      !(data instanceof Date) &&
+      !(data instanceof File)
+    ) {
+      Object.keys(data).forEach((key) => {
+        buildFormData(
+          formData,
+          data[key],
+          parentKey ? `${parentKey}[${key}]` : key,
+        );
+      });
+    } else {
+      const value = data == null ? '' : data;
+
+      formData.append(parentKey, value);
+    }
+  };
+
+  const onSubmit = async () => {
+    let answer = null;
+    const opts = [];
+
+    options.forEach((item) => {
+      opts.push(item.value);
+      if (item.isCorrect) answer = item.value;
+    });
+
     const data = {
       standard: standard.value,
       subject: subject.value,
       topics: topics.map((topic) => topic.value),
       difficulty,
       question: question.current.value,
-      answerExplaination: answer.current.value,
-      options,
+      answerExplanation: explanation.current.value,
+      answer,
+      options: opts,
+      userId: user._id,
     };
 
     const formData = new FormData();
-    formData.append('data', data);
+    buildFormData(formData, data);
     formData.append('image', image);
-
-    console.log(data);
+    console.log(formData);
+    await addQuestion(formData)
+      .then(() => {
+        toast({
+          id: 'Contribute',
+          title: 'success',
+          position: 'top-right',
+          description: 'Successfully contributed the question!',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+        setImage(null);
+        setOptions([
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+          { value: '', isCorrect: false, id: Math.random() * 100 },
+        ]);
+        setStandard({ value: '10', label: 'X' });
+        setSubject('');
+        setTopics('');
+        question.current.value = '';
+        answer.current.value = '';
+        group.current.value = 'Easy';
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -145,10 +217,120 @@ const Contribute = () => {
           </mark>
         </Heading>
         <Button onClick={onSubmit} w={150} h={45}>
-          Submit
+          SUBMIT
         </Button>
       </Flex>
       <Flex justify='space-between'>
+        <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
+          <FormControl isRequired mb={6}>
+            <FormLabel fontSize={18} htmlFor='question'>
+              Question
+            </FormLabel>
+            <Textarea
+              id='question'
+              placeholder='Enter Question'
+              w='100%'
+              rows='3'
+              boxShadow='base'
+              resize='none'
+              ref={question}
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <Flex alignItems='center' justify='space-between' mb='2'>
+              <Box>
+                <FormLabel fontSize={18} htmlFor='options' mb='1'>
+                  Options
+                </FormLabel>
+                <FormHelperText mb={3} fontSize='sm' mt='0'>
+                  Minimum 2 options are required
+                </FormHelperText>
+              </Box>
+              {options.length < 4 && (
+                <Button
+                  p={3}
+                  onClick={handleAddOption}
+                  bg='brand.300'
+                  color='brand.600'
+                  _hover={{
+                    backgroundColor: 'brand.500',
+                    color: 'brand.100',
+                  }}
+                  size='sm'
+                >
+                  Add Option
+                </Button>
+              )}
+            </Flex>
+            <Flex justify='space-between' wrap='wrap'>
+              {options.map((option, idx) => (
+                <Fragment key={option.id}>
+                  <Box w='43%' mb={7}>
+                    <Flex alignItems='center' justify='space-between' mb='1.5'>
+                      <FormLabel htmlFor={`options[${idx + 1}]`} mb='0'>
+                        {`Option ${idx + 1}`}
+                      </FormLabel>
+                      <IconButton
+                        aria-label='Delete option'
+                        icon={<MdDelete />}
+                        borderRadius='full'
+                        onClick={() => handleRemoveOption(idx)}
+                        size='xs'
+                        bg='gray.100'
+                        color='gray.400'
+                        _hover={{
+                          backgroundColor: 'gray.200',
+                          color: 'gray.600',
+                        }}
+                      />
+                    </Flex>
+                    <InputGroup>
+                      <Input
+                        placeholder={`Option ${idx + 1}`}
+                        w='full'
+                        minW='unset'
+                        boxShadow='base'
+                        // value={option.value}
+                        onChange={(e) => handleOptionChange(idx, e)}
+                        pr='0'
+                      />
+                      <InputRightElement>
+                        <Tooltip
+                          label='Mark this as correct answer'
+                          fontSize='10px'
+                        >
+                          <IconButton
+                            aria-label='Select Answer'
+                            icon={<FaCheck />}
+                            bg={option.isCorrect ? 'green.300' : 'gray.300'}
+                            color={option.isCorrect ? 'brand.100' : 'brand.100'}
+                            _hover={{ backgroundColor: 'green.300' }}
+                            borderLeftRadius='0'
+                            onClick={() => handleAnswer(idx)}
+                          />
+                        </Tooltip>
+                      </InputRightElement>
+                    </InputGroup>
+                  </Box>
+                </Fragment>
+              ))}
+            </Flex>
+          </FormControl>
+          <FormControl>
+            <FormLabel fontSize={18} htmlFor='explanation'>
+              Answer Explanation
+            </FormLabel>
+            <Textarea
+              id='explanation'
+              placeholder='Enter Answer Explanation'
+              w='100%'
+              rows='3'
+              boxShadow='base'
+              resize='none'
+              ref={explanation}
+            />
+          </FormControl>
+        </Box>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
           <FormControl mb={6} isRequired>
             <FormLabel fontSize={18} htmlFor='class'>
@@ -249,116 +431,6 @@ const Contribute = () => {
               Upload Image
             </FormLabel>
             <ImageUploader setImage={setImage} />
-          </FormControl>
-        </Box>
-        <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
-          <FormControl isRequired mb={6}>
-            <FormLabel fontSize={18} htmlFor='question'>
-              Question
-            </FormLabel>
-            <Textarea
-              id='question'
-              placeholder='Enter Question'
-              w='100%'
-              rows='3'
-              boxShadow='base'
-              resize='none'
-              ref={question}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <Flex alignItems='center' justify='space-between' mb='2'>
-              <Box>
-                <FormLabel fontSize={18} htmlFor='options' mb='1'>
-                  Options
-                </FormLabel>
-                <FormHelperText mb={3} fontSize='sm' mt='0'>
-                  Minimum 2 options are required
-                </FormHelperText>
-              </Box>
-              {options.length < 4 && (
-                <Button
-                  p={3}
-                  onClick={handleAddOption}
-                  bg='brand.300'
-                  color='brand.600'
-                  _hover={{
-                    backgroundColor: 'brand.500',
-                    color: 'brand.100',
-                  }}
-                  size='sm'
-                >
-                  Add Option
-                </Button>
-              )}
-            </Flex>
-            <Flex justify='space-between' wrap='wrap'>
-              {options.map((option, idx) => (
-                <Fragment key={idx}>
-                  <Box w='43%' mb={7}>
-                    <Flex alignItems='center' justify='space-between' mb='1.5'>
-                      <FormLabel htmlFor={`options[${idx + 1}]`} mb='0'>
-                        {`Option ${idx + 1}`}
-                      </FormLabel>
-                      <IconButton
-                        aria-label='Delete option'
-                        icon={<MdDelete />}
-                        borderRadius='full'
-                        onClick={() => handleRemoveOption(idx)}
-                        size='xs'
-                        bg='gray.100'
-                        color='gray.400'
-                        _hover={{
-                          backgroundColor: 'gray.200',
-                          color: 'gray.600',
-                        }}
-                      />
-                    </Flex>
-                    <InputGroup>
-                      <Input
-                        placeholder={`Option ${idx + 1}`}
-                        w='full'
-                        minW='unset'
-                        boxShadow='base'
-                        value={option.value}
-                        onChange={(e) => handleOptionChange(idx, e)}
-                        pr='0'
-                      />
-                      <InputRightElement>
-                        <Tooltip
-                          label='Mark this as correct answer'
-                          fontSize='10px'
-                        >
-                          <IconButton
-                            aria-label='Select Answer'
-                            icon={<FaCheck />}
-                            bg={option.isCorrect ? 'green.300' : 'gray.300'}
-                            color={option.isCorrect ? 'brand.100' : 'brand.100'}
-                            _hover={{ backgroundColor: 'green.300' }}
-                            borderLeftRadius='0'
-                            onClick={() => handleAnswer(idx)}
-                          />
-                        </Tooltip>
-                      </InputRightElement>
-                    </InputGroup>
-                  </Box>
-                </Fragment>
-              ))}
-            </Flex>
-          </FormControl>
-          <FormControl>
-            <FormLabel fontSize={18} htmlFor='explanation'>
-              Answer Explanation
-            </FormLabel>
-            <Textarea
-              id='explanation'
-              placeholder='Enter Answer Explanation'
-              w='100%'
-              rows='3'
-              boxShadow='base'
-              resize='none'
-              ref={answer}
-            />
           </FormControl>
         </Box>
       </Flex>

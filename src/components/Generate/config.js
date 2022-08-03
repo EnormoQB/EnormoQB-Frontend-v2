@@ -1,4 +1,22 @@
-// eslint-disable-next-line import/prefer-default-export
+export const difficulties = ['Easy', 'Medium', 'Hard'];
+
+export const classOptions = [
+  { value: '10', label: 'X' },
+  { value: '12', label: 'XII' },
+];
+
+export const boardOptions = [
+  { value: 'CBSE', label: 'CBSE' },
+  { value: 'ICSE', label: 'ICSE' },
+];
+
+// export const examTypes = [
+//   { value: 'Class Test', label: 'Class Test' },
+//   { value: 'Semi-Finals', label: 'Semi-Finals' },
+//   { value: 'Pre-Finals', label: 'Pre-Finals' },
+//   { value: 'Finals', label: 'Finals' },
+// ];
+
 export const dummy = [
   {
     _id: { $oid: '62378fcadbf12400166ed1d8' },
@@ -99,7 +117,7 @@ export const dummy = [
       'AT is a tangent to the circle with centre O such that OT = 4 cm and ∠OTA = 30°. Then AT is equal to',
     answer: '4√3 cm',
     standard: 'X',
-    subject: 'Science',
+    subject: 'Maths',
     topics: ['Circles'],
     imageUrl:
       'https://firebasestorage.googleapis.com/v0/b/enormo-c2678.appspot.com/o/questionImage%2FFbF6s0ros3gJxtYorHcB92zDy6p2?alt=media&token=0294c3f6-8e6b-48ce-8c48-d7f48d8826d8',
