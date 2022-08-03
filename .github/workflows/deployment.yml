@@ -22,7 +22,7 @@ jobs:
           cd EnormoQB/Frontend
           git checkout main
           git pull
-          npm ci
+          npm i
           npm run build
           sudo systemctl restart nginx
 
