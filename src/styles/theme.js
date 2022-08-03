@@ -50,22 +50,6 @@ const theme = extendTheme({
           bg: 'brand.500',
           color: 'brand.200',
         },
-        accept: {
-          bg: 'blue.300',
-          color: 'brand.100',
-          _hover: {
-            bg: 'blue.400',
-            color: 'brand.100',
-          },
-        },
-        reject: {
-          bg: 'gray.500',
-          color: 'brand.100',
-          _hover: {
-            bg: 'gray.600',
-            color: 'brand.100',
-          },
-        },
       },
       defaultProps: {
         variant: 'base',
@@ -79,4 +63,5 @@ const theme = extendTheme({
     },
   },
 });
+
 export default theme;

@@ -21,12 +21,25 @@ import { BiExpand } from 'react-icons/bi';
 import Option from './option';
 import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
+import FeedbackModal from '../Modal/Feedback';
 
 const Question = ({ data }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: modalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure();
+
+  const handleReject = () => {};
 
   return (
-    <Flex>
+    <Box>
+      <FeedbackModal
+        isOpen={modalOpen}
+        onClose={onModalClose}
+        onConfirm={handleReject}
+      />
       <Accordion allowMultiple w='full'>
         <AccordionItem
           borderTop='none'
@@ -62,39 +75,6 @@ const Question = ({ data }) => {
                     />
                   </Flex>
                 </Flex>
-                <Box
-                  mr='6'
-                  ml='7'
-                  display={data.status === 'pending' ? 'flex' : 'none'}
-                  opacity={isExpanded ? '1' : '0'}
-                  _groupHover={{ opacity: 1 }}
-                  transition='opacity ease-in-out 200ms'
-                >
-                  <Button
-                    variant='accept'
-                    fontSize='sm'
-                    fontWeight='medium'
-                    borderRightRadius='0'
-                    bg='brand.600'
-                    _hover={{ backgroundColor: 'myGray.500' }}
-                  >
-                    Accept
-                  </Button>
-                  <Button
-                    variant='reject'
-                    fontSize='sm'
-                    fontWeight='medium'
-                    bg='brand.100'
-                    color='brand.600'
-                    border='1px'
-                    borderLeft='none'
-                    borderColor='brand.600'
-                    borderLeftRadius='0'
-                    _hover={{ backgroundColor: 'brand.200' }}
-                  >
-                    Reject
-                  </Button>
-                </Box>
                 <AccordionIcon h='6' w='6' />
               </AccordionButton>
               <AccordionPanel borderBottomRadius='lg' py='4' px='8'>
@@ -161,12 +141,33 @@ const Question = ({ data }) => {
                     </Flex>
                   )}
                 </Flex>
+                <Box mt='3'>
+                  <Button
+                    fontSize='sm'
+                    fontWeight='medium'
+                    mr='4'
+                    bg='brand.600'
+                    _hover={{ backgroundColor: 'myGray.500' }}
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    fontSize='sm'
+                    fontWeight='medium'
+                    bg='brand.300'
+                    color='brand.600'
+                    _hover={{ backgroundColor: 'brand.400' }}
+                    onClick={onModalOpen}
+                  >
+                    Reject
+                  </Button>
+                </Box>
               </AccordionPanel>
             </>
           )}
         </AccordionItem>
       </Accordion>
-    </Flex>
+    </Box>
   );
 };
 
