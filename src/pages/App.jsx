@@ -10,6 +10,7 @@ import Rejected from './Dashboard/rejected';
 import Generate from './Dashboard/generate';
 import Contribute from './Dashboard/contribute';
 import QuestionPapers from './Dashboard/questionPapers';
+import NotFound from './NotFound';
 import Home from './Home';
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
             <Route path='contribute' element={<Contribute />} />
             <Route path='questionpapers' element={<QuestionPapers />} />
           </Route>
+          <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>
     </ChakraProvider>
