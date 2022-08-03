@@ -8,19 +8,36 @@ const About = ({ aboutRef }) => (
     alignItems='center'
     ref={aboutRef}
     pos='relative'
+    mt={['8', null]}
   >
     <Flex
       flexDirection='column'
       alignItems='center'
       bgColor='brand.600'
       className='slanted'
-      h='4xl'
+      h={['xl', '2xl', '3xl', '4xl']}
     >
-      <Image src={NextGIF} w='6%' mt='24' borderRadius='100%' />
-      <Box fontSize='2xl' fontWeight='bold' color='brand.100' my='4'>
+      <Image
+        src={NextGIF}
+        w={['12%', '12%', '6%']}
+        mt={['14', '16', '24']}
+        borderRadius='100%'
+      />
+      <Box
+        fontSize={['xl', 'xl', '2xl']}
+        fontWeight='bold'
+        color='brand.100'
+        my='4'
+      >
         About Us
       </Box>
-      <Box color='brand.200' w='40%' textAlign='center' mb='6' fontSize='lg'>
+      <Box
+        color='brand.200'
+        w={['80%', '80%', '60%', '60%', '40%']}
+        textAlign='center'
+        mb='6'
+        fontSize={['sm', 'md', 'lg']}
+      >
         <span className='highlightSecond'>EnormoQB</span> is a crowdsourced
         question bank of over 5000+ objective type board questions. You can
         anonymously contribute questions here and also generate numerous
@@ -32,16 +49,16 @@ const About = ({ aboutRef }) => (
 
     <Flex
       flexDirection='column'
-      width='50%'
+      width={['80%', '80%', '60%', '60%', '50%']}
       bgColor='blue.100'
       borderRadius='lg'
       position='absolute'
-      top='30rem'
+      top={['25rem', '28rem', '30rem']}
     >
-      <Flex p='4'>
-        <Circle size='4' bgColor='brand.300' mx='1' />
-        <Circle size='4' bgColor='brand.300' mx='1' />
-        <Circle size='4' bgColor='brand.300' mx='1' />
+      <Flex p={['2', '2', '4']}>
+        <Circle size={['3', '3', '4']} bgColor='brand.300' mx='1' />
+        <Circle size={['3', '3', '4']} bgColor='brand.300' mx='1' />
+        <Circle size={['3', '3', '4']} bgColor='brand.300' mx='1' />
       </Flex>
       <Image src={SampleDashboard} alt='Sample Dashboard' />
     </Flex>

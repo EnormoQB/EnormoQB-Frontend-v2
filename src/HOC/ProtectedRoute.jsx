@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { userApi } from '../redux/services/userApi';
-import FullScreenLoader from '../components/FullScreenLoader';
+import FullScreenLoader from '../components/Loaders/FullScreenLoader';
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();

@@ -10,11 +10,12 @@ export const boardOptions = [
   { value: 'ICSE', label: 'ICSE' },
 ];
 
-export const examTypes = [
-  { value: 'Class Test', label: 'Class Test' },
-  { value: 'Board', label: 'Board' },
-  { value: 'Pre-Board', label: 'Pre-Board' },
-];
+// export const examTypes = [
+//   { value: 'Class Test', label: 'Class Test' },
+//   { value: 'Semi-Finals', label: 'Semi-Finals' },
+//   { value: 'Pre-Finals', label: 'Pre-Finals' },
+//   { value: 'Finals', label: 'Finals' },
+// ];
 
 export const dummy = [
   {

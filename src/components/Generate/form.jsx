@@ -16,21 +16,53 @@ import {
   Input,
   Tooltip,
   Textarea,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { FaPlus } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import classData from '../../data/classData';
-import { boardOptions, classOptions, difficulties, examTypes } from './config';
+import { boardOptions, classOptions, difficulties } from './config';
+import WarningModal from './warningModal';
 
 const GenerateForm = () => {
-  const [title, setTitle] = useState('');
+  const [institution, setInstitution] = useState('');
+  const [examType, setExamType] = useState('');
+  const [instructions, setInstructions] = useState('');
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
   const [board, setBoard] = useState('');
   const [topic, setTopic] = useState('');
   const [topicQuesCount, setTopicQuesCount] = useState('');
   const [topicsList, setTopicsList] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [warning, setWarning] = useState('null');
+
+  const onConfirm = {
+    class: (e) => {
+      setStandard(e);
+      setSubject('');
+      setTopicsList([]);
+    },
+    subject: (e) => {
+      setSubject(e);
+      setTopicsList([]);
+    },
+  };
+
+  const handleStdChange = (e) => {
+    if (subject !== '') {
+      onOpen();
+      setWarning({ type: 'class', val: e });
+    } else setStandard(e);
+  };
+
+  const handleSubjectChange = (e) => {
+    if (topicsList.length > 0) {
+      onOpen();
+      setWarning({ type: 'subject', val: e });
+    } else setSubject(e);
+  };
 
   const handleAddTopic = () => {
     if (topicsList.filter((item) => item.name === topic.value).length === 0) {
@@ -39,13 +71,17 @@ const GenerateForm = () => {
         { name: topic.value, count: topicQuesCount },
       ]);
     }
-
     setTopicQuesCount('');
     setTopic('');
   };
 
   return (
     <Box>
+      <WarningModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={() => onConfirm[warning.type](warning.val)}
+      />
       <FormControl mb={6}>
         <FormLabel fontSize={19} htmlFor='institution'>
           Institution Name
@@ -54,26 +90,22 @@ const GenerateForm = () => {
           id='institution'
           placeholder='Enter Institution Name (optional)'
           boxShadow='base'
-          value={title}
-          onChange={() => {}}
+          value={institution}
+          onChange={(e) => setInstitution(e.target.value)}
         />
       </FormControl>
       <Flex justify='space-between'>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
-          <FormControl mb={6} isRequired>
-            <FormLabel fontSize={19} htmlFor='type'>
+          <FormControl mb={6}>
+            <FormLabel fontSize={19} htmlFor='examType'>
               Exam Type
             </FormLabel>
-            <Select
-              options={examTypes}
-              placeholder='Select Exam Type'
-              chakraStyles={{
-                control: (provided) => ({ ...provided, boxShadow: 'base' }),
-              }}
-              value={title}
-              onChange={(e) => {
-                setTitle(e);
-              }}
+            <Input
+              id='examType'
+              placeholder='For Example: Pre-Boards 2021-22 (optional)'
+              boxShadow='base'
+              value={examType}
+              onChange={(e) => setExamType(e.target.value)}
             />
           </FormControl>
           <FormControl mb={6} isRequired>
@@ -108,10 +140,7 @@ const GenerateForm = () => {
                 control: (provided) => ({ ...provided, boxShadow: 'base' }),
               }}
               value={standard}
-              onChange={(e) => {
-                setStandard(e);
-                setSubject('');
-              }}
+              onChange={handleStdChange}
             />
           </FormControl>
           <FormControl isRequired mb={6}>
@@ -128,12 +157,7 @@ const GenerateForm = () => {
                 control: (provided) => ({ ...provided, boxShadow: 'base' }),
               }}
               value={subject}
-              onChange={(e) => {
-                if (subject.value !== e.value) {
-                  setTopicsList([]);
-                  setSubject(e);
-                }
-              }}
+              onChange={handleSubjectChange}
             />
           </FormControl>
         </Box>
@@ -147,6 +171,8 @@ const GenerateForm = () => {
           placeholder='Write Exam Instructions (optional)'
           w='100%'
           rows='3'
+          value={instructions}
+          onChange={(e) => setInstructions(e.target.value)}
           boxShadow='base'
           resize='none'
         />
