@@ -16,7 +16,7 @@ const DashboardHome = () => {
   return (
     <div>
       <Text as='h3' mb='6' fontSize='2xl' fontWeight='500'>
-        Welcome {user.username.split(' ')[0]}!
+        Welcome {user ? user.username.split(' ')[0] : 'Guest'}!
       </Text>
       <Flex flexDir='row' alignItems='center' justifyContent='space-between'>
         <Cards
