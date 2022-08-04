@@ -25,7 +25,6 @@ export const questionsApi = createApi({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
           dispatch(setQuestion(data.data.items));
         } catch (error) {
           console.log(error);

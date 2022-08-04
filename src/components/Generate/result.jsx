@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import CustomQuestion from './customQues';
 import QuestionTab from './questionTab';
 import { dummy } from './config';
@@ -34,8 +34,42 @@ const GenerateResult = () => {
   return (
     <Box>
       <CustomQuestion />
-      <Box>
-        <Text>Central Board of Secondary Education</Text>
+      <Box mt='6' mb='6'>
+        <Box textAlign='center'>
+          <Text as='h2' fontSize='xl' fontWeight='500'>
+            Central Board of Secondary Education
+          </Text>
+          <Text as='h2' fontSize='lg' fontWeight='500'>
+            Class XII : Finals 2021-22
+          </Text>
+          <Text as='h2' fontSize='lg' fontWeight='500'>
+            Mathematics
+          </Text>
+        </Box>
+        <Flex justify='space-between' alignItems='center' mt='3'>
+          <Text as='p' fontSize='md'>
+            <Text as='span' fontWeight='500'>
+              Time allowed:&nbsp;
+            </Text>
+            3 hours
+          </Text>
+          <Text as='p' fontSize='md'>
+            <Text as='span' fontWeight='500'>
+              Maximum Marks:&nbsp;
+            </Text>
+            3 hours
+          </Text>
+        </Flex>
+        <Box mt='3'>
+          <Text as='p' fontSize='md' fontWeight='500'>
+            Exam Instructions:
+          </Text>
+          <Text as='p' sx={{ whiteSpace: 'pre' }} fontSize='15px'>
+            {
+              '1. Section A includes 10 questions for 1 mark each.\n2. Section B includes 6 questions for 3 marks each.\n3. Section C includes 4 questions for 5 marks each.'
+            }
+          </Text>
+        </Box>
       </Box>
       <DragDropContext
         onDragEnd={handleOnDragEnd}

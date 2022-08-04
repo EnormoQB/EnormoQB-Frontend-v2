@@ -111,9 +111,7 @@ const Sidebar = () => {
               icon={item.icon}
               title={item.name}
               active={`/dashboard${item.link}` === location.pathname}
-              onClick={() => {
-                navigate(`/dashboard${item.link}`);
-              }}
+              onClick={() => navigate(`/dashboard${item.link}`)}
             />
           ))}
         </Box>

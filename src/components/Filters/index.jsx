@@ -16,7 +16,7 @@ const Filter = () => {
 
   return (
     <Flex alignItems='center' gap='4' mb='6'>
-      <FormControl w='10%'>
+      <FormControl w='10%' flexShrink='0'>
         <Select
           size='sm'
           options={classOptions}
@@ -29,10 +29,14 @@ const Filter = () => {
             }),
           }}
           value={standard}
-          onChange={(e) => setStandard(e)}
+          onChange={(e) => {
+            setStandard(e);
+            setSubject('');
+            setTopics([]);
+          }}
         />
       </FormControl>
-      <FormControl w='15%'>
+      <FormControl w='15%' flexShrink='0'>
         <Select
           options={
             standard !== ''
@@ -60,7 +64,7 @@ const Filter = () => {
           value={subject}
         />
       </FormControl>
-      <FormControl w='15%'>
+      <FormControl w='15%' flexShrink='0'>
         <Select
           size='sm'
           options={difficulties.map((value) => ({ value, label: value }))}
@@ -76,7 +80,7 @@ const Filter = () => {
           value={difficulty}
         />
       </FormControl>
-      <FormControl w='35%'>
+      <FormControl minW='35%' grow='1'>
         <Select
           isMulti
           selectedOptionStyle='check'
@@ -93,6 +97,19 @@ const Filter = () => {
           }
           placeholder='Select Topics'
           chakraStyles={{
+            // container: (provided) => ({ ...provided, overflowX: 'auto' }),
+            // input: (provided) => ({ ...provided, overflowX: 'auto' }),
+            // inputContainer: (provided) => ({ ...provided, overflowX: 'auto' }),
+            multiValue: (provided) => ({
+              ...provided,
+              flexShrink: '0',
+            }),
+            valueContainer: (provided) => ({
+              ...provided,
+              overflowX: 'auto',
+              '&::-webkit-scrollbar': { display: 'none' },
+              flexWrap: 'nowrap',
+            }),
             control: (provided) => ({
               ...provided,
               boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
@@ -113,6 +130,7 @@ const Filter = () => {
         color='brand.600'
         _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
         ml='auto'
+        flexShrink='0'
         onClick={handleApply}
       >
         Apply

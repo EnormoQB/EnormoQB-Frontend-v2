@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { BsFileEarmarkCheck, BsXSquare } from 'react-icons/bs';
 import { MdOutlinePendingActions } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 import Cards from '../../components/Stats/cards';
 import LineGraph from '../../components/Graph/LineGraph';
 import DoughnutGraph from '../../components/Graph/DoughnutGraph';
@@ -13,6 +14,7 @@ import { useGetStatsQuery } from '../../redux/services/statsApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
 const DashboardHome = () => {
+  const user = useSelector((state) => state.userState.user);
   const { data, isLoading, isFetching } = useGetStatsQuery();
   useEffect(() => {
     if (data) {
@@ -24,6 +26,9 @@ const DashboardHome = () => {
     <DashboardLoader />
   ) : (
     <div>
+      <Text as='h3' mb='6' fontSize='2xl' fontWeight='500'>
+        Welcome {user ? user.username.split(' ')[0] : 'Guest'}!
+      </Text>
       <Flex flexDir='row' alignItems='center' justifyContent='space-between'>
         <Cards
           background='brand.600'
