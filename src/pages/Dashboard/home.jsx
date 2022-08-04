@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { BsFileEarmarkCheck, BsXSquare } from 'react-icons/bs';
@@ -8,35 +9,46 @@ import DoughnutGraph from '../../components/Graph/DoughnutGraph';
 import Question from '../../components/Accordion';
 import { dummy } from '../../components/Generate/config';
 import Filter from '../../components/Filters';
+import { useGetStatsQuery } from '../../redux/services/statsApi';
+import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
 const DashboardHome = () => {
-  return (
+  const { data, isLoading, isFetching } = useGetStatsQuery();
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+  }, [data]);
+
+  return isLoading || isFetching || !data ? (
+    <DashboardLoader />
+  ) : (
     <div>
       <Flex flexDir='row' alignItems='center' justifyContent='space-between'>
         <Cards
           background='brand.600'
-          number='170'
+          number={data.data.total}
           comment='Contributed Questions'
           iconColor='blue.100'
           iconUsed={<HiOutlineDocumentText fontSize='2rem' />}
         />
         <Cards
           background='brand.100'
-          number='120'
+          number={data.data.pending}
           comment='Pending Questions'
           iconColor='blue.200'
           iconUsed={<MdOutlinePendingActions fontSize='2rem' />}
         />
         <Cards
           background='brand.100'
-          number='180'
+          number={data.data.approved}
           comment='Accepted Questions'
           iconColor='blue.300'
           iconUsed={<BsFileEarmarkCheck fontSize='2rem' />}
         />
         <Cards
           background='brand.100'
-          number='150'
+          number={data.data.rejected}
           comment='Rejected Questions'
           iconColor='blue.400'
           iconUsed={<BsXSquare fontSize='2rem' />}
@@ -49,7 +61,10 @@ const DashboardHome = () => {
           p='6'
           borderRadius='10'
         >
-          <LineGraph />
+          <LineGraph
+            dateData={data.data.contribute}
+            monthData={data.data.month}
+          />
         </Box>
         <Box
           boxShadow='rgba(0, 0, 0, 0.16) 0px 1px 4px'

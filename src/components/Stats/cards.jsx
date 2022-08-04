@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 
-const Cards = ({ background, number, comment, iconColor, iconUsed }) => {
+const Cards = ({ background, number, comment, iconColor, iconUsed, value }) => {
   return (
     <Flex
       h='130px'
