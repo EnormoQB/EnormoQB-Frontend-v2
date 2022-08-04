@@ -10,7 +10,7 @@ const Approved = () => {
 
   useEffect(() => {
     if (data) {
-      setQuestions(data.data.items);
+      setQuestions(data.data.questions);
     }
   }, [data]);
 
