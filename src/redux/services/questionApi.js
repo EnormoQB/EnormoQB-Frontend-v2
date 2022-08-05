@@ -17,11 +17,17 @@ export const questionsApi = createApi({
       }),
     }),
     getQuestions: builder.query({
-      query: ({ userid, status }) => ({
-        url: `${ApiEndpoints.questions.accept.url}/userid=${userid}/status=${status}`,
-        method: 'get',
-        providesTags: ['Questions'],
-      }),
+      query: ({ userId, status }) => {
+        const params = new URLSearchParams({
+          ...(userId ? { userId } : {}),
+          ...(status ? { status } : {}),
+        });
+        return {
+          url: `${ApiEndpoints.questions.accept.url}?${params.toString()}`,
+          method: 'get',
+          providesTags: ['Questions'],
+        };
+      },
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { BsFileEarmarkCheck, BsXSquare } from 'react-icons/bs';
@@ -16,13 +16,15 @@ import DashboardLoader from '../../components/Loaders/DashboardLoader';
 const DashboardHome = () => {
   const user = useSelector((state) => state.userState.user);
   const { data, isLoading, isFetching } = useGetStatsQuery();
+  const [stats, setStats] = useState(null);
   useEffect(() => {
     if (data) {
       console.log(data);
+      setStats(data.data);
     }
   }, [data]);
 
-  return isLoading || isFetching || !data ? (
+  return isLoading || isFetching || !stats ? (
     <DashboardLoader />
   ) : (
     <div>
@@ -32,28 +34,28 @@ const DashboardHome = () => {
       <Flex flexDir='row' alignItems='center' justifyContent='space-between'>
         <Cards
           background='brand.600'
-          number={data.data.total}
+          number={stats.total}
           comment='Contributed Questions'
           iconColor='blue.100'
           iconUsed={<HiOutlineDocumentText fontSize='2rem' />}
         />
         <Cards
           background='brand.100'
-          number={data.data.pending}
+          number={stats.pending}
           comment='Pending Questions'
           iconColor='blue.200'
           iconUsed={<MdOutlinePendingActions fontSize='2rem' />}
         />
         <Cards
           background='brand.100'
-          number={data.data.approved}
+          number={stats.approved}
           comment='Accepted Questions'
           iconColor='blue.300'
           iconUsed={<BsFileEarmarkCheck fontSize='2rem' />}
         />
         <Cards
           background='brand.100'
-          number={data.data.rejected}
+          number={stats.rejected}
           comment='Rejected Questions'
           iconColor='blue.400'
           iconUsed={<BsXSquare fontSize='2rem' />}
@@ -66,10 +68,7 @@ const DashboardHome = () => {
           p='6'
           borderRadius='10'
         >
-          <LineGraph
-            dateData={data.data.contribute}
-            monthData={data.data.month}
-          />
+          <LineGraph contribution={stats.contribute} />
         </Box>
         <Box
           boxShadow='rgba(0, 0, 0, 0.16) 0px 1px 4px'

@@ -23,7 +23,6 @@ const ApiEndpoints = {
       url: 'api/questions/list',
     },
   },
-
   stats: {
     accept: {
       method: 'GET',

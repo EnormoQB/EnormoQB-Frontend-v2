@@ -7,7 +7,9 @@ import Filter from '../../components/Filters';
 
 const Approved = () => {
   const [questions, setQuestions] = useState([]);
-  const { data, isLoading, isFetching } = useGetQuestionsQuery();
+  const { data, isLoading, isFetching } = useGetQuestionsQuery({
+    status: 'approved',
+  });
 
   useEffect(() => {
     if (data) {
@@ -34,11 +36,7 @@ const Approved = () => {
       {isLoading || isFetching || questions.length === 0 ? (
         <DashboardLoader />
       ) : (
-        <>
-          {questions.map((ques) => (
-            <Question key={ques._id} data={ques} />
-          ))}
-        </>
+        questions.map((ques) => <Question key={ques._id} data={ques} />)
       )}
     </Box>
   );
