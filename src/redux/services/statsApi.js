@@ -9,7 +9,7 @@ export const statsApi = createApi({
   endpoints: (builder) => ({
     getStats: builder.query({
       query: () => ({
-        url: ApiEndpoints.stats.accept.url,
+        url: ApiEndpoints.stats.get.url,
         method: 'get',
         headers: {},
       }),
