@@ -1,9 +1,21 @@
+import React, { useState, useEffect } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
 import Question from '../../components/Accordion';
 import { dummy } from '../../components/Generate/config';
 import Filter from '../../components/Filters';
+import { useGetQuestionsQuery } from '../../redux/services/questionApi';
+import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
 const Rejected = () => {
+  const [questions, setQuestions] = useState([]);
+  const { data, isLoading, isFetching } = useGetQuestionsQuery();
+
+  useEffect(() => {
+    if (data) {
+      setQuestions(data.data.questions);
+    }
+  }, [data]);
+
   return (
     <Box>
       <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
@@ -20,9 +32,15 @@ const Rejected = () => {
         Questions
       </Heading>
       <Filter />
-      {dummy.map((ques) => (
-        <Question key={ques._id.$oid} data={ques} />
-      ))}
+      {isLoading || isFetching || questions.length === 0 ? (
+        <DashboardLoader />
+      ) : (
+        <>
+          {dummy.map((ques) => (
+            <Question key={ques._id.$oid} data={ques} />
+          ))}
+        </>
+      )}
     </Box>
   );
 };

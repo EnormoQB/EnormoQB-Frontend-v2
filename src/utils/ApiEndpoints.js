@@ -23,6 +23,13 @@ const ApiEndpoints = {
       url: 'api/questions/list',
     },
   },
+
+  stats: {
+    accept: {
+      method: 'GET',
+      url: 'api/questions/stats',
+    },
+  },
 };
 
 export default ApiEndpoints;

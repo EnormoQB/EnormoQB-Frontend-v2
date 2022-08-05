@@ -24,7 +24,7 @@ ChartJS.register(
 ChartJS.defaults.scale.grid.display = false;
 ChartJS.defaults.font.family = 'Poppins';
 
-const LineGraph = () => {
+const LineGraph = ({ dateData, monthData }) => {
   return <Line options={lineGraph.options} data={lineGraph.data} />;
 };
 

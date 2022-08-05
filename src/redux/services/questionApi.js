@@ -17,8 +17,8 @@ export const questionsApi = createApi({
       }),
     }),
     getQuestions: builder.query({
-      query: () => ({
-        url: `${ApiEndpoints.questions.accept.url}`,
+      query: ({ userid, status }) => ({
+        url: `${ApiEndpoints.questions.accept.url}/userid=${userid}/status=${status}`,
         method: 'get',
         providesTags: ['Questions'],
       }),
