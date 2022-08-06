@@ -24,7 +24,7 @@ import { FaPlus } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import classData from '../../data/classData';
 import { boardOptions, classOptions, difficulties } from './config';
-import WarningModal from './warningModal';
+import WarningModal from '../Modal/Warning';
 import { useGenerateQuesPaperMutation } from '../../redux/services/questionApi';
 
 const GenerateForm = () => {
