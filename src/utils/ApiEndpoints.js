@@ -22,6 +22,10 @@ const ApiEndpoints = {
       method: 'GET',
       url: 'api/questions/list',
     },
+    generate: {
+      method: 'POST',
+      url: 'api/questionPaper/generate',
+    },
   },
   stats: {
     accept: {
