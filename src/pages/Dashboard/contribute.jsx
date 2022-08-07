@@ -169,7 +169,7 @@ const Contribute = () => {
     const formData = new FormData();
     buildFormData(formData, data);
     formData.append('image', image);
-    console.log(formData);
+    // console.log(formData);
     await addQuestion(formData)
       .then(() => {
         toast({
