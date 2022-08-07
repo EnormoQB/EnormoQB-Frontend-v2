@@ -24,7 +24,7 @@ const ApiEndpoints = {
     },
   },
   stats: {
-    accept: {
+    get: {
       method: 'GET',
       url: 'api/questions/stats',
     },
