@@ -24,8 +24,23 @@ ChartJS.register(
 ChartJS.defaults.scale.grid.display = false;
 ChartJS.defaults.font.family = 'Poppins';
 
-const LineGraph = () => {
-  return <Line options={lineGraph.options} data={lineGraph.data} />;
+const LineGraph = ({ contribution }) => {
+  const config = {
+    labels: contribution.map((item) => item._id),
+    datasets: [
+      {
+        label: 'Questions Contribution',
+        data: contribution.map((item) => ({
+          x: item._id,
+          y: item.totalQuestion,
+        })),
+        borderColor: '#005CE6',
+        backgroundColor: '#005CE6',
+      },
+    ],
+  };
+
+  return <Line options={lineGraph.options} data={config} />;
 };
 
 export default LineGraph;

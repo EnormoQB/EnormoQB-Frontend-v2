@@ -3,14 +3,17 @@ import { Box, Heading } from '@chakra-ui/react';
 import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import Question from '../../components/Accordion';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
+import Filter from '../../components/Filters';
 
 const Approved = () => {
   const [questions, setQuestions] = useState([]);
-  const { data, isLoading, isFetching } = useGetQuestionsQuery();
+  const { data, isLoading, isFetching } = useGetQuestionsQuery({
+    status: 'approved',
+  });
 
   useEffect(() => {
     if (data) {
-      setQuestions(data.data.items);
+      setQuestions(data.data.questions);
     }
   }, [data]);
 
@@ -29,6 +32,7 @@ const Approved = () => {
         </mark>
         Questions
       </Heading>
+      <Filter />
       {isLoading || isFetching || questions.length === 0 ? (
         <DashboardLoader />
       ) : (

@@ -17,15 +17,20 @@ export const questionsApi = createApi({
       }),
     }),
     getQuestions: builder.query({
-      query: () => ({
-        url: `${ApiEndpoints.questions.accept.url}`,
-        method: 'get',
-        providesTags: ['Questions'],
-      }),
+      query: ({ userId, status }) => {
+        const params = new URLSearchParams({
+          ...(userId ? { userId } : {}),
+          ...(status ? { status } : {}),
+        });
+        return {
+          url: `${ApiEndpoints.questions.accept.url}?${params.toString()}`,
+          method: 'get',
+          providesTags: ['Questions'],
+        };
+      },
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
           dispatch(setQuestion(data.data.items));
         } catch (error) {
           console.log(error);
