@@ -17,26 +17,19 @@ const Home = () => {
   const aboutRef = useRef(null);
   const footerRef = useRef(null);
 
-  const executeProcessScroll = useCallback(
-    () => processRef.current.scrollIntoView({ behavior: 'smooth' }),
-    [],
-  );
-  const executeAboutScroll = useCallback(
-    () => aboutRef.current.scrollIntoView({ behavior: 'smooth' }),
-    [],
-  );
-  const executeFooterScroll = useCallback(
-    () => footerRef.current.scrollIntoView({ behavior: 'smooth' }),
-    [],
-  );
+  const executeScroll = useCallback((ref) => {
+    console.log('first');
+    ref.current.scrollIntoView({ behavior: 'smooth' });
+    console.log('second');
+  }, []);
 
   return (
     <Flex flexDirection='column' bg='brand.100' h='100%'>
       <TopBorder borderH='0.5rem' />
       <NavBar
-        executeProcessScroll={executeProcessScroll}
-        executeAboutScroll={executeAboutScroll}
-        executeFooterScroll={executeFooterScroll}
+        executeProcessScroll={() => executeScroll(processRef)}
+        executeAboutScroll={() => executeScroll(aboutRef)}
+        executeFooterScroll={() => executeScroll(footerRef)}
       />
       <Hero />
       <Image
