@@ -11,7 +11,7 @@ import {
   Box,
   Kbd,
 } from '@chakra-ui/react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { MdOutlineLogout } from 'react-icons/md';
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
 import { useSelector } from 'react-redux';
@@ -70,13 +70,15 @@ const Sidebar = () => {
         grow='1'
       >
         <Flex w='100%' px={!isOpen ? '2' : '5'}>
-          <Image
-            w='80%'
-            maxH='60px'
-            src={isOpen ? LogoWhite : LogoIcon}
-            alt='Logo'
-            loading='eager'
-          />
+          <Link to='/'>
+            <Image
+              w='80%'
+              maxH='60px'
+              src={isOpen ? LogoWhite : LogoIcon}
+              alt='Logo'
+              loading='eager'
+            />
+          </Link>
         </Flex>
         <Tooltip
           label={

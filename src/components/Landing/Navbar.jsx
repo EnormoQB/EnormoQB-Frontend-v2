@@ -45,8 +45,8 @@ const NavBar = ({
 
   return (
     <Flex
-      px={['10', '16', '20', '32']}
-      my='4'
+      px={['8', '16', '20', '32']}
+      my={['2', '4']}
       mb={['0', '0', '0', '0', '4']}
       justifyContent='space-between'
       alignItems='center'
@@ -111,18 +111,23 @@ const NavBar = ({
             }}
             isLoading={isFetching}
           >
-            DashBoard
+            Dashboard
           </Button>
         )}
       </Flex>
       <IconButton
-        // colorScheme='blue'
         aria-label='Search database'
         icon={<GiHamburgerMenu />}
         onClick={onOpen}
         display={['flex', 'flex', 'none']}
       />
-      <Drawer placement='right' size='xs' onClose={onClose} isOpen={isOpen}>
+      <Drawer
+        placement='right'
+        size='xs'
+        onClose={onClose}
+        isOpen={isOpen}
+        returnFocusOnClose={false}
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton top='4' _focus={{}} />
@@ -138,7 +143,10 @@ const NavBar = ({
               mb='3'
               cursor='pointer'
               _hover={{ color: 'blue.400' }}
-              onClick={executeProcessScroll}
+              onClick={() => {
+                executeProcessScroll();
+                onClose();
+              }}
             >
               Process Flow
             </Box>
@@ -146,7 +154,10 @@ const NavBar = ({
               mb='3'
               cursor='pointer'
               _hover={{ color: 'blue.400' }}
-              onClick={executeAboutScroll}
+              onClick={() => {
+                executeAboutScroll();
+                onClose();
+              }}
             >
               About Us
             </Box>
@@ -154,7 +165,10 @@ const NavBar = ({
               mb='4'
               cursor='pointer'
               _hover={{ color: 'blue.400' }}
-              onClick={executeFooterScroll}
+              onClick={() => {
+                executeFooterScroll();
+                onClose();
+              }}
             >
               Contact Us
             </Box>
@@ -172,12 +186,10 @@ const NavBar = ({
               </Button>
             ) : (
               <Button
-                onClick={() => {
-                  navigate('/dashboard');
-                }}
+                onClick={() => navigate('/dashboard')}
                 isLoading={isFetching}
               >
-                DashBoard
+                Dashboard
               </Button>
             )}
           </DrawerBody>
