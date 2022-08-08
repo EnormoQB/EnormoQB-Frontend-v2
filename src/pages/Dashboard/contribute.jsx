@@ -124,27 +124,6 @@ const Contribute = () => {
     );
   };
 
-  const buildFormData = (formData, data, parentKey) => {
-    if (
-      data &&
-      typeof data === 'object' &&
-      !(data instanceof Date) &&
-      !(data instanceof File)
-    ) {
-      Object.keys(data).forEach((key) => {
-        buildFormData(
-          formData,
-          data[key],
-          parentKey ? `${parentKey}[${key}]` : key,
-        );
-      });
-    } else {
-      const value = data == null ? '' : data;
-
-      formData.append(parentKey, value);
-    }
-  };
-
   const onSubmit = async () => {
     let answer = null;
     const opts = [];
@@ -167,9 +146,8 @@ const Contribute = () => {
     };
 
     const formData = new FormData();
-    buildFormData(formData, data);
+    formData.append('data', JSON.stringify(data));
     formData.append('image', image);
-    // console.log(formData);
     await addQuestion(formData)
       .then(() => {
         toast({
@@ -192,7 +170,7 @@ const Contribute = () => {
         setSubject('');
         setTopics('');
         question.current.value = '';
-        answer.current.value = '';
+        explanation.current.value = '';
         group.current.value = 'Easy';
       })
       .catch((error) => {
@@ -430,7 +408,7 @@ const Contribute = () => {
             <FormLabel fontSize={18} htmlFor='difficulty'>
               Upload Image
             </FormLabel>
-            <ImageUploader setImage={setImage} />
+            <ImageUploader image={image} setImage={setImage} />
           </FormControl>
         </Box>
       </Flex>

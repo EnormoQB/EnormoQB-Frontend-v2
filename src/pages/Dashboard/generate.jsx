@@ -12,7 +12,7 @@ import GenerateResult from '../../components/Generate/result';
 
 const Generate = () => {
   return (
-    <div>
+    <div id='generateForm'>
       <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
         Generate
         <mark

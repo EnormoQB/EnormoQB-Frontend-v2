@@ -25,6 +25,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 import classData from '../../data/classData';
 import { boardOptions, classOptions, difficulties } from './config';
 import WarningModal from '../Modal/Warning';
+import OverlayLoader from '../Loaders/OverlayLoader';
 import { useGenerateQuesPaperMutation } from '../../redux/services/questionApi';
 
 const GenerateForm = () => {
@@ -35,6 +36,7 @@ const GenerateForm = () => {
   const [topic, setTopic] = useState('');
   const [topicQuesCount, setTopicQuesCount] = useState('');
   const [topicsList, setTopicsList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [warning, setWarning] = useState('null');
   const [generateQuesPaper] = useGenerateQuesPaperMutation();
@@ -105,42 +107,43 @@ const GenerateForm = () => {
     };
 
     const formData = new FormData();
-    formData.append('data', data);
+    formData.append('data', JSON.stringify(data));
     console.log(data);
-    generateQuesPaper(formData)
-      .then(() => {
-        toast({
-          id: 'Contribute',
-          title: 'success',
-          position: 'top-right',
-          description: 'Successfully contributed the question!',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
-        instituteName.current.value = '';
-        examType.current.value = '';
-        instructions.current.value = '';
-        setStandard({ value: '10', label: 'X' });
-        setSubject('');
-        setBoard('');
-        setSubject('');
-        setTopicsList([]);
-        setQuesDiffDetails({
-          Easy: { count: 0, marks: 1 },
-          Medium: { count: 0, marks: 1 },
-          Hard: { count: 0, marks: 1 },
-        });
-        setTime('');
-        totalMarks = 0;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // generateQuesPaper(formData)
+    //   .then(() => {
+    toast({
+      id: 'Contribute',
+      title: 'success',
+      position: 'top-right',
+      description: 'Successfully contributed the question!',
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+    instituteName.current.value = '';
+    examType.current.value = '';
+    instructions.current.value = '';
+    setStandard({ value: '10', label: 'X' });
+    setSubject('');
+    setBoard('');
+    setSubject('');
+    setTopicsList([]);
+    setQuesDiffDetails({
+      Easy: { count: 0, marks: 1 },
+      Medium: { count: 0, marks: 1 },
+      Hard: { count: 0, marks: 1 },
+    });
+    setTime('');
+    totalMarks = 0;
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   };
 
   return (
     <Box>
+      {loading && <OverlayLoader />}
       <WarningModal
         isOpen={isOpen}
         onClose={onClose}

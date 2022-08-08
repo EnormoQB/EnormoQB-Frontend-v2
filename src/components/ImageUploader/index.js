@@ -4,8 +4,14 @@ import { Flex, Center, useColorModeValue, Icon, Box } from '@chakra-ui/react';
 import { AiFillFileAdd } from 'react-icons/ai';
 import { MdClear } from 'react-icons/md';
 
-const ImageUploader = ({ setImage }) => {
+const ImageUploader = ({ image, setImage }) => {
   const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    if (image === null) {
+      setFiles([]);
+    }
+  }, [image]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { 'image/*': [] },
