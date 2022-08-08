@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -17,6 +17,7 @@ import {
   Tooltip,
   Textarea,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { FaPlus } from 'react-icons/fa';
@@ -24,11 +25,10 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 import classData from '../../data/classData';
 import { boardOptions, classOptions, difficulties } from './config';
 import WarningModal from '../Modal/Warning';
+import { useGenerateQuesPaperMutation } from '../../redux/services/questionApi';
 
 const GenerateForm = () => {
-  const [institution, setInstitution] = useState('');
-  const [examType, setExamType] = useState('');
-  const [instructions, setInstructions] = useState('');
+  const toast = useToast();
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
   const [board, setBoard] = useState('');
@@ -37,6 +37,16 @@ const GenerateForm = () => {
   const [topicsList, setTopicsList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [warning, setWarning] = useState('null');
+  const [generateQuesPaper] = useGenerateQuesPaperMutation();
+  const instituteName = useRef();
+  const examType = useRef();
+  const [quesDiffDetails, setQuesDiffDetails] = useState({
+    Easy: { count: 0, marks: 1 },
+    Medium: { count: 0, marks: 1 },
+    Hard: { count: 0, marks: 1 },
+  });
+  const instructions = useRef();
+  const [time, setTime] = useState('');
 
   const onConfirm = {
     class: (e) => {
@@ -75,6 +85,60 @@ const GenerateForm = () => {
     setTopic('');
   };
 
+  const easy = quesDiffDetails.Easy.count * quesDiffDetails.Easy.marks;
+  const medium = quesDiffDetails.Medium.count * quesDiffDetails.Medium.marks;
+  const hard = quesDiffDetails.Hard.count * quesDiffDetails.Hard.marks;
+  let totalMarks = easy + medium + hard;
+
+  const onSubmit = () => {
+    const data = {
+      instituteName: instituteName.current.value,
+      standard: standard.value,
+      subject: subject.value,
+      topics: topicsList,
+      examType: examType.current.value,
+      board: board.value,
+      instructions: instructions.current.value,
+      time,
+      quesDiffDetails,
+      totalMarks,
+    };
+
+    const formData = new FormData();
+    formData.append('data', data);
+    console.log(data);
+    generateQuesPaper(formData)
+      .then(() => {
+        toast({
+          id: 'Contribute',
+          title: 'success',
+          position: 'top-right',
+          description: 'Successfully contributed the question!',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+        instituteName.current.value = '';
+        examType.current.value = '';
+        instructions.current.value = '';
+        setStandard({ value: '10', label: 'X' });
+        setSubject('');
+        setBoard('');
+        setSubject('');
+        setTopicsList([]);
+        setQuesDiffDetails({
+          Easy: { count: 0, marks: 1 },
+          Medium: { count: 0, marks: 1 },
+          Hard: { count: 0, marks: 1 },
+        });
+        setTime('');
+        totalMarks = 0;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <Box>
       <WarningModal
@@ -90,8 +154,7 @@ const GenerateForm = () => {
           id='institution'
           placeholder='Enter Institution Name (optional)'
           boxShadow='base'
-          value={institution}
-          onChange={(e) => setInstitution(e.target.value)}
+          ref={instituteName}
         />
       </FormControl>
       <Flex justify='space-between'>
@@ -104,8 +167,7 @@ const GenerateForm = () => {
               id='examType'
               placeholder='For Example: Pre-Boards 2021-22 (optional)'
               boxShadow='base'
-              value={examType}
-              onChange={(e) => setExamType(e.target.value)}
+              ref={examType}
             />
           </FormControl>
           <FormControl mb={6} isRequired>
@@ -171,8 +233,7 @@ const GenerateForm = () => {
           placeholder='Write Exam Instructions (optional)'
           w='100%'
           rows='3'
-          value={instructions}
-          onChange={(e) => setInstructions(e.target.value)}
+          ref={instructions}
           boxShadow='base'
           resize='none'
         />
@@ -187,7 +248,21 @@ const GenerateForm = () => {
               <Box key={i} w='29%'>
                 <Text>{value}</Text>
                 <Flex boxShadow='base' borderRadius='6'>
-                  <NumberInput min={0} defaultValue={0} allowMouseWheel>
+                  <NumberInput
+                    min={0}
+                    defaultValue={0}
+                    allowMouseWheel
+                    value={quesDiffDetails[value].count}
+                    onChange={(e) => {
+                      setQuesDiffDetails((prev) => ({
+                        ...prev,
+                        [value]: {
+                          count: Number(e),
+                          marks: Number(prev[value].marks),
+                        },
+                      }));
+                    }}
+                  >
                     <NumberInputField
                       borderRightRadius='0'
                       placeholder='Questions'
@@ -199,6 +274,16 @@ const GenerateForm = () => {
                     defaultValue={1}
                     allowMouseWheel
                     w='60%'
+                    value={quesDiffDetails[value].marks}
+                    onChange={(e) => {
+                      setQuesDiffDetails((prev) => ({
+                        ...prev,
+                        [value]: {
+                          marks: Number(e),
+                          count: Number(prev[value].count),
+                        },
+                      }));
+                    }}
                   >
                     <NumberInputField borderRadius='0' />
                   </NumberInput>
@@ -235,7 +320,7 @@ const GenerateForm = () => {
             fontSize='sm'
             borderRadius='6px'
           >
-            0
+            {totalMarks}
           </Flex>
         </Box>
         <FormControl mb={6} isRequired w='48%'>
@@ -245,8 +330,17 @@ const GenerateForm = () => {
               (in mins)
             </Box>
           </FormLabel>
-          <NumberInput defaultValue={0} min={0} allowMouseWheel step={5}>
-            <NumberInputField boxShadow='base' />
+          <NumberInput
+            defaultValue={0}
+            min={0}
+            allowMouseWheel
+            step={5}
+            value={time}
+            onChange={(e) => {
+              setTime(e);
+            }}
+          >
+            <NumberInputField placeholder='Total Time' boxShadow='base' />
           </NumberInput>
         </FormControl>
       </Flex>
@@ -336,7 +430,7 @@ const GenerateForm = () => {
         ))}
       </Wrap>
       <Flex justify='center'>
-        <Button mt={7} w={300} h={50}>
+        <Button mt={7} w={300} h={50} onClick={onSubmit}>
           SUBMIT
         </Button>
       </Flex>

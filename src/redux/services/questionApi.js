@@ -16,6 +16,14 @@ export const questionsApi = createApi({
         data: question,
       }),
     }),
+    generateQuesPaper: builder.mutation({
+      query: (questionPaper) => ({
+        url: ApiEndpoints.questions.generate.url,
+        method: 'post',
+        headers: { 'content-type': 'multipart/form-data' },
+        data: questionPaper,
+      }),
+    }),
     getQuestions: builder.query({
       query: ({ userId, status }) => {
         const params = new URLSearchParams({
@@ -40,4 +48,8 @@ export const questionsApi = createApi({
   }),
 });
 
-export const { useAddQuestionsMutation, useGetQuestionsQuery } = questionsApi;
+export const {
+  useAddQuestionsMutation,
+  useGetQuestionsQuery,
+  useGenerateQuesPaperMutation,
+} = questionsApi;
