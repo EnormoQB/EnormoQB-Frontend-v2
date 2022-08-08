@@ -95,7 +95,7 @@ const NavBar = ({
             }}
             isLoading={isFetching}
           >
-            DashBoard
+            Dashboard
           </Button>
         )}
       </Flex>
