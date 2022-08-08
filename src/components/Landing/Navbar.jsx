@@ -12,7 +12,7 @@ import {
   useDisclosure,
   Image,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { useNavigate } from 'react-router-dom';
 import { userApi } from '../../redux/services/userApi';
@@ -23,6 +23,7 @@ const NavBar = ({
   executeAboutScroll,
   executeFooterScroll,
 }) => {
+  const [sticky, setSticky] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const { data, isLoading, isFetching } =
@@ -30,6 +31,18 @@ const NavBar = ({
       skip: false,
       refetchOnMountOrArgChange: true,
     });
+  const isSticky = () => {
+    const scrollTop = window.scrollY;
+    const stickyClass = scrollTop >= 15 ? 'is-sticky' : '';
+    setSticky(stickyClass);
+  };
+  useEffect(() => {
+    window.addEventListener('scroll', isSticky);
+    return () => {
+      window.removeEventListener('scroll', isSticky);
+    };
+  }, []);
+
   return (
     <Flex
       px={['10', '16', '20', '32']}
@@ -41,6 +54,9 @@ const NavBar = ({
       top='0'
       zIndex='10'
       bgColor='brand.100'
+      boxShadow={
+        sticky === 'is-sticky' ? '0px 19px 14px -17px rgba(0,0,0,0.1)' : 'none'
+      }
     >
       <Image
         src={Logo}
@@ -110,10 +126,14 @@ const NavBar = ({
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton top='4' _focus={{}} />
-          <DrawerHeader borderBottomWidth='1px' color='brand.500'>
+          <DrawerHeader
+            borderBottomWidth='1px'
+            color='brand.500'
+            fontSize={['lg', 'lg', 'xl']}
+          >
             EnormoQB
           </DrawerHeader>
-          <DrawerBody>
+          <DrawerBody fontSize={['sm', 'md', 'md']}>
             <Box
               mb='3'
               cursor='pointer'

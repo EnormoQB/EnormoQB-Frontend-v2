@@ -50,6 +50,7 @@ const Home = () => {
         alignItems='center'
         color='brand.600'
         ref={processRef}
+        mt={['8', null]}
       >
         <ProcessBlock
           flexD='row'
