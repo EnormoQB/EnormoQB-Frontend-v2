@@ -25,10 +25,14 @@ export const questionsApi = createApi({
       }),
     }),
     getQuestions: builder.query({
-      query: ({ userId, status }) => {
+      query: ({ userId, status, standard, subject, topics, difficulty }) => {
         const params = new URLSearchParams({
           ...(userId ? { userId } : {}),
           ...(status ? { status } : {}),
+          ...(standard ? { standard } : {}),
+          ...(subject ? { subject } : {}),
+          ...(topics ? { topics } : {}),
+          ...(difficulty ? { difficulty } : {}),
         });
         return {
           url: `${ApiEndpoints.questions.accept.url}?${params.toString()}`,
