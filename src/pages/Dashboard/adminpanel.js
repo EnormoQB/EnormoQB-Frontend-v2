@@ -48,7 +48,7 @@ const Sendmail = () => {
         </mark>
         Panel
       </Heading>
-      <Tableview />
+      <Tableview onOpen={onOpen} />
       <Flex fontWeight='medium'>
         Send Mails to all the contibutors for more contributions
         <Modal
@@ -62,12 +62,7 @@ const Sendmail = () => {
         >
           <ModalOverlay />
           <ModalContent sx={style1}>
-            <ModalCloseButton
-              _focus={{}}
-              position='fixed'
-              mt='260px'
-              mr='470px'
-            />
+            <ModalCloseButton _focus={{}} position='absolute' />
             <ModalBody>
               <Box display='flex' flexDir='column' alignItems='center'>
                 <Flex
@@ -105,9 +100,6 @@ const Sendmail = () => {
             </ModalBody>
           </ModalContent>
         </Modal>
-        <Button onClick={onOpen} ml='5' mt='-1.5'>
-          Send Mail
-        </Button>
       </Flex>
     </Box>
   );

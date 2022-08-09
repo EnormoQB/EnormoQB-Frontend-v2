@@ -8,45 +8,54 @@ import {
   Th,
   Tbody,
   Td,
-  Tfoot,
+  Button,
 } from '@chakra-ui/react';
 
-const Tableview = () => {
+const Tableview = ({ onOpen }) => {
   return (
-    <TableContainer w='80vw' mb='40px'>
+    <TableContainer w='80vw' mb='40px' textAlign='center'>
       <Table variant='striped' colorScheme='gray'>
         <TableCaption>Questions in each subject per class</TableCaption>
         <Thead>
           <Tr>
             <Th>Class</Th>
             <Th>Subject</Th>
-            <Th isNumeric>Questions</Th>
+            <Th mr='10'>No. of Questions</Th>
+            <Th>Send Mail</Th>
           </Tr>
         </Thead>
         <Tbody>
           <Tr>
-            <Td>Class X</Td>
-            <Td>Science Physics</Td>
-            <Td isNumeric>15 Questions</Td>
+            <Td>X</Td>
+            <Td>Physics</Td>
+            <Td>15</Td>
+            <Td>
+              <Button onClick={onOpen} mt='-1.5'>
+                Send Mail
+              </Button>
+            </Td>
           </Tr>
           <Tr>
-            <Td>Class X</Td>
-            <Td>Science Physics</Td>
-            <Td isNumeric>15 Questions</Td>
+            <Td>X</Td>
+            <Td>Physics</Td>
+            <Td>15</Td>
+            <Td>
+              <Button onClick={onOpen} mt='-1.5'>
+                Send Mail
+              </Button>
+            </Td>
           </Tr>
           <Tr>
-            <Td>Class X</Td>
-            <Td>Science Physics</Td>
-            <Td isNumeric>15 Questions</Td>
+            <Td>X</Td>
+            <Td>Physics</Td>
+            <Td>15</Td>
+            <Td>
+              <Button onClick={onOpen} mt='-1.5'>
+                Send Mail
+              </Button>
+            </Td>
           </Tr>
         </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>X / XII</Th>
-            <Th>Topic</Th>
-            <Th isNumeric>Threshold Value 10 Questions</Th>
-          </Tr>
-        </Tfoot>
       </Table>
     </TableContainer>
   );

@@ -52,6 +52,6 @@ export const navItems = [
     id: 9,
     name: 'Admin Panel',
     icon: RiAdminFill,
-    link: '/sendmail',
+    link: '/adminpanel',
   },
 ];
