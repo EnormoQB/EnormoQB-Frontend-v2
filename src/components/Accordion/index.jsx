@@ -44,6 +44,7 @@ const style1 = {
   justifyContent: 'center',
   position: 'fixed',
   overflowX: 'scroll',
+  overflowY: 'scroll',
   alignItems: 'center',
   textAlign: 'center',
   padding: '30px',
