@@ -23,12 +23,45 @@ import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
 import FeedbackModal from '../Modal/Feedback';
 
-const Question = ({ data }) => {
+const style = {
+  height: '60vh',
+  width: '50vw',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  textAlign: 'center',
+  marginLeft: '-150px',
+};
+
+const style1 = {
+  height: '80vh',
+  maxH: '80vh',
+  width: '80vw',
+  maxW: '80vw',
+  backgroundColor: 'white',
+  display: 'flex',
+  flexDir: 'column',
+  justifyContent: 'center',
+  position: 'fixed',
+  overflowX: 'scroll',
+  alignItems: 'center',
+  textAlign: 'center',
+  padding: '30px',
+  borderRadius: '10px',
+};
+
+const Question = ({ data, show, questions }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: modalOpen,
     onOpen: onModalOpen,
     onClose: onModalClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: modalOpenSimilarQuestion,
+    onOpen: onModalOpenSimilarQuestion,
+    onClose: onModalCloseSimilarQuestion,
   } = useDisclosure();
 
   const handleReject = () => {};
@@ -125,15 +158,19 @@ const Question = ({ data }) => {
                       >
                         <BiExpand color='white' size={24} />
                       </Center>
-                      <Modal isOpen={isOpen} onClose={onClose}>
+                      <Modal
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        isCentered
+                        motionPreset='slideInBottom'
+                        w='55vw'
+                        h='55vh'
+                        maxH='85vh'
+                      >
                         <ModalOverlay />
-                        <ModalContent>
+                        <ModalContent bg='Transparent'>
                           <ModalCloseButton _focus={{}} />
-                          <ModalBody
-                            w='fit-content'
-                            h='fit-content'
-                            maxH='80vh'
-                          >
+                          <ModalBody sx={style}>
                             <Image src={data.imageUrl} alt='Question' />
                           </ModalBody>
                         </ModalContent>
@@ -141,27 +178,68 @@ const Question = ({ data }) => {
                     </Flex>
                   )}
                 </Flex>
-                <Box mt='3'>
-                  <Button
-                    fontSize='sm'
-                    fontWeight='medium'
-                    mr='4'
-                    bg='brand.600'
-                    _hover={{ backgroundColor: 'myGray.500' }}
-                  >
-                    Accept
-                  </Button>
-                  <Button
-                    fontSize='sm'
-                    fontWeight='medium'
-                    bg='brand.300'
-                    color='brand.600'
-                    _hover={{ backgroundColor: 'brand.400' }}
-                    onClick={onModalOpen}
-                  >
-                    Reject
-                  </Button>
-                </Box>
+                {show ? (
+                  <Box mt='3'>
+                    <Button
+                      fontSize='sm'
+                      fontWeight='medium'
+                      mr='4'
+                      bg='brand.600'
+                      _hover={{ backgroundColor: 'myGray.500' }}
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      fontSize='sm'
+                      fontWeight='medium'
+                      bg='brand.400'
+                      color='brand.600'
+                      mr='4'
+                      _hover={{ backgroundColor: 'brand.450' }}
+                      onClick={onModalOpen}
+                    >
+                      Reject
+                    </Button>
+                    <Button
+                      fontSize='sm'
+                      fontWeight='medium'
+                      bg='brand.300'
+                      color='brand.600'
+                      _hover={{ backgroundColor: 'brand.350' }}
+                      onClick={onModalOpenSimilarQuestion}
+                    >
+                      {questions.length} Similar Questions
+                    </Button>
+                    <Modal
+                      isOpen={modalOpenSimilarQuestion}
+                      onClose={onModalCloseSimilarQuestion}
+                      isCentered
+                      motionPreset='slideInBottom'
+                      w='55vw'
+                      h='55vh'
+                      maxH='85vh'
+                    >
+                      <ModalOverlay />
+                      <ModalContent sx={style1}>
+                        <ModalCloseButton
+                          _focus={{}}
+                          position='fixed'
+                          mt='80px'
+                          mr='170px'
+                        />
+                        <ModalBody>
+                          <Box pt='800px'>
+                            {questions.map((ques) => (
+                              <Question key={ques._id.$oid} data={ques} />
+                            ))}
+                          </Box>
+                        </ModalBody>
+                      </ModalContent>
+                    </Modal>
+                  </Box>
+                ) : (
+                  <br />
+                )}
               </AccordionPanel>
             </>
           )}

@@ -21,7 +21,7 @@ const Footer = ({ footerRef }) => {
       <Flex
         alignItems='center'
         w='100%'
-        px={['10', '10', '16']}
+        px={['7', '10', '16']}
         py={['6', '8', '10']}
       >
         <Flex
@@ -31,7 +31,7 @@ const Footer = ({ footerRef }) => {
           alignItems='center'
           mr={['4', '4', null]}
         >
-          <Flex fontSize='md' fontWeight='semibold' m='2'>
+          <Flex fontSize={['md', 'lg']} fontWeight='semibold' m='2'>
             EnormoQB
           </Flex>
           <Flex fontSize={['sm', 'md']} textAlign='center'>
@@ -58,37 +58,25 @@ const Footer = ({ footerRef }) => {
         >
           <Flex
             my='1'
-            _hover={{
-              borderBottom: '1px solid #DEE3F5',
-              cursor: 'pointer',
-            }}
+            _hover={{ borderBottom: '1px solid #DEE3F5', cursor: 'pointer' }}
           >
             About
           </Flex>
           <Flex
             my='1'
-            _hover={{
-              borderBottom: '1px solid #DEE3F5',
-              cursor: 'pointer',
-            }}
+            _hover={{ borderBottom: '1px solid #DEE3F5', cursor: 'pointer' }}
           >
             Terms
           </Flex>
           <Flex
             my='1'
-            _hover={{
-              borderBottom: '1px solid #DEE3F5',
-              cursor: 'pointer',
-            }}
+            _hover={{ borderBottom: '1px solid #DEE3F5', cursor: 'pointer' }}
           >
             Policy
           </Flex>
           <Flex
             my='1'
-            _hover={{
-              borderBottom: '1px solid #DEE3F5',
-              cursor: 'pointer',
-            }}
+            _hover={{ borderBottom: '1px solid #DEE3F5', cursor: 'pointer' }}
           >
             Request a demo
           </Flex>

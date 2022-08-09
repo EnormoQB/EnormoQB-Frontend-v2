@@ -12,7 +12,7 @@ import {
   useDisclosure,
   Image,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { useNavigate } from 'react-router-dom';
 import { userApi } from '../../redux/services/userApi';
@@ -23,6 +23,7 @@ const NavBar = ({
   executeAboutScroll,
   executeFooterScroll,
 }) => {
+  const [sticky, setSticky] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const { data, isLoading, isFetching } =
@@ -30,10 +31,22 @@ const NavBar = ({
       skip: false,
       refetchOnMountOrArgChange: true,
     });
+  const isSticky = () => {
+    const scrollTop = window.scrollY;
+    const stickyClass = scrollTop >= 15 ? 'is-sticky' : '';
+    setSticky(stickyClass);
+  };
+  useEffect(() => {
+    window.addEventListener('scroll', isSticky);
+    return () => {
+      window.removeEventListener('scroll', isSticky);
+    };
+  }, []);
+
   return (
     <Flex
-      px={['10', '16', '20', '32']}
-      my='4'
+      px={['8', '16', '20', '32']}
+      my={['2', '4']}
       mb={['0', '0', '0', '0', '4']}
       justifyContent='space-between'
       alignItems='center'
@@ -41,6 +54,9 @@ const NavBar = ({
       top='0'
       zIndex='10'
       bgColor='brand.100'
+      boxShadow={
+        sticky === 'is-sticky' ? '0px 19px 14px -17px rgba(0,0,0,0.1)' : 'none'
+      }
     >
       <Image
         src={Logo}
@@ -95,30 +111,42 @@ const NavBar = ({
             }}
             isLoading={isFetching}
           >
-            DashBoard
+            Dashboard
           </Button>
         )}
       </Flex>
       <IconButton
-        // colorScheme='blue'
         aria-label='Search database'
         icon={<GiHamburgerMenu />}
         onClick={onOpen}
         display={['flex', 'flex', 'none']}
       />
-      <Drawer placement='right' size='xs' onClose={onClose} isOpen={isOpen}>
+      <Drawer
+        placement='right'
+        size='xs'
+        onClose={onClose}
+        isOpen={isOpen}
+        returnFocusOnClose={false}
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton top='4' _focus={{}} />
-          <DrawerHeader borderBottomWidth='1px' color='brand.500'>
+          <DrawerHeader
+            borderBottomWidth='1px'
+            color='brand.500'
+            fontSize={['lg', 'lg', 'xl']}
+          >
             EnormoQB
           </DrawerHeader>
-          <DrawerBody>
+          <DrawerBody fontSize={['sm', 'md', 'md']}>
             <Box
               mb='3'
               cursor='pointer'
               _hover={{ color: 'blue.400' }}
-              onClick={executeProcessScroll}
+              onClick={() => {
+                executeProcessScroll();
+                onClose();
+              }}
             >
               Process Flow
             </Box>
@@ -126,7 +154,10 @@ const NavBar = ({
               mb='3'
               cursor='pointer'
               _hover={{ color: 'blue.400' }}
-              onClick={executeAboutScroll}
+              onClick={() => {
+                executeAboutScroll();
+                onClose();
+              }}
             >
               About Us
             </Box>
@@ -134,7 +165,10 @@ const NavBar = ({
               mb='4'
               cursor='pointer'
               _hover={{ color: 'blue.400' }}
-              onClick={executeFooterScroll}
+              onClick={() => {
+                executeFooterScroll();
+                onClose();
+              }}
             >
               Contact Us
             </Box>
@@ -152,12 +186,10 @@ const NavBar = ({
               </Button>
             ) : (
               <Button
-                onClick={() => {
-                  navigate('/dashboard');
-                }}
+                onClick={() => navigate('/dashboard')}
                 isLoading={isFetching}
               >
-                DashBoard
+                Dashboard
               </Button>
             )}
           </DrawerBody>

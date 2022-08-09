@@ -38,7 +38,12 @@ const Pending = () => {
       ) : (
         <>
           {questions.map((ques) => (
-            <Question key={ques._id.$oid} data={ques} />
+            <Question
+              key={ques._id.$oid}
+              data={ques}
+              show={1}
+              questions={questions}
+            />
           ))}
         </>
       )}
