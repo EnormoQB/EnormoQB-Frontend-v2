@@ -7,9 +7,11 @@ import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
 const Rejected = () => {
   const [questions, setQuestions] = useState([]);
-  const { data, isLoading, isFetching } = useGetQuestionsQuery({
+  const [filter, setfilter] = useState({
     status: 'rejected',
   });
+
+  const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
 
   useEffect(() => {
     if (data) {
@@ -32,7 +34,7 @@ const Rejected = () => {
         </mark>
         Questions
       </Heading>
-      <Filter />
+      <Filter setfilter={setfilter} />
       {isLoading || isFetching || questions.length === 0 ? (
         <DashboardLoader />
       ) : (

@@ -4,14 +4,20 @@ import { Select } from 'chakra-react-select';
 import { classOptions, difficulties } from '../Generate/config';
 import classData from '../../data/classData';
 
-const Filter = () => {
+const Filter = ({ setfilter }) => {
   const [standard, setStandard] = useState('');
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
   const [difficulty, setDifficulty] = useState('');
 
   const handleApply = () => {
-    console.log('yo');
+    setfilter((prev) => ({
+      ...prev,
+      standard: standard.value,
+      subject: subject.value,
+      topics: topics.map((topic) => topic.value),
+      difficulty: difficulty.value,
+    }));
   };
 
   return (

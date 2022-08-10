@@ -2,10 +2,11 @@ import {
   MdOutlineDoneAll,
   MdOutlineHourglassTop,
   MdRemoveDone,
+  MdMail,
 } from 'react-icons/md';
 import { AiFillHome, AiFillFileUnknown, AiFillGift } from 'react-icons/ai';
 import { BsFillFilePdfFill } from 'react-icons/bs';
-import { RiFileEditFill } from 'react-icons/ri';
+import { RiFileEditFill, RiAdminFill } from 'react-icons/ri';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navItems = [
@@ -46,5 +47,11 @@ export const navItems = [
     name: 'Perks',
     icon: AiFillGift,
     link: '/perks',
+  },
+  {
+    id: 9,
+    name: 'Admin Panel',
+    icon: RiAdminFill,
+    link: '/sendmail',
   },
 ];
