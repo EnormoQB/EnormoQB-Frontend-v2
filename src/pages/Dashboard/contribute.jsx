@@ -26,6 +26,7 @@ import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
 import classData from '../../data/classData';
 import { useAddQuestionsMutation } from '../../redux/services/questionApi';
+import OverlayLoader from '../../components/Loaders/OverlayLoader';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
@@ -50,6 +51,7 @@ const Contribute = () => {
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const question = useRef();
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
@@ -125,6 +127,7 @@ const Contribute = () => {
   };
 
   const onSubmit = async () => {
+    setLoading(true);
     let answer = null;
     const opts = [];
 
@@ -150,6 +153,7 @@ const Contribute = () => {
     formData.append('image', image);
     await addQuestion(formData)
       .then(() => {
+        setLoading(false);
         toast({
           id: 'Contribute',
           title: 'success',
@@ -180,6 +184,7 @@ const Contribute = () => {
 
   return (
     <Box>
+      {loading && <OverlayLoader />}
       <Flex justify='space-between' alignItems='center' mb={10}>
         <Heading as='h1' fontSize='4xl' fontWeight='bold'>
           Contribute
@@ -194,7 +199,7 @@ const Contribute = () => {
             Question
           </mark>
         </Heading>
-        <Button onClick={onSubmit} w={150} h={45}>
+        <Button disabled={loading} onClick={onSubmit} w={150} h={45}>
           SUBMIT
         </Button>
       </Flex>

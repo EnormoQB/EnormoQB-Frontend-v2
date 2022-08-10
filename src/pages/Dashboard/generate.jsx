@@ -9,8 +9,11 @@ import {
 import CustomTab from '../../components/Generate/customTab';
 import GenerateForm from '../../components/Generate/form';
 import GenerateResult from '../../components/Generate/result';
+import { useLazyGeneratePreviewQuery } from '../../redux/services/questionPaperApi';
 
 const Generate = () => {
+  const [trigger, { data, isLoading, isFetching }] =
+    useLazyGeneratePreviewQuery();
   return (
     <div id='generateForm'>
       <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
@@ -34,10 +37,18 @@ const Generate = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <GenerateForm />
+              <GenerateForm
+                trigger={trigger}
+                isLoading={isLoading}
+                isFetching={isFetching}
+              />
             </TabPanel>
             <TabPanel>
-              <GenerateResult />
+              <GenerateResult
+                data={data}
+                isLoading={isLoading}
+                isFetching={isFetching}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -18,13 +18,15 @@ const ApiEndpoints = {
       method: 'POST',
       url: 'api/questions/add',
     },
-    accept: {
+    list: {
       method: 'GET',
       url: 'api/questions/list',
     },
-    generate: {
+  },
+  questionPapers: {
+    preview: {
       method: 'POST',
-      url: 'api/questionPaper/generate',
+      url: 'api/questionPapers/preview',
     },
   },
   stats: {

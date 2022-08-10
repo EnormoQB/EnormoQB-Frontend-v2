@@ -1,13 +1,20 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import CustomQuestion from './customQues';
 import QuestionTab from './questionTab';
 import { dummy } from './config';
 
-const GenerateResult = () => {
-  const [initialData, setInitialData] = useState(dummy);
+const GenerateResult = ({ data }) => {
+  const [initialData, setInitialData] = useState([]);
   const [isDragging, setIsDragging] = useState(null);
+
+  useEffect(() => {
+    console.log(data);
+    if (data && data.data && data.data.length !== 0) {
+      setInitialData(data.data);
+    }
+  }, [data]);
 
   const handleOnDragStart = (e) => {
     setIsDragging(e.source.index);

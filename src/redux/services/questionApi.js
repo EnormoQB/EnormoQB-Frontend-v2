@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import ApiEndpoints from '../../utils/ApiEndpoints';
 import axiosBaseQuery from './axiosBaseQuery';
-import { setQuestion } from '../features/questionSlice';
 
 export const questionsApi = createApi({
   reducerPath: 'questionsApi',
@@ -16,9 +15,9 @@ export const questionsApi = createApi({
         data: question,
       }),
     }),
-    generateQuesPaper: builder.mutation({
+    generatePreview: builder.query({
       query: (questionPaper) => ({
-        url: ApiEndpoints.questions.generate.url,
+        url: ApiEndpoints.questionPapers.preview.url,
         method: 'post',
         headers: { 'content-type': 'multipart/form-data' },
         data: questionPaper,
@@ -31,18 +30,10 @@ export const questionsApi = createApi({
           ...(status ? { status } : {}),
         });
         return {
-          url: `${ApiEndpoints.questions.accept.url}?${params.toString()}`,
+          url: `${ApiEndpoints.questions.list.url}?${params.toString()}`,
           method: 'get',
           providesTags: ['Questions'],
         };
-      },
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(setQuestion(data.data.items));
-        } catch (error) {
-          console.log(error);
-        }
       },
     }),
   }),
@@ -51,5 +42,5 @@ export const questionsApi = createApi({
 export const {
   useAddQuestionsMutation,
   useGetQuestionsQuery,
-  useGenerateQuesPaperMutation,
+  useLazyGeneratePreviewQuery,
 } = questionsApi;
