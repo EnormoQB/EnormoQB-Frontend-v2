@@ -17,6 +17,16 @@ import {
   InputRightElement,
   Tooltip,
   useToast,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Text,
+  Image,
 } from '@chakra-ui/react';
 import debounce from 'lodash.debounce';
 import { Select } from 'chakra-react-select';
@@ -26,6 +36,7 @@ import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
 import classData from '../../data/classData';
 import { useAddQuestionsMutation } from '../../redux/services/questionApi';
+import Congratulations from '../../assets/announcement.svg';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
@@ -53,6 +64,7 @@ const Contribute = () => {
   const question = useRef();
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const changeHandler = (idx, e) => {
     setOptions((prevState) =>
@@ -216,9 +228,34 @@ const Contribute = () => {
             Question
           </mark>
         </Heading>
-        <Button onClick={onSubmit} w={150} h={45}>
+        <Button onClick={(onSubmit, onOpen)} w={150} h={45}>
           SUBMIT
         </Button>
+        <Modal isOpen={isOpen} onClose={onClose} size='lg'>
+          <ModalOverlay />
+          <ModalContent m='auto'>
+            <ModalHeader />
+            <ModalCloseButton />
+            <ModalBody>
+              <Text fontWeight='bold' fontSize='lg' textAlign='center' mb={3}>
+                Thank you for the submission!
+              </Text>
+              <Text textAlign='center' mb={6} fontSize='sm' w='80%' m='auto'>
+                Your question status is pending. We will approve or reject it
+                upon evaluation.
+              </Text>
+              <Image
+                src={Congratulations}
+                alt='successful submission'
+                w='60%'
+                m='auto'
+                mt={6}
+                mr='78px'
+              />
+            </ModalBody>
+            <ModalFooter />
+          </ModalContent>
+        </Modal>
       </Flex>
       <Flex justify='space-between'>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
