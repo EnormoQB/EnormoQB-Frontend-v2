@@ -26,6 +26,7 @@ import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
 import classData from '../../data/classData';
 import { useAddQuestionsMutation } from '../../redux/services/questionApi';
+import OverlayLoader from '../../components/Loaders/OverlayLoader';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
@@ -50,6 +51,7 @@ const Contribute = () => {
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const question = useRef();
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
@@ -124,28 +126,8 @@ const Contribute = () => {
     );
   };
 
-  const buildFormData = (formData, data, parentKey) => {
-    if (
-      data &&
-      typeof data === 'object' &&
-      !(data instanceof Date) &&
-      !(data instanceof File)
-    ) {
-      Object.keys(data).forEach((key) => {
-        buildFormData(
-          formData,
-          data[key],
-          parentKey ? `${parentKey}[${key}]` : key,
-        );
-      });
-    } else {
-      const value = data == null ? '' : data;
-
-      formData.append(parentKey, value);
-    }
-  };
-
   const onSubmit = async () => {
+    setLoading(true);
     let answer = null;
     const opts = [];
 
@@ -167,11 +149,11 @@ const Contribute = () => {
     };
 
     const formData = new FormData();
-    buildFormData(formData, data);
+    formData.append('data', JSON.stringify(data));
     formData.append('image', image);
-    // console.log(formData);
     await addQuestion(formData)
       .then(() => {
+        setLoading(false);
         toast({
           id: 'Contribute',
           title: 'success',
@@ -192,7 +174,7 @@ const Contribute = () => {
         setSubject('');
         setTopics('');
         question.current.value = '';
-        answer.current.value = '';
+        explanation.current.value = '';
         group.current.value = 'Easy';
       })
       .catch((error) => {
@@ -202,6 +184,7 @@ const Contribute = () => {
 
   return (
     <Box>
+      {loading && <OverlayLoader />}
       <Flex justify='space-between' alignItems='center' mb={10}>
         <Heading as='h1' fontSize='4xl' fontWeight='bold'>
           Contribute
@@ -216,7 +199,7 @@ const Contribute = () => {
             Question
           </mark>
         </Heading>
-        <Button onClick={onSubmit} w={150} h={45}>
+        <Button disabled={loading} onClick={onSubmit} w={150} h={45}>
           SUBMIT
         </Button>
       </Flex>
@@ -430,7 +413,7 @@ const Contribute = () => {
             <FormLabel fontSize={18} htmlFor='difficulty'>
               Upload Image
             </FormLabel>
-            <ImageUploader setImage={setImage} />
+            <ImageUploader image={image} setImage={setImage} />
           </FormControl>
         </Box>
       </Flex>

@@ -80,7 +80,7 @@ const DashboardHome = () => {
       </Flex>
       <Box mt={12}>
         <Heading as='h2' fontSize='3xl' fontWeight='bold' mb={10}>
-          Question
+          Sample
           <mark
             style={{
               backgroundColor: '#C3D0F9',
@@ -89,10 +89,9 @@ const DashboardHome = () => {
               marginLeft: '3px',
             }}
           >
-            Bank
+            Question Bank
           </mark>
         </Heading>
-        <Filter />
         {dummy.map((ques) => (
           <Question key={ques._id.$oid} data={ques} />
         ))}
