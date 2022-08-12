@@ -9,20 +9,32 @@ import LineGraph from '../../components/Graph/LineGraph';
 import DoughnutGraph from '../../components/Graph/DoughnutGraph';
 import Question from '../../components/Accordion';
 import { dummy } from '../../components/Generate/config';
-import Filter from '../../components/Filters';
 import { useGetStatsQuery } from '../../redux/services/statsApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
+import { useReservedQuestionsQuery } from '../../redux/services/questionApi';
 
 const DashboardHome = () => {
   const user = useSelector((state) => state.userState.user);
   const { data, isLoading, isFetching } = useGetStatsQuery();
   const [stats, setStats] = useState(null);
+  const {
+    data: reservedData,
+    isLoading: reservedIsLoading,
+    isFetching: reservedIsFetching,
+  } = useReservedQuestionsQuery();
+
+  const [reservedDatastore, setreservedDatastore] = useState([]);
   useEffect(() => {
     if (data) {
-      // console.log(data);
       setStats(data.data);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (reservedData) {
+      setreservedDatastore(reservedData.data.reservedQuestions);
+    }
+  }, [reservedData]);
 
   return isLoading || isFetching || !stats ? (
     <DashboardLoader />
@@ -92,9 +104,15 @@ const DashboardHome = () => {
             Question Bank
           </mark>
         </Heading>
-        {dummy.map((ques) => (
-          <Question key={ques._id.$oid} data={ques} />
-        ))}
+        {reservedIsLoading ||
+        reservedIsFetching ||
+        reservedDatastore.length === 0 ? (
+          <DashboardLoader />
+        ) : (
+          reservedDatastore.map((ques, index) => (
+            <Question key={index} data={ques} />
+          ))
+        )}
       </Box>
     </div>
   );

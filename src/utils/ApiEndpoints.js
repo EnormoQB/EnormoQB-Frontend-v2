@@ -22,6 +22,10 @@ const ApiEndpoints = {
       method: 'GET',
       url: 'api/questions/list',
     },
+    reserved: {
+      method: 'GET',
+      url: 'api/questions/reserved',
+    },
   },
   questionPapers: {
     preview: {

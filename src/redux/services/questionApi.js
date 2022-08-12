@@ -23,6 +23,15 @@ export const questionsApi = createApi({
         data: questionPaper,
       }),
     }),
+    reservedQuestions: builder.query({
+      query: () => {
+        return {
+          url: `${ApiEndpoints.questions.reserved.url}`,
+          method: 'get',
+          providesTags: ['Reserved'],
+        };
+      },
+    }),
     getQuestions: builder.query({
       query: ({ userId, status, standard, subject, topics, difficulty }) => {
         const params = new URLSearchParams({
@@ -47,4 +56,5 @@ export const {
   useAddQuestionsMutation,
   useGetQuestionsQuery,
   useLazyGeneratePreviewQuery,
+  useReservedQuestionsQuery,
 } = questionsApi;
