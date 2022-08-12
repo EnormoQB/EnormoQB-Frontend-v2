@@ -22,6 +22,7 @@ import Option from './option';
 import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
 import FeedbackModal from '../Modal/Feedback';
+import SimilarQuestion from './similarQuestion';
 
 const style = {
   height: '60vh',
@@ -38,16 +39,11 @@ const style1 = {
   maxH: '80vh',
   width: '80vw',
   maxW: '80vw',
-  backgroundColor: 'white',
+  backgroundColor: 'brand.100',
   display: 'flex',
   flexDir: 'column',
-  justifyContent: 'center',
   position: 'fixed',
-  overflowX: 'scroll',
-  alignItems: 'center',
-  textAlign: 'center',
   padding: '30px',
-  borderRadius: '10px',
 };
 
 const Question = ({ data, show, questions }) => {
@@ -215,9 +211,6 @@ const Question = ({ data, show, questions }) => {
                       onClose={onModalCloseSimilarQuestion}
                       isCentered
                       motionPreset='slideInBottom'
-                      w='55vw'
-                      h='55vh'
-                      maxH='85vh'
                     >
                       <ModalOverlay />
                       <ModalContent sx={style1}>
@@ -225,14 +218,12 @@ const Question = ({ data, show, questions }) => {
                           _focus={{}}
                           position='fixed'
                           mt='80px'
-                          mr='170px'
+                          mr='152px'
                         />
-                        <ModalBody>
-                          <Box pt='800px'>
-                            {questions.map((ques) => (
-                              <Question key={ques._id.$oid} data={ques} />
-                            ))}
-                          </Box>
+                        <ModalBody mt='8' overflow='auto' py='0'>
+                          {questions.map((ques) => (
+                            <SimilarQuestion key={ques._id.$oid} data={ques} />
+                          ))}
                         </ModalBody>
                       </ModalContent>
                     </Modal>
