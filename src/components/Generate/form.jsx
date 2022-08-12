@@ -22,22 +22,25 @@ import {
 import { Select } from 'chakra-react-select';
 import { FaPlus } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
+import { setFormData } from '../../redux/features/generateSlice';
 import classData from '../../data/classData';
 import { boardOptions, classOptions, difficulties } from './config';
 import WarningModal from '../Modal/Warning';
-import { useGenerateQuesPaperMutation } from '../../redux/services/questionApi';
+import OverlayLoader from '../Loaders/OverlayLoader';
 
-const GenerateForm = () => {
+const GenerateForm = ({ trigger }) => {
   const toast = useToast();
+  const dispatch = useDispatch();
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
   const [board, setBoard] = useState('');
   const [topic, setTopic] = useState('');
   const [topicQuesCount, setTopicQuesCount] = useState('');
   const [topicsList, setTopicsList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [warning, setWarning] = useState('null');
-  const [generateQuesPaper] = useGenerateQuesPaperMutation();
   const instituteName = useRef();
   const examType = useRef();
   const [quesDiffDetails, setQuesDiffDetails] = useState({
@@ -88,9 +91,10 @@ const GenerateForm = () => {
   const easy = quesDiffDetails.Easy.count * quesDiffDetails.Easy.marks;
   const medium = quesDiffDetails.Medium.count * quesDiffDetails.Medium.marks;
   const hard = quesDiffDetails.Hard.count * quesDiffDetails.Hard.marks;
-  let totalMarks = easy + medium + hard;
+  const totalMarks = easy + medium + hard;
 
   const onSubmit = () => {
+    setLoading(true);
     const data = {
       instituteName: instituteName.current.value,
       standard: standard.value,
@@ -104,35 +108,55 @@ const GenerateForm = () => {
       totalMarks,
     };
 
-    const formData = new FormData();
-    formData.append('data', data);
-    // console.log(data);
-    generateQuesPaper(formData)
+    const neededTopics = topicsList.map((item) => item.name);
+
+    const completeTopicList = classData[10].Maths.filter(
+      (item) => !neededTopics.includes(item),
+    ).map((item) => {
+      return {
+        name: item,
+        count: -1,
+      };
+    });
+
+    const previewData = {
+      standard: standard.value,
+      subject: subject.value,
+      topicsDistribution: [...topicsList, ...completeTopicList],
+      easy: quesDiffDetails.Easy.count,
+      medium: quesDiffDetails.Medium.count,
+      hard: quesDiffDetails.Hard.count,
+    };
+
+    dispatch(setFormData(data));
+
+    trigger(previewData)
       .then(() => {
+        setLoading(false);
         toast({
-          id: 'Contribute',
+          id: 'generate',
           title: 'success',
           position: 'top-right',
-          description: 'Successfully contributed the question!',
+          description: 'Preview generated successfully !!',
           status: 'success',
           duration: 3000,
           isClosable: true,
         });
-        instituteName.current.value = '';
-        examType.current.value = '';
-        instructions.current.value = '';
-        setStandard({ value: '10', label: 'X' });
-        setSubject('');
-        setBoard('');
-        setSubject('');
-        setTopicsList([]);
-        setQuesDiffDetails({
-          Easy: { count: 0, marks: 1 },
-          Medium: { count: 0, marks: 1 },
-          Hard: { count: 0, marks: 1 },
-        });
-        setTime('');
-        totalMarks = 0;
+        // instituteName.current.value = '';
+        // examType.current.value = '';
+        // instructions.current.value = '';
+        // setStandard({ value: '10', label: 'X' });
+        // setSubject('');
+        // setBoard('');
+        // setSubject('');
+        // setTopicsList([]);
+        // setQuesDiffDetails({
+        //   Easy: { count: 0, marks: 1 },
+        //   Medium: { count: 0, marks: 1 },
+        //   Hard: { count: 0, marks: 1 },
+        // });
+        // setTime('');
+        // totalMarks = 0;
       })
       .catch((error) => {
         console.log(error);
@@ -141,6 +165,7 @@ const GenerateForm = () => {
 
   return (
     <Box>
+      {loading && <OverlayLoader />}
       <WarningModal
         isOpen={isOpen}
         onClose={onClose}
@@ -391,7 +416,7 @@ const GenerateForm = () => {
               allowMouseWheel
               min={1}
               value={topicQuesCount}
-              onChange={(val) => setTopicQuesCount(val)}
+              onChange={(val) => setTopicQuesCount(parseInt(val, 10))}
             >
               <NumberInputField
                 boxShadow='base'
