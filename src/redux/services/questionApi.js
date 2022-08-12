@@ -45,7 +45,7 @@ export const questionsApi = createApi({
           const { data } = await queryFulfilled;
           dispatch(setQuestion(data.data.items));
         } catch (error) {
-          console.log(error);
+          // console.error(error);
         }
       },
     }),

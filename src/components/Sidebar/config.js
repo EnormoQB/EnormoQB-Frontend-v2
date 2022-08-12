@@ -26,15 +26,15 @@ export const navItems = [
   { id: 4, name: 'Rejected Questions', icon: MdRemoveDone, link: '/rejected' },
   {
     id: 5,
-    name: 'Generate Question Paper',
-    icon: BsFillFilePdfFill,
-    link: '/generate',
-  },
-  {
-    id: 6,
     name: 'Contribute Question',
     icon: RiFileEditFill,
     link: '/contribute',
+  },
+  {
+    id: 6,
+    name: 'Generate Question Paper',
+    icon: BsFillFilePdfFill,
+    link: '/generate',
   },
   {
     id: 7,

@@ -116,7 +116,7 @@ const CustomQuestion = () => {
       answer,
       options: opts,
     };
-    console.log(data);
+    // console.log(data);
   };
 
   return (

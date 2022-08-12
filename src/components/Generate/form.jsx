@@ -106,7 +106,7 @@ const GenerateForm = () => {
 
     const formData = new FormData();
     formData.append('data', data);
-    console.log(data);
+    // console.log(data);
     generateQuesPaper(formData)
       .then(() => {
         toast({

@@ -229,7 +229,7 @@ const Question = ({ data, show, questions }) => {
                           mr='170px'
                         />
                         <ModalBody>
-                          <Box pt='800px'>
+                          <Box pt='40px'>
                             {questions.map((ques) => (
                               <Question key={ques._id.$oid} data={ques} />
                             ))}

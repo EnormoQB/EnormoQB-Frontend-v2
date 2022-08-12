@@ -19,7 +19,7 @@ const DashboardHome = () => {
   const [stats, setStats] = useState(null);
   useEffect(() => {
     if (data) {
-      console.log(data);
+      // console.log(data);
       setStats(data.data);
     }
   }, [data]);

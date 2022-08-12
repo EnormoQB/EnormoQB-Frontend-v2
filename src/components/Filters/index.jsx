@@ -18,6 +18,7 @@ const Filter = ({ setfilter }) => {
       topics: topics.map((topic) => topic.value),
       difficulty: difficulty.value,
     }));
+    // console.log(standard, subject, difficulty);
   };
 
   return (

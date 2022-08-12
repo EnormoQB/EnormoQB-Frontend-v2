@@ -10,7 +10,7 @@ const QuesPapersFilter = () => {
   const [board, setBoard] = useState('');
 
   const handleApply = () => {
-    console.log('yo');
+    // console.log('yo');
   };
 
   return (
