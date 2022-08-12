@@ -42,12 +42,7 @@ const Pending = () => {
           {questions.length === 0 && <>No data!</>}
           {questions.length !== 0 &&
             questions.map((ques) => (
-              <Question
-                key={ques._id.$oid}
-                data={ques}
-                questions={questions}
-                show
-              />
+              <Question key={ques._id} data={ques} questions={questions} show />
             ))}
         </>
       )}

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -22,7 +22,7 @@ import {
 import { Select } from 'chakra-react-select';
 import { FaPlus } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setFormData } from '../../redux/features/generateSlice';
 import classData from '../../data/classData';
 import { boardOptions, classOptions, difficulties } from './config';
@@ -31,6 +31,7 @@ import OverlayLoader from '../Loaders/OverlayLoader';
 
 const GenerateForm = ({ trigger }) => {
   const toast = useToast();
+  const formDetails = useSelector((state) => state.generateState.generateForm);
   const dispatch = useDispatch();
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
@@ -50,6 +51,24 @@ const GenerateForm = ({ trigger }) => {
   });
   const instructions = useRef();
   const [time, setTime] = useState('');
+
+  const onLoad = () => {
+    console.log('running');
+    instituteName.current.value = formDetails.instituteName;
+    setBoard(boardOptions.find((ele) => ele.value === formDetails.board));
+    examType.current.value = formDetails.examType;
+    instructions.current.value = formDetails.instructions;
+    setQuesDiffDetails(formDetails.quesDiffDetails);
+    setStandard(classOptions.find((ele) => ele.value === formDetails.standard));
+    setSubject({ value: formDetails.subject, label: formDetails.subject });
+    setTime(formDetails.time);
+    setTopicsList(formDetails.topics);
+  };
+
+  useEffect(() => {
+    console.log(formDetails);
+    if (formDetails) onLoad();
+  }, [formDetails]);
 
   const onConfirm = {
     class: (e) => {
@@ -361,9 +380,7 @@ const GenerateForm = ({ trigger }) => {
             allowMouseWheel
             step={5}
             value={time}
-            onChange={(e) => {
-              setTime(e);
-            }}
+            onChange={(e) => setTime(e)}
           >
             <NumberInputField placeholder='Total Time' boxShadow='base' />
           </NumberInput>

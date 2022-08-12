@@ -15,14 +15,6 @@ export const questionsApi = createApi({
         data: question,
       }),
     }),
-    generatePreview: builder.query({
-      query: (questionPaper) => ({
-        url: ApiEndpoints.questionPapers.preview.url,
-        method: 'post',
-        headers: { 'content-type': 'multipart/form-data' },
-        data: questionPaper,
-      }),
-    }),
     getQuestions: builder.query({
       query: ({ userId, status, standard, subject, topics, difficulty }) => {
         const params = new URLSearchParams({

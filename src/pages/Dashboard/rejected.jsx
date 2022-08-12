@@ -41,9 +41,7 @@ const Rejected = () => {
         <>
           {questions.length === 0 && <>No data!</>}
           {questions.length !== 0 &&
-            questions.map((ques) => (
-              <Question key={ques._id.$oid} data={ques} />
-            ))}
+            questions.map((ques) => <Question key={ques._id} data={ques} />)}
         </>
       )}
     </Box>

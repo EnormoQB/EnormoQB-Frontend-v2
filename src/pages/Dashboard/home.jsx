@@ -9,7 +9,6 @@ import LineGraph from '../../components/Graph/LineGraph';
 import DoughnutGraph from '../../components/Graph/DoughnutGraph';
 import Question from '../../components/Accordion';
 import { dummy } from '../../components/Generate/config';
-import Filter from '../../components/Filters';
 import { useGetStatsQuery } from '../../redux/services/statsApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
