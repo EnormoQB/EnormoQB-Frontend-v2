@@ -251,3 +251,7 @@ const Question = ({ data, show, questions }) => {
 };
 
 export default Question;
+
+Question.defaultProps = {
+  show: false,
+};

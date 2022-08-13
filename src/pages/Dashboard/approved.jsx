@@ -15,7 +15,7 @@ const Approved = () => {
 
   useEffect(() => {
     if (data) {
-      setQuestions(data.data.questions);
+      setQuestions(data.data.questions || []);
     }
   }, [data]);
 
@@ -35,10 +35,14 @@ const Approved = () => {
         Questions
       </Heading>
       <Filter setfilter={setfilter} />
-      {isLoading || isFetching || questions.length === 0 ? (
-        <DashboardLoader />
+      {isLoading || isFetching ? (
+        <DashboardLoader height='calc(70vh - 64px)' />
       ) : (
-        questions.map((ques) => <Question key={ques._id} data={ques} />)
+        <>
+          {questions.length === 0 && <>No data!</>}
+          {questions.length !== 0 &&
+            questions.map((ques) => <Question key={ques._id} data={ques} />)}
+        </>
       )}
     </Box>
   );

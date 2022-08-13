@@ -1,13 +1,8 @@
 import { Box, Spinner } from '@chakra-ui/react';
 
-const FullScreenLoader = () => {
+const DashboardLoader = (height) => {
   return (
-    <Box
-      display='flex'
-      alignItems='center'
-      justifyContent='center'
-      h='calc(100vh - 64px)'
-    >
+    <Box display='flex' alignItems='center' justifyContent='center' sx={height}>
       <Spinner
         thickness='4px'
         speed='0.65s'
@@ -19,4 +14,8 @@ const FullScreenLoader = () => {
   );
 };
 
-export default FullScreenLoader;
+export default DashboardLoader;
+
+DashboardLoader.defaultProps = {
+  height: 'calc(100vh - 64px)',
+};

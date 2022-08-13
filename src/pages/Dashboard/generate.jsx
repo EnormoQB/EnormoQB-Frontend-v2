@@ -14,6 +14,7 @@ import { useLazyGeneratePreviewQuery } from '../../redux/services/questionPaperA
 const Generate = () => {
   const [trigger, { data, isLoading, isFetching }] =
     useLazyGeneratePreviewQuery();
+
   return (
     <div id='generateForm'>
       <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
