@@ -47,6 +47,7 @@ const Contribute = () => {
     getRootProps,
     getRadioProps,
     value: difficulty,
+    setValue: setDifficulty,
   } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
 
   const group = getRootProps();
@@ -143,7 +144,7 @@ const Contribute = () => {
   };
 
   const onSubmit = async () => {
-    let answer = null;
+    let answer = '';
     const opts = [];
 
     options.forEach((item) => {
@@ -151,7 +152,6 @@ const Contribute = () => {
       if (item.isCorrect) answer = item.value.trim();
     });
 
-    console.log('yo1');
     const data = {
       standard: standard.value,
       subject: subject.value,
@@ -163,11 +163,10 @@ const Contribute = () => {
       options: opts,
       userId: user._id,
     };
-    console.log('yo2');
 
     if (data.question.length < 1) {
       errorToast('Question cannot be blank!');
-      // } else if (data.answer === null) {
+      // } else if (data.answer.length < 1) {
       //   errorToast('Answer cannot be blank!');
       // } else if (data.subject.length < 1) {
       //   errorToast('Subject cannot be blank!');
@@ -182,8 +181,7 @@ const Contribute = () => {
       addQuestion(formData)
         .then((res) => {
           console.log(res);
-          if (res?.error.status !== 0) {
-            onOpen();
+          if (res?.data.status === 1) {
             setImage(null);
             setOptions([
               { value: '', isCorrect: false, id: Math.random() * 100 },
@@ -196,13 +194,16 @@ const Contribute = () => {
             setTopics([]);
             question.current.value = '';
             explanation.current.value = '';
-            group.current.value = 'Easy';
+            setDifficulty('Easy');
+            setLoading(false);
+            onOpen();
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
           errorToast('Some error occured!');
         });
-      setLoading(false);
     }
   };
 
