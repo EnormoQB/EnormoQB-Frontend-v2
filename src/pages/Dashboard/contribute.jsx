@@ -60,13 +60,25 @@ const Contribute = () => {
   const user = useSelector((state) => state.userState.user);
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
-  const [topics, setTopics] = useState('');
+  const [topics, setTopics] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const question = useRef();
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const errorToast = (description) => {
+    toast({
+      id: 'fail',
+      title: 'Error',
+      position: 'top-right',
+      description,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   const changeHandler = (idx, e) => {
     setOptions((prevState) =>
@@ -118,15 +130,7 @@ const Contribute = () => {
   const handleAnswer = (idx) => {
     if (options[idx].value === '') {
       if (!toast.isActive('answer')) {
-        toast({
-          id: 'answer',
-          title: 'Error',
-          position: 'top-right',
-          description: 'Answer cannot be blank!',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
+        errorToast('Answer cannot be blank!');
       }
       return;
     }
@@ -139,59 +143,67 @@ const Contribute = () => {
   };
 
   const onSubmit = async () => {
-    setLoading(true);
     let answer = null;
     const opts = [];
 
     options.forEach((item) => {
-      opts.push(item.value);
-      if (item.isCorrect) answer = item.value;
+      opts.push(item.value.trim());
+      if (item.isCorrect) answer = item.value.trim();
     });
 
+    console.log('yo1');
     const data = {
       standard: standard.value,
       subject: subject.value,
       topics: topics.map((topic) => topic.value),
       difficulty,
-      question: question.current.value,
-      answerExplanation: explanation.current.value,
+      question: question.current.value.trim(),
+      answerExplanation: explanation.current.value.trim(),
       answer,
       options: opts,
       userId: user._id,
     };
+    console.log('yo2');
 
-    const formData = new FormData();
-    formData.append('data', JSON.stringify(data));
-    formData.append('image', image);
-    await addQuestion(formData)
-      .then(() => {
-        setLoading(false);
-        toast({
-          id: 'Contribute',
-          title: 'success',
-          position: 'top-right',
-          description: 'Successfully contributed the question!',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
+    if (data.question.length < 1) {
+      errorToast('Question cannot be blank!');
+      // } else if (data.answer === null) {
+      //   errorToast('Answer cannot be blank!');
+      // } else if (data.subject.length < 1) {
+      //   errorToast('Subject cannot be blank!');
+      // } else if (data.topics.length < 1) {
+      //   errorToast('Subject cannot be blank!');
+    } else {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(data));
+      formData.append('image', image);
+      addQuestion(formData)
+        .then((res) => {
+          console.log(res);
+          if (res?.error.status !== 0) {
+            onOpen();
+            setImage(null);
+            setOptions([
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+            ]);
+            setStandard({ value: '10', label: 'X' });
+            setSubject('');
+            setTopics([]);
+            question.current.value = '';
+            explanation.current.value = '';
+            group.current.value = 'Easy';
+          }
+        })
+        .catch(() => {
+          errorToast('Some error occured!');
         });
-        setImage(null);
-        setOptions([
-          { value: '', isCorrect: false, id: Math.random() * 100 },
-          { value: '', isCorrect: false, id: Math.random() * 100 },
-          { value: '', isCorrect: false, id: Math.random() * 100 },
-          { value: '', isCorrect: false, id: Math.random() * 100 },
-        ]);
-        setStandard({ value: '10', label: 'X' });
-        setSubject('');
-        setTopics('');
-        question.current.value = '';
-        explanation.current.value = '';
-        group.current.value = 'Easy';
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -211,7 +223,14 @@ const Contribute = () => {
             Question
           </mark>
         </Heading>
-        <Button disabled={loading} onClick={(onSubmit, onOpen)} w={150} h={45}>
+        <Button
+          disabled={loading}
+          onClick={() => {
+            onSubmit();
+          }}
+          w={150}
+          h={45}
+        >
           SUBMIT
         </Button>
         <Modal isOpen={isOpen} onClose={onClose} size='lg'>
