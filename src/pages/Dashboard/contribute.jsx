@@ -143,15 +143,26 @@ const Contribute = () => {
   };
 
   const onSubmit = async () => {
-    let answer = null;
+    let answer = '';
     const opts = [];
+    let flag = false;
+    for (let i = 0; i < options.length; i += 1) {
+      const val = options[i].value.trim();
+      if (val.length < 1) {
+        flag = true;
+        break;
+      }
+      opts.push(val);
+      if (options[i].isCorrect) {
+        answer = val;
+      }
+    }
+    if (flag) {
+      errorToast('Delete the empty option or enter some value!');
+      return;
+    }
 
-    options.forEach((item) => {
-      opts.push(item.value.trim());
-      if (item.isCorrect) answer = item.value.trim();
-    });
-
-    console.log('yo1');
+    console.log(answer);
     const data = {
       standard: standard.value,
       subject: subject.value,
@@ -163,16 +174,18 @@ const Contribute = () => {
       options: opts,
       userId: user._id,
     };
-    console.log('yo2');
+    console.log(data.answer);
 
     if (data.question.length < 1) {
       errorToast('Question cannot be blank!');
-      // } else if (data.answer === null) {
-      //   errorToast('Answer cannot be blank!');
-      // } else if (data.subject.length < 1) {
-      //   errorToast('Subject cannot be blank!');
-      // } else if (data.topics.length < 1) {
-      //   errorToast('Subject cannot be blank!');
+    } else if (data.subject.length < 1) {
+      errorToast('Subject cannot be blank!');
+    } else if (data.topics.length < 1) {
+      errorToast('Topics cannot be blank!');
+    } else if (!difficulties.includes(data.difficulty)) {
+      errorToast('Select from given difficulties!');
+    } else if (data.answer.length < 1) {
+      errorToast('Answer cannot be blank!');
     } else {
       setLoading(true);
 
