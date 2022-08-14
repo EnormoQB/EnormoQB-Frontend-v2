@@ -177,15 +177,17 @@ const Contribute = () => {
       userId: user._id,
     };
 
+    console.log(data.topics);
+
     if (data.question.length < 1) {
       errorToast('Question cannot be blank!');
-    } else if (data.subject.length < 1) {
+    } else if (typeof data.subject === 'undefined') {
       errorToast('Subject cannot be blank!');
-    } else if (data.topics.length < 1) {
+    } else if (data.topics.length === 0) {
       errorToast('Topics cannot be blank!');
     } else if (!difficulties.includes(data.difficulty)) {
       errorToast('Select from given difficulties!');
-    } else if (data.answer.length < 1) {
+    } else if (data.answer === '') {
       errorToast('Answer cannot be blank!');
     } else {
       setLoading(true);

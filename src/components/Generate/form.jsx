@@ -70,6 +70,18 @@ const GenerateForm = ({ trigger }) => {
     if (formDetails) onLoad();
   }, [formDetails]);
 
+  const errorToast = (description) => {
+    toast({
+      id: 'fail',
+      title: 'Error',
+      position: 'top-right',
+      description,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
   const onConfirm = {
     class: (e) => {
       setStandard(e);
@@ -110,10 +122,10 @@ const GenerateForm = ({ trigger }) => {
   const easy = quesDiffDetails.Easy.count * quesDiffDetails.Easy.marks;
   const medium = quesDiffDetails.Medium.count * quesDiffDetails.Medium.marks;
   const hard = quesDiffDetails.Hard.count * quesDiffDetails.Hard.marks;
-  const totalMarks = easy + medium + hard;
+  let totalMarks = easy + medium + hard;
 
   const onSubmit = () => {
-    setLoading(true);
+    // setLoading(true);
     const data = {
       instituteName: instituteName.current.value,
       standard: standard.value,
@@ -127,59 +139,76 @@ const GenerateForm = ({ trigger }) => {
       totalMarks,
     };
 
-    const neededTopics = topicsList.map((item) => item.name);
+    console.log(quesDiffDetails.Easy.count);
 
-    const completeTopicList = classData[10].Maths.filter(
-      (item) => !neededTopics.includes(item),
-    ).map((item) => {
-      return {
-        name: item,
-        count: -1,
-      };
-    });
+    if (typeof data.board === 'undefined') {
+      errorToast('Board cannot be blank!');
+    } else if (typeof data.subject === 'undefined') {
+      errorToast('subject cannot be blank!');
+    } else if (
+      quesDiffDetails.Easy.count === 0 &&
+      quesDiffDetails.Medium.count === 0 &&
+      quesDiffDetails.Hard.count === 0
+    ) {
+      errorToast(
+        'Number of question of at least 1 difficulty has to be entered!',
+      );
+    } else {
+      setLoading(true);
+      const neededTopics = topicsList.map((item) => item.name);
 
-    const previewData = {
-      standard: standard.value,
-      subject: subject.value,
-      topicsDistribution: [...topicsList, ...completeTopicList],
-      easy: quesDiffDetails.Easy.count,
-      medium: quesDiffDetails.Medium.count,
-      hard: quesDiffDetails.Hard.count,
-    };
-
-    dispatch(setFormData(data));
-
-    trigger(previewData)
-      .then(() => {
-        setLoading(false);
-        toast({
-          id: 'generate',
-          title: 'success',
-          position: 'top-right',
-          description: 'Preview generated successfully !!',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
-        // instituteName.current.value = '';
-        // examType.current.value = '';
-        // instructions.current.value = '';
-        // setStandard({ value: '10', label: 'X' });
-        // setSubject('');
-        // setBoard('');
-        // setSubject('');
-        // setTopicsList([]);
-        // setQuesDiffDetails({
-        //   Easy: { count: 0, marks: 1 },
-        //   Medium: { count: 0, marks: 1 },
-        //   Hard: { count: 0, marks: 1 },
-        // });
-        // setTime('');
-        // totalMarks = 0;
-      })
-      .catch((error) => {
-        console.log(error);
+      const completeTopicList = classData[10].Maths.filter(
+        (item) => !neededTopics.includes(item),
+      ).map((item) => {
+        return {
+          name: item,
+          count: -1,
+        };
       });
+
+      const previewData = {
+        standard: standard.value,
+        subject: subject.value,
+        topicsDistribution: [...topicsList, ...completeTopicList],
+        easy: quesDiffDetails.Easy.count,
+        medium: quesDiffDetails.Medium.count,
+        hard: quesDiffDetails.Hard.count,
+      };
+
+      dispatch(setFormData(data));
+
+      trigger(previewData)
+        .then(() => {
+          setLoading(false);
+          toast({
+            id: 'generate',
+            title: 'success',
+            position: 'top-right',
+            description: 'Preview generated successfully!!',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
+          instituteName.current.value = '';
+          examType.current.value = '';
+          instructions.current.value = '';
+          setStandard({ value: '10', label: 'X' });
+          setSubject('');
+          setBoard('');
+          setSubject('');
+          setTopicsList([]);
+          setQuesDiffDetails({
+            Easy: { count: 0, marks: 1 },
+            Medium: { count: 0, marks: 1 },
+            Hard: { count: 0, marks: 1 },
+          });
+          setTime('');
+          totalMarks = 0;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
