@@ -17,6 +17,16 @@ import {
   InputRightElement,
   Tooltip,
   useToast,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Text,
+  Image,
 } from '@chakra-ui/react';
 import debounce from 'lodash.debounce';
 import { Select } from 'chakra-react-select';
@@ -26,6 +36,7 @@ import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
 import classData from '../../data/classData';
 import { useAddQuestionsMutation } from '../../redux/services/questionApi';
+import Congratulations from '../../assets/announcement.svg';
 import OverlayLoader from '../../components/Loaders/OverlayLoader';
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
@@ -36,6 +47,7 @@ const Contribute = () => {
     getRootProps,
     getRadioProps,
     value: difficulty,
+    setValue: setDifficulty,
   } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
 
   const group = getRootProps();
@@ -49,12 +61,25 @@ const Contribute = () => {
   const user = useSelector((state) => state.userState.user);
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
-  const [topics, setTopics] = useState('');
+  const [topics, setTopics] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const question = useRef();
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const errorToast = (description) => {
+    toast({
+      id: 'fail',
+      title: 'Error',
+      position: 'top-right',
+      description,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   const changeHandler = (idx, e) => {
     setOptions((prevState) =>
@@ -106,15 +131,7 @@ const Contribute = () => {
   const handleAnswer = (idx) => {
     if (options[idx].value === '') {
       if (!toast.isActive('answer')) {
-        toast({
-          id: 'answer',
-          title: 'Error',
-          position: 'top-right',
-          description: 'Answer cannot be blank!',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
+        errorToast('Answer cannot be blank!');
       }
       return;
     }
@@ -127,59 +144,84 @@ const Contribute = () => {
   };
 
   const onSubmit = async () => {
-    setLoading(true);
-    let answer = null;
+    let answer = '';
     const opts = [];
+    let flag = false;
 
-    options.forEach((item) => {
-      opts.push(item.value);
-      if (item.isCorrect) answer = item.value;
-    });
+    for (let i = 0; i < options.length; i += 1) {
+      const val = options[i].value.trim();
+      if (val.length < 1) {
+        flag = true;
+        break;
+      }
+      opts.push(val);
+      if (options[i].isCorrect) {
+        answer = val;
+      }
+    }
+
+    if (flag) {
+      errorToast('Delete the empty option or enter some value!');
+      return;
+    }
 
     const data = {
       standard: standard.value,
       subject: subject.value,
       topics: topics.map((topic) => topic.value),
       difficulty,
-      question: question.current.value,
-      answerExplanation: explanation.current.value,
+      question: question.current.value.trim(),
+      answerExplanation: explanation.current.value.trim(),
       answer,
       options: opts,
       userId: user._id,
     };
 
-    const formData = new FormData();
-    formData.append('data', JSON.stringify(data));
-    formData.append('image', image);
-    await addQuestion(formData)
-      .then(() => {
-        setLoading(false);
-        toast({
-          id: 'Contribute',
-          title: 'success',
-          position: 'top-right',
-          description: 'Successfully contributed the question!',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
+    console.log(data.topics);
+
+    if (data.question.length < 1) {
+      errorToast('Question cannot be blank!');
+    } else if (typeof data.subject === 'undefined') {
+      errorToast('Subject cannot be blank!');
+    } else if (data.topics.length === 0) {
+      errorToast('Topics cannot be blank!');
+    } else if (!difficulties.includes(data.difficulty)) {
+      errorToast('Select from given difficulties!');
+    } else if (data.answer === '') {
+      errorToast('Answer cannot be blank!');
+    } else {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(data));
+      formData.append('image', image);
+
+      addQuestion(formData)
+        .then((res) => {
+          if (res?.data.status === 1) {
+            setImage(null);
+            setOptions([
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+            ]);
+            setStandard({ value: '10', label: 'X' });
+            setSubject('');
+            setTopics([]);
+            question.current.value = '';
+            explanation.current.value = '';
+            setDifficulty('Easy');
+            setLoading(false);
+            onOpen();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          errorToast('Some error occured!');
         });
-        setImage(null);
-        setOptions([
-          { value: '', isCorrect: false, id: Math.random() * 100 },
-          { value: '', isCorrect: false, id: Math.random() * 100 },
-          { value: '', isCorrect: false, id: Math.random() * 100 },
-          { value: '', isCorrect: false, id: Math.random() * 100 },
-        ]);
-        setStandard({ value: '10', label: 'X' });
-        setSubject('');
-        setTopics('');
-        question.current.value = '';
-        explanation.current.value = '';
-        group.current.value = 'Easy';
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
   };
 
   return (
@@ -199,9 +241,41 @@ const Contribute = () => {
             Question
           </mark>
         </Heading>
-        <Button disabled={loading} onClick={onSubmit} w={150} h={45}>
+        <Button
+          disabled={loading}
+          onClick={() => {
+            onSubmit();
+          }}
+          w={150}
+          h={45}
+        >
           SUBMIT
         </Button>
+        <Modal isOpen={isOpen} onClose={onClose} size='lg'>
+          <ModalOverlay />
+          <ModalContent m='auto'>
+            <ModalHeader />
+            <ModalCloseButton />
+            <ModalBody>
+              <Text fontWeight='bold' fontSize='lg' textAlign='center' mb={3}>
+                Thank you for the submission!
+              </Text>
+              <Text textAlign='center' mb={6} fontSize='sm' w='80%' m='auto'>
+                Your question status is pending. We will approve or reject it
+                upon evaluation.
+              </Text>
+              <Image
+                src={Congratulations}
+                alt='successful submission'
+                w='60%'
+                m='auto'
+                mt={6}
+                mr='78px'
+              />
+            </ModalBody>
+            <ModalFooter />
+          </ModalContent>
+        </Modal>
       </Flex>
       <Flex justify='space-between'>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
