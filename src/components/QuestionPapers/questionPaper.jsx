@@ -20,7 +20,6 @@ const QuesPaper = ({ data }) => {
       const HardQues = ((data || {}).quesDiffDetails || {}).Hard;
       const HardCount = (HardQues || {}).count;
       const HardMarks = (HardQues || {}).marks;
-      // console.log(ans, ans1);
 
       setMarks(
         EasyCount * EasyMarks +

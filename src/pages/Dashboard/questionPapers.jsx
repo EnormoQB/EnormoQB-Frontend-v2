@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
 import QuesPapersFilter from '../../components/Filters/quesPapersFilter';
 import QuesPaper from '../../components/QuestionPapers/questionPaper';
-import dummy from '../../components/QuestionPapers/config';
 import { usePreviousYearPaperQuery } from '../../redux/services/questionPaperApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
@@ -32,10 +31,6 @@ const QuestionPapers = () => {
         Papers
       </Heading>
       <QuesPapersFilter />
-      {/* {dummy.map((ques) => (
-        <QuesPaper key={ques._id.$oid} data={ques} />
-      ))} */}
-
       {isLoading || isFetching || paper.length === 0 ? (
         <DashboardLoader />
       ) : (
