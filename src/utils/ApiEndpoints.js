@@ -32,6 +32,10 @@ const ApiEndpoints = {
       method: 'POST',
       url: 'api/questionPapers/preview',
     },
+    previous: {
+      method: 'GET',
+      url: 'api/questionPapers/previousyear',
+    },
   },
   stats: {
     get: {

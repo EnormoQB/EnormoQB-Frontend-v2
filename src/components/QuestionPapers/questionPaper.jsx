@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Box, Flex, IconButton, Text, Tooltip } from '@chakra-ui/react';
 import { RiFileDownloadFill } from 'react-icons/ri';
 import { BsBoxArrowInRight } from 'react-icons/bs';
@@ -5,6 +6,30 @@ import Tag from './tag';
 import TagDivider from '../Accordion/Tags/divider';
 
 const QuesPaper = ({ data }) => {
+  const [marks, setMarks] = useState(0);
+  useEffect(() => {
+    if (data) {
+      const EasyQues = ((data || {}).quesDiffDetails || {}).Easy;
+      const EasyCount = (EasyQues || {}).count;
+      const EasyMarks = (EasyQues || {}).marks;
+
+      const MediumQues = ((data || {}).quesDiffDetails || {}).Medium;
+      const MediumCount = (MediumQues || {}).count;
+      const MediumMarks = (MediumQues || {}).marks;
+
+      const HardQues = ((data || {}).quesDiffDetails || {}).Hard;
+      const HardCount = (HardQues || {}).count;
+      const HardMarks = (HardQues || {}).marks;
+      // console.log(ans, ans1);
+
+      setMarks(
+        EasyCount * EasyMarks +
+          MediumCount * MediumMarks +
+          HardCount * HardMarks,
+      );
+    }
+  }, []);
+
   return (
     <Flex
       px='5'
@@ -17,22 +42,22 @@ const QuesPaper = ({ data }) => {
     >
       <Box w='75%'>
         <Text as='h2' fontWeight='600' fontSize='lg'>
-          {data.title}
+          {data.name}
         </Text>
         <Flex wrap='wrap' mt='2.5' alignItems='center'>
           <Tag content={data.instituteName} />
           <TagDivider />
-          <Tag content={data.examType} />
+          <Tag content={data.examType || <span>Board Exam</span>} />
           <TagDivider />
           <Tag content={data.board} />
           <TagDivider />
-          <Tag content={data.class} />
+          <Tag content={data.standard} />
           <TagDivider />
           <Tag content={data.subject} />
           <TagDivider />
-          <Tag content={`${data.totalMarks} Marks`} />
+          <Tag content={`${marks} Marks`} />
           <TagDivider />
-          <Tag content={`${data.totalTime} Hours`} />
+          <Tag content={`${data.time} Minutes`} />
         </Flex>
       </Box>
       <Flex ml='auto' alignItems='center'>
