@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -22,7 +22,7 @@ import {
 import { Select } from 'chakra-react-select';
 import { FaPlus } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setFormData } from '../../redux/features/generateSlice';
 import classData from '../../data/classData';
 import { boardOptions, classOptions, difficulties } from './config';
@@ -31,6 +31,7 @@ import OverlayLoader from '../Loaders/OverlayLoader';
 
 const GenerateForm = ({ trigger }) => {
   const toast = useToast();
+  const formDetails = useSelector((state) => state.generateState.generateForm);
   const dispatch = useDispatch();
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
@@ -50,6 +51,36 @@ const GenerateForm = ({ trigger }) => {
   });
   const instructions = useRef();
   const [time, setTime] = useState('');
+
+  const onLoad = () => {
+    console.log('running');
+    instituteName.current.value = formDetails.instituteName;
+    setBoard(boardOptions.find((ele) => ele.value === formDetails.board));
+    examType.current.value = formDetails.examType;
+    instructions.current.value = formDetails.instructions;
+    setQuesDiffDetails(formDetails.quesDiffDetails);
+    setStandard(classOptions.find((ele) => ele.value === formDetails.standard));
+    setSubject({ value: formDetails.subject, label: formDetails.subject });
+    setTime(formDetails.time);
+    setTopicsList(formDetails.topics);
+  };
+
+  useEffect(() => {
+    console.log(formDetails);
+    if (formDetails) onLoad();
+  }, [formDetails]);
+
+  const errorToast = (description) => {
+    toast({
+      id: 'fail',
+      title: 'Error',
+      position: 'top-right',
+      description,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   const onConfirm = {
     class: (e) => {
@@ -91,10 +122,10 @@ const GenerateForm = ({ trigger }) => {
   const easy = quesDiffDetails.Easy.count * quesDiffDetails.Easy.marks;
   const medium = quesDiffDetails.Medium.count * quesDiffDetails.Medium.marks;
   const hard = quesDiffDetails.Hard.count * quesDiffDetails.Hard.marks;
-  const totalMarks = easy + medium + hard;
+  let totalMarks = easy + medium + hard;
 
   const onSubmit = () => {
-    setLoading(true);
+    // setLoading(true);
     const data = {
       instituteName: instituteName.current.value,
       standard: standard.value,
@@ -108,59 +139,76 @@ const GenerateForm = ({ trigger }) => {
       totalMarks,
     };
 
-    const neededTopics = topicsList.map((item) => item.name);
+    console.log(quesDiffDetails.Easy.count);
 
-    const completeTopicList = classData[10].Maths.filter(
-      (item) => !neededTopics.includes(item),
-    ).map((item) => {
-      return {
-        name: item,
-        count: -1,
-      };
-    });
+    if (typeof data.board === 'undefined') {
+      errorToast('Board cannot be blank!');
+    } else if (typeof data.subject === 'undefined') {
+      errorToast('subject cannot be blank!');
+    } else if (
+      quesDiffDetails.Easy.count === 0 &&
+      quesDiffDetails.Medium.count === 0 &&
+      quesDiffDetails.Hard.count === 0
+    ) {
+      errorToast(
+        'Number of question of at least 1 difficulty has to be entered!',
+      );
+    } else {
+      setLoading(true);
+      const neededTopics = topicsList.map((item) => item.name);
 
-    const previewData = {
-      standard: standard.value,
-      subject: subject.value,
-      topicsDistribution: [...topicsList, ...completeTopicList],
-      easy: quesDiffDetails.Easy.count,
-      medium: quesDiffDetails.Medium.count,
-      hard: quesDiffDetails.Hard.count,
-    };
-
-    dispatch(setFormData(data));
-
-    trigger(previewData)
-      .then(() => {
-        setLoading(false);
-        toast({
-          id: 'generate',
-          title: 'success',
-          position: 'top-right',
-          description: 'Preview generated successfully !!',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
-        // instituteName.current.value = '';
-        // examType.current.value = '';
-        // instructions.current.value = '';
-        // setStandard({ value: '10', label: 'X' });
-        // setSubject('');
-        // setBoard('');
-        // setSubject('');
-        // setTopicsList([]);
-        // setQuesDiffDetails({
-        //   Easy: { count: 0, marks: 1 },
-        //   Medium: { count: 0, marks: 1 },
-        //   Hard: { count: 0, marks: 1 },
-        // });
-        // setTime('');
-        // totalMarks = 0;
-      })
-      .catch((error) => {
-        console.log(error);
+      const completeTopicList = classData[10].Maths.filter(
+        (item) => !neededTopics.includes(item),
+      ).map((item) => {
+        return {
+          name: item,
+          count: -1,
+        };
       });
+
+      const previewData = {
+        standard: standard.value,
+        subject: subject.value,
+        topicsDistribution: [...topicsList, ...completeTopicList],
+        easy: quesDiffDetails.Easy.count,
+        medium: quesDiffDetails.Medium.count,
+        hard: quesDiffDetails.Hard.count,
+      };
+
+      dispatch(setFormData(data));
+
+      trigger(previewData)
+        .then(() => {
+          setLoading(false);
+          toast({
+            id: 'generate',
+            title: 'success',
+            position: 'top-right',
+            description: 'Preview generated successfully!!',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
+          instituteName.current.value = '';
+          examType.current.value = '';
+          instructions.current.value = '';
+          setStandard({ value: '10', label: 'X' });
+          setSubject('');
+          setBoard('');
+          setSubject('');
+          setTopicsList([]);
+          setQuesDiffDetails({
+            Easy: { count: 0, marks: 1 },
+            Medium: { count: 0, marks: 1 },
+            Hard: { count: 0, marks: 1 },
+          });
+          setTime('');
+          totalMarks = 0;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
@@ -361,9 +409,7 @@ const GenerateForm = ({ trigger }) => {
             allowMouseWheel
             step={5}
             value={time}
-            onChange={(e) => {
-              setTime(e);
-            }}
+            onChange={(e) => setTime(e)}
           >
             <NumberInputField placeholder='Total Time' boxShadow='base' />
           </NumberInput>

@@ -13,7 +13,7 @@ import { AiOutlineMenu } from 'react-icons/ai';
 
 const QuestionTab = ({ data, index, isDragging, onDelete }) => {
   return (
-    <Draggable draggableId={data._id.$oid} index={index}>
+    <Draggable draggableId={data._id} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}

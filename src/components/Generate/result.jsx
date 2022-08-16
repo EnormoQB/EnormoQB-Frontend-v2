@@ -1,11 +1,12 @@
 import { useCallback, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import CustomQuestion from './customQues';
 import QuestionTab from './questionTab';
-import { dummy } from './config';
 
 const GenerateResult = ({ data }) => {
+  const formDetails = useSelector((state) => state.generateState.generateForm);
   const [initialData, setInitialData] = useState([]);
   const [isDragging, setIsDragging] = useState(null);
 
@@ -44,13 +45,13 @@ const GenerateResult = ({ data }) => {
       <Box mt='6' mb='6'>
         <Box textAlign='center'>
           <Text as='h2' fontSize='xl' fontWeight='500'>
-            Central Board of Secondary Education
+            {formDetails.instituteName}
           </Text>
           <Text as='h2' fontSize='lg' fontWeight='500'>
-            Class XII : Finals 2021-22
+            Class {formDetails.standard} : {formDetails.examType}
           </Text>
           <Text as='h2' fontSize='lg' fontWeight='500'>
-            Mathematics
+            {formDetails.subject}
           </Text>
         </Box>
         <Flex justify='space-between' alignItems='center' mt='3'>
@@ -64,7 +65,7 @@ const GenerateResult = ({ data }) => {
             <Text as='span' fontWeight='500'>
               Maximum Marks:&nbsp;
             </Text>
-            3 hours
+            {formDetails.totalMarks}
           </Text>
         </Flex>
         <Box mt='3'>
@@ -72,9 +73,7 @@ const GenerateResult = ({ data }) => {
             Exam Instructions:
           </Text>
           <Text as='p' sx={{ whiteSpace: 'pre' }} fontSize='15px'>
-            {
-              '1. Section A includes 10 questions for 1 mark each.\n2. Section B includes 6 questions for 3 marks each.\n3. Section C includes 4 questions for 5 marks each.'
-            }
+            {formDetails.instructions}
           </Text>
         </Box>
       </Box>
@@ -87,7 +86,7 @@ const GenerateResult = ({ data }) => {
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {initialData.map((ques, idx) => (
                 <QuestionTab
-                  key={ques._id.$oid}
+                  key={ques._id}
                   index={idx}
                   data={ques}
                   isDragging={isDragging}
