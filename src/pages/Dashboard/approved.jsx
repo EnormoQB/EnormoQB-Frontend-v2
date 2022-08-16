@@ -11,7 +11,8 @@ const Approved = () => {
     status: 'approved',
   });
 
-  const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
+  const { data, isLoading, isFetching, isSuccess } =
+    useGetQuestionsQuery(filter);
 
   useEffect(() => {
     if (data) {
@@ -35,14 +36,10 @@ const Approved = () => {
         Questions
       </Heading>
       <Filter setfilter={setfilter} />
-      {isLoading || isFetching ? (
+      {isLoading || isFetching || !isSuccess ? (
         <DashboardLoader height='calc(70vh - 64px)' />
       ) : (
-        <>
-          {questions.length === 0 && <>No data!</>}
-          {questions.length !== 0 &&
-            questions.map((ques) => <Question key={ques._id} data={ques} />)}
-        </>
+        questions.map((ques) => <Question key={ques._id} data={ques} />)
       )}
     </Box>
   );

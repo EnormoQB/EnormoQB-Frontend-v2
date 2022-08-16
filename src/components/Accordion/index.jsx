@@ -73,7 +73,9 @@ const Question = ({ data, show, questions }) => {
         isOpen={modalOpen}
         onClose={onModalClose}
         onConfirm={handleReject}
+        id={data._id}
       />
+
       <Accordion allowMultiple w='full'>
         <AccordionItem
           borderTop='none'

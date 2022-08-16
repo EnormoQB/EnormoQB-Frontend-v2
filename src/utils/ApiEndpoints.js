@@ -26,6 +26,10 @@ const ApiEndpoints = {
       method: 'GET',
       url: 'api/questions/reserved',
     },
+    feedback: {
+      method: 'PATCH',
+      url: 'api/questions/update/feedback',
+    },
   },
   questionPapers: {
     preview: {
@@ -35,6 +39,10 @@ const ApiEndpoints = {
     previous: {
       method: 'GET',
       url: 'api/questionPapers/previousyear',
+    },
+    history: {
+      method: 'GET',
+      url: 'api/questionPapers/userpapers',
     },
   },
   stats: {

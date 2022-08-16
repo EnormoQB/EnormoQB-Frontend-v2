@@ -22,8 +22,18 @@ export const questionPaperApi = createApi({
         providesTags: ['PreviousYear'],
       }),
     }),
+    userPaperHistory: builder.query({
+      query: () => ({
+        url: ApiEndpoints.questionPapers.history.url,
+        method: 'get',
+        providesTags: ['PaperHistory'],
+      }),
+    }),
   }),
 });
 
-export const { useLazyGeneratePreviewQuery, usePreviousYearPaperQuery } =
-  questionPaperApi;
+export const {
+  useLazyGeneratePreviewQuery,
+  usePreviousYearPaperQuery,
+  useUserPaperHistoryQuery,
+} = questionPaperApi;

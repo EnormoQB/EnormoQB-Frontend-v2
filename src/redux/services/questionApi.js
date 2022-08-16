@@ -49,6 +49,15 @@ export const questionsApi = createApi({
         };
       },
     }),
+    feedbackupdate: builder.mutation({
+      query: ({ feedback, id }) => {
+        return {
+          url: `${ApiEndpoints.questions.feedback.url}/${id}`,
+          method: 'patch',
+          data: { feedback },
+        };
+      },
+    }),
   }),
 });
 
@@ -57,4 +66,5 @@ export const {
   useGetQuestionsQuery,
   useLazyGeneratePreviewQuery,
   useReservedQuestionsQuery,
+  useFeedbackupdateMutation,
 } = questionsApi;
