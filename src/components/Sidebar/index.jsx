@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import {
   Avatar,
   Divider,
@@ -24,6 +24,12 @@ import { titleCase } from '../../utils/helpers';
 
 const Sidebar = () => {
   const user = useSelector((state) => state.userState.user);
+  const userType = useMemo(
+    () =>
+      // user?.userType || 'member'
+      'developer',
+    [user],
+  );
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
@@ -108,17 +114,22 @@ const Sidebar = () => {
             onClick={handleDrawer}
           />
         </Tooltip>
-        <Box mt='30px' w='100%'>
-          {navItems.map((item) => (
-            <NavItems
-              key={item.id}
-              isNavOpen={isOpen}
-              icon={item.icon}
-              title={item.name}
-              active={`/dashboard${item.link}` === location.pathname}
-              onClick={() => navigate(`/dashboard${item.link}`)}
-            />
-          ))}
+        <Box mt='9' w='100%'>
+          {navItems.map((item) => {
+            if (!item.roles.includes(userType.toLowerCase())) {
+              return null;
+            }
+            return (
+              <NavItems
+                key={item.id}
+                isNavOpen={isOpen}
+                icon={item.icon}
+                title={item.name}
+                active={`/dashboard${item.link}` === location.pathname}
+                onClick={() => navigate(`/dashboard${item.link}`)}
+              />
+            );
+          })}
         </Box>
         <NavItems
           isNavOpen={isOpen}
@@ -146,7 +157,7 @@ const Sidebar = () => {
               {user ? user.username : 'Guest'}
             </Heading>
             <Text color='gray' fontSize='sm' mt='0.5'>
-              {user ? titleCase(user.userType) : 'Member'}
+              {user && titleCase(userType)}
             </Text>
           </Flex>
         </Flex>
