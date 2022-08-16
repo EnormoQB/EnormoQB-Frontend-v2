@@ -16,6 +16,7 @@ const DashboardHome = () => {
   const user = useSelector((state) => state.userState.user);
   const { data, isLoading, isFetching } = useGetStatsQuery();
   const [stats, setStats] = useState(null);
+
   useEffect(() => {
     if (data) {
       console.log(data);

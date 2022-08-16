@@ -188,7 +188,7 @@ const Contribute = () => {
     } else if (!difficulties.includes(data.difficulty)) {
       errorToast('Select from given difficulties!');
     } else if (data.answer === '') {
-      errorToast('Answer cannot be blank!');
+      errorToast('Please mark a correct answer!');
     } else {
       setLoading(true);
 
