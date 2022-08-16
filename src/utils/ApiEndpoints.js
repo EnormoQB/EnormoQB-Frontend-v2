@@ -51,6 +51,12 @@ const ApiEndpoints = {
       url: 'api/questions/stats',
     },
   },
+  subjects: {
+    sub: {
+      method: 'GET',
+      url: 'api/subjectsData',
+    },
+  },
 };
 
 export default ApiEndpoints;

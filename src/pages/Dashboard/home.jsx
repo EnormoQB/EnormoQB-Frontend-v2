@@ -11,10 +11,17 @@ import Question from '../../components/Accordion';
 import { useGetStatsQuery } from '../../redux/services/statsApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 import { useReservedQuestionsQuery } from '../../redux/services/questionApi';
+import { useGetSubjectsQuery } from '../../redux/services/subjectApi';
 
 const DashboardHome = () => {
   const user = useSelector((state) => state.userState.user);
   const { data, isLoading, isFetching } = useGetStatsQuery();
+  const {
+    data: subdata,
+    isLoading: subLoading,
+    isFetching: subFetching,
+  } = useGetSubjectsQuery();
+
   const [stats, setStats] = useState(null);
   const {
     data: reservedData,
@@ -28,6 +35,13 @@ const DashboardHome = () => {
       setStats(data.data);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (subdata) {
+      //  All the Subjects and topics of each class
+      // console.log(subdata.data);
+    }
+  }, [subdata]);
 
   useEffect(() => {
     if (reservedData) {
