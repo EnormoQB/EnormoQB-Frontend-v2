@@ -74,6 +74,7 @@ const Sidebar = () => {
             <Image
               w='80%'
               maxH='60px'
+              mx={!isOpen && 'auto'}
               src={isOpen ? LogoWhite : LogoIcon}
               alt='Logo'
               loading='eager'
@@ -91,6 +92,7 @@ const Sidebar = () => {
           placement={isOpen ? 'bottom' : 'right'}
         >
           <IconButton
+            aria-label='Toggle sidebar'
             position='absolute'
             top='78px'
             right='0'
@@ -102,10 +104,11 @@ const Sidebar = () => {
             size='sm'
             fontSize='20px'
             icon={!isOpen ? <IoIosArrowForward /> : <IoIosArrowBack />}
+            zIndex='1'
             onClick={handleDrawer}
           />
         </Tooltip>
-        <Box mt='12' w='100%'>
+        <Box mt='30px' w='100%'>
           {navItems.map((item) => (
             <NavItems
               key={item.id}

@@ -2,7 +2,6 @@ import {
   MdOutlineDoneAll,
   MdOutlineHourglassTop,
   MdRemoveDone,
-  MdMail,
 } from 'react-icons/md';
 import { AiFillHome, AiFillFileUnknown, AiFillGift } from 'react-icons/ai';
 import { BsFillFilePdfFill } from 'react-icons/bs';
@@ -42,16 +41,6 @@ export const navItems = [
     icon: AiFillFileUnknown,
     link: '/questionpapers',
   },
-  {
-    id: 8,
-    name: 'Perks',
-    icon: AiFillGift,
-    link: '/perks',
-  },
-  {
-    id: 9,
-    name: 'Admin Panel',
-    icon: RiAdminFill,
-    link: '/sendmail',
-  },
+  { id: 8, name: 'Perks', icon: AiFillGift, link: '/perks' },
+  { id: 9, name: 'Admin Panel', icon: RiAdminFill, link: '/sendmail' },
 ];
