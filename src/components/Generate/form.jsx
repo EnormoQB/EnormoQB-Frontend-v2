@@ -29,7 +29,7 @@ import { boardOptions, classOptions, difficulties } from './config';
 import WarningModal from '../Modal/Warning';
 import OverlayLoader from '../Loaders/OverlayLoader';
 
-const GenerateForm = ({ trigger }) => {
+const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
   const toast = useToast();
   const formDetails = useSelector((state) => state.generateState.generateForm);
   const dispatch = useDispatch();
@@ -52,8 +52,12 @@ const GenerateForm = ({ trigger }) => {
   const instructions = useRef();
   const [time, setTime] = useState('');
 
+  const easy = quesDiffDetails.Easy.count * quesDiffDetails.Easy.marks;
+  const medium = quesDiffDetails.Medium.count * quesDiffDetails.Medium.marks;
+  const hard = quesDiffDetails.Hard.count * quesDiffDetails.Hard.marks;
+  let totalMarks = easy + medium + hard;
+
   const onLoad = () => {
-    console.log('running');
     instituteName.current.value = formDetails.instituteName;
     setBoard(boardOptions.find((ele) => ele.value === formDetails.board));
     examType.current.value = formDetails.examType;
@@ -119,13 +123,25 @@ const GenerateForm = ({ trigger }) => {
     setTopic('');
   };
 
-  const easy = quesDiffDetails.Easy.count * quesDiffDetails.Easy.marks;
-  const medium = quesDiffDetails.Medium.count * quesDiffDetails.Medium.marks;
-  const hard = quesDiffDetails.Hard.count * quesDiffDetails.Hard.marks;
-  let totalMarks = easy + medium + hard;
+  const resetFields = () => {
+    instituteName.current.value = '';
+    examType.current.value = '';
+    instructions.current.value = '';
+    setStandard({ value: '10', label: 'X' });
+    setSubject('');
+    setBoard('');
+    setSubject('');
+    setTopicsList([]);
+    setQuesDiffDetails({
+      Easy: { count: 0, marks: 1 },
+      Medium: { count: 0, marks: 1 },
+      Hard: { count: 0, marks: 1 },
+    });
+    setTime('');
+    totalMarks = 0;
+  };
 
   const onSubmit = () => {
-    // setLoading(true);
     const data = {
       instituteName: instituteName.current.value,
       standard: standard.value,
@@ -134,17 +150,15 @@ const GenerateForm = ({ trigger }) => {
       examType: examType.current.value,
       board: board.value,
       instructions: instructions.current.value,
-      time,
+      time: time.trim(),
       quesDiffDetails,
       totalMarks,
     };
 
-    console.log(quesDiffDetails.Easy.count);
-
     if (typeof data.board === 'undefined') {
       errorToast('Board cannot be blank!');
     } else if (typeof data.subject === 'undefined') {
-      errorToast('subject cannot be blank!');
+      errorToast('Subject cannot be blank!');
     } else if (
       quesDiffDetails.Easy.count === 0 &&
       quesDiffDetails.Medium.count === 0 &&
@@ -153,17 +167,17 @@ const GenerateForm = ({ trigger }) => {
       errorToast(
         'Number of question of at least 1 difficulty has to be entered!',
       );
+    } else if (data.time.length < 1) {
+      errorToast('Total time cannot be blank!');
+    } else if (data.time < 1) {
+      errorToast('Total time should be greater than 0!');
     } else {
       setLoading(true);
       const neededTopics = topicsList.map((item) => item.name);
-
       const completeTopicList = classData[10].Maths.filter(
         (item) => !neededTopics.includes(item),
       ).map((item) => {
-        return {
-          name: item,
-          count: -1,
-        };
+        return { name: item, count: -1 };
       });
 
       const previewData = {
@@ -184,26 +198,15 @@ const GenerateForm = ({ trigger }) => {
             id: 'generate',
             title: 'success',
             position: 'top-right',
-            description: 'Preview generated successfully!!',
+            description: 'Preview generated successfully!',
             status: 'success',
             duration: 3000,
             isClosable: true,
           });
-          instituteName.current.value = '';
-          examType.current.value = '';
-          instructions.current.value = '';
-          setStandard({ value: '10', label: 'X' });
-          setSubject('');
-          setBoard('');
-          setSubject('');
-          setTopicsList([]);
-          setQuesDiffDetails({
-            Easy: { count: 0, marks: 1 },
-            Medium: { count: 0, marks: 1 },
-            Hard: { count: 0, marks: 1 },
-          });
-          setTime('');
-          totalMarks = 0;
+          resetFields();
+          if (!isLoading && !isFetching) {
+            switchPreview();
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -501,8 +504,20 @@ const GenerateForm = ({ trigger }) => {
         ))}
       </Wrap>
       <Flex justify='center'>
-        <Button mt={7} w={300} h={50} onClick={onSubmit}>
+        <Button mt={7} w={200} h={50} onClick={onSubmit}>
           SUBMIT
+        </Button>
+        <Button
+          ml={4}
+          mt={7}
+          w={200}
+          h={50}
+          bg='brand.300'
+          color='brand.600'
+          _hover={{ backgroundColor: 'brand.400' }}
+          onClick={resetFields}
+        >
+          Clear All
         </Button>
       </Flex>
     </Box>
