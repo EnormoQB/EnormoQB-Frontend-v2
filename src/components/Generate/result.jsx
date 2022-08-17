@@ -1,21 +1,16 @@
-import { useCallback, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import CustomQuestion from './customQues';
 import QuestionTab from './questionTab';
+import { setPreviewData } from '../../redux/features/generateSlice';
 
-const GenerateResult = ({ data }) => {
+const GenerateResult = () => {
   const formDetails = useSelector((state) => state.generateState.generateForm);
-  const [initialData, setInitialData] = useState([]);
+  const previewData = useSelector((state) => state.generateState.previewData);
+  const dispatch = useDispatch();
   const [isDragging, setIsDragging] = useState(null);
-
-  useEffect(() => {
-    console.log(data);
-    if (data && data.data && data.data.length !== 0) {
-      setInitialData(data.data);
-    }
-  }, [data]);
 
   const handleOnDragStart = (e) => {
     setIsDragging(e.source.index);
@@ -27,40 +22,67 @@ const GenerateResult = ({ data }) => {
     if (result.destination.index === result.source.index) {
       return;
     }
-    const items = Array.from(initialData);
+    const items = Array.from(previewData);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    setInitialData(items);
+    dispatch(setPreviewData(items));
   };
 
-  const handleDelete = useCallback((idx) => {
-    console.log('delete running');
-    setInitialData((prev) => prev.filter((item, index) => idx !== index));
-  }, []);
+  const handleDelete = useCallback(
+    (idx) => {
+      console.log(previewData, idx);
+      dispatch(
+        setPreviewData(previewData.filter((item, index) => idx !== index)),
+      );
+    },
+    [previewData],
+  );
+
+  const addCustomQues = (data) => {
+    const newArray = Array.from(previewData);
+    newArray.unshift(data);
+    dispatch(setPreviewData(newArray));
+  };
 
   return (
     <Box>
-      <CustomQuestion />
+      <CustomQuestion addQues={addCustomQues} />
       <Box mt='6' mb='6'>
-        <Box textAlign='center'>
-          <Text as='h2' fontSize='xl' fontWeight='500'>
-            {formDetails.instituteName}
-          </Text>
-          <Text as='h2' fontSize='lg' fontWeight='500'>
-            Class {formDetails.standard} : {formDetails.examType}
-          </Text>
-          <Text as='h2' fontSize='lg' fontWeight='500'>
-            {formDetails.subject}
-          </Text>
-        </Box>
+        {formDetails && (
+          <Box textAlign='center'>
+            {formDetails.instituteName && (
+              <Text as='h2' fontSize='xl' fontWeight='500'>
+                {formDetails.instituteName}
+              </Text>
+            )}
+            {formDetails.board && (
+              <Text as='h2' fontSize='lg' fontWeight='500'>
+                {formDetails.board}
+                {` - Class ${formDetails.standard}`}
+              </Text>
+            )}
+            {formDetails.examType && (
+              <Text as='h2' fontSize='lg' fontWeight='500'>
+                {formDetails.examType}
+              </Text>
+            )}
+            {formDetails.subject && (
+              <Text as='h2' fontSize='lg' fontWeight='500'>
+                {formDetails.subject}
+              </Text>
+            )}
+          </Box>
+        )}
         <Flex justify='space-between' alignItems='center' mt='3'>
-          <Text as='p' fontSize='md'>
-            <Text as='span' fontWeight='500'>
-              Time allowed:&nbsp;
+          {formDetails.time && (
+            <Text as='p' fontSize='md'>
+              <Text as='span' fontWeight='500'>
+                Time allowed:&nbsp;
+              </Text>
+              {`${formDetails.time} minutes`}
             </Text>
-            3 hours
-          </Text>
+          )}
           <Text as='p' fontSize='md'>
             <Text as='span' fontWeight='500'>
               Maximum Marks:&nbsp;
@@ -68,14 +90,16 @@ const GenerateResult = ({ data }) => {
             {formDetails.totalMarks}
           </Text>
         </Flex>
-        <Box mt='3'>
-          <Text as='p' fontSize='md' fontWeight='500'>
-            Exam Instructions:
-          </Text>
-          <Text as='p' sx={{ whiteSpace: 'pre' }} fontSize='15px'>
-            {formDetails.instructions}
-          </Text>
-        </Box>
+        {formDetails.instructions && (
+          <Box mt='3'>
+            <Text as='p' fontSize='md' fontWeight='500'>
+              Exam Instructions:
+            </Text>
+            <Text as='p' sx={{ whiteSpace: 'pre' }} fontSize='15px'>
+              {formDetails.instructions}
+            </Text>
+          </Box>
+        )}
       </Box>
       <DragDropContext
         onDragEnd={handleOnDragEnd}
@@ -84,7 +108,7 @@ const GenerateResult = ({ data }) => {
         <Droppable droppableId='list'>
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              {initialData.map((ques, idx) => (
+              {previewData.map((ques, idx) => (
                 <QuestionTab
                   key={ques._id}
                   index={idx}

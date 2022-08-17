@@ -5,10 +5,10 @@ import { TiTickOutline } from 'react-icons/ti';
 import { IoIosArrowDropup, IoIosArrowDropdown } from 'react-icons/io';
 import PerkCard from '../../components/Perks/PerkCard';
 import ActivityCard from '../../components/Perks/ActivityCard';
-import Shirt from '../../components/Perks/tshirt.svg';
-import Voucher from '../../components/Perks/voucher.svg';
-import EnormoKit from '../../components/Perks/enormokit.svg';
-import LaptopSleeve from '../../components/Perks/laptopSleeve.svg';
+import Shirt from '../../assets/tshirt.svg';
+import Voucher from '../../assets/voucher.svg';
+import EnormoKit from '../../assets/enormokit.svg';
+import LaptopSleeve from '../../assets/laptopSleeve.svg';
 
 const Perks = () => {
   return (
