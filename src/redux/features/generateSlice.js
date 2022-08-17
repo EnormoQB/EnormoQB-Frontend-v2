@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   generateForm: null,
-  previewData: null,
+  previewData: [],
+  customQues: [],
 };
 
 export const generateFormSlice = createSlice({
@@ -16,9 +17,13 @@ export const generateFormSlice = createSlice({
     setPreviewData: (state, action) => {
       state.previewData = action.payload;
     },
+    setCustomQues: (state, action) => {
+      state.customQues = action.payload;
+    },
   },
 });
 
 export default generateFormSlice.reducer;
 
-export const { clear, setFormData, setPreviewData } = generateFormSlice.actions;
+export const { clear, setFormData, setPreviewData, setCustomQues } =
+  generateFormSlice.actions;

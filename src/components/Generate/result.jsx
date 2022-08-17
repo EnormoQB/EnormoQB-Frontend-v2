@@ -1,16 +1,28 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import CustomQuestion from './customQues';
 import QuestionTab from './questionTab';
-import { setPreviewData } from '../../redux/features/generateSlice';
+import {
+  setPreviewData,
+  setCustomQues,
+} from '../../redux/features/generateSlice';
 
-const GenerateResult = () => {
-  const formDetails = useSelector((state) => state.generateState.generateForm);
-  const previewData = useSelector((state) => state.generateState.previewData);
+const GenerateResult = ({ queryData }) => {
+  const {
+    generateForm: formDetails,
+    previewData,
+    customQues,
+  } = useSelector((state) => state.generateState);
   const dispatch = useDispatch();
   const [isDragging, setIsDragging] = useState(null);
+
+  useEffect(() => {
+    if (queryData && previewData.length === 0) {
+      dispatch(setPreviewData(queryData?.data || []));
+    }
+  }, [queryData]);
 
   const handleOnDragStart = (e) => {
     setIsDragging(e.source.index);
@@ -40,9 +52,12 @@ const GenerateResult = () => {
   );
 
   const addCustomQues = (data) => {
-    const newArray = Array.from(previewData);
-    newArray.unshift(data);
-    dispatch(setPreviewData(newArray));
+    const newArray = Array.from(customQues);
+    const finalPreview = Array.from(previewData);
+    newArray.push(data);
+    finalPreview.unshift(data);
+    dispatch(setCustomQues(newArray));
+    dispatch(setPreviewData(finalPreview));
   };
 
   return (

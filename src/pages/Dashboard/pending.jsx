@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
-import Question from '../../components/Accordion';
+import Question from '../../components/QuestionAccordion';
 import Filter from '../../components/Filters';
 import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';

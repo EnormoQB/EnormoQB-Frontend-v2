@@ -46,7 +46,7 @@ const style1 = {
   padding: '30px',
 };
 
-const Question = ({ data, show, questions }) => {
+const QuestionAccordion = ({ data, show, questions }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: modalOpen,
@@ -214,16 +214,26 @@ const Question = ({ data, show, questions }) => {
                     >
                       <ModalOverlay />
                       <ModalContent sx={style1}>
-                        <ModalCloseButton
-                          _focus={{}}
-                          position='fixed'
-                          mt='80px'
-                          mr='152px'
-                        />
-                        <ModalBody mt='8' overflow='auto' py='0'>
-                          {questions.map((ques) => (
-                            <SimilarQuestion key={ques._id.$oid} data={ques} />
-                          ))}
+                        <ModalCloseButton _focus={{}} mr='1.5' mt='1.5' />
+                        <ModalBody p='0' h='100%'>
+                          <Text
+                            as='h3'
+                            fontWeight='600'
+                            fontSize='2xl'
+                            mb='3'
+                            pr={6}
+                            pl={3}
+                          >
+                            Similar Questions
+                          </Text>
+                          <Box overflow='auto' h='92%' pr={6} pl={3}>
+                            {questions.map((ques) => (
+                              <SimilarQuestion
+                                key={ques._id.$oid}
+                                data={ques}
+                              />
+                            ))}
+                          </Box>
                         </ModalBody>
                       </ModalContent>
                     </Modal>
@@ -240,8 +250,8 @@ const Question = ({ data, show, questions }) => {
   );
 };
 
-export default Question;
+export default QuestionAccordion;
 
-Question.defaultProps = {
+QuestionAccordion.defaultProps = {
   show: false,
 };

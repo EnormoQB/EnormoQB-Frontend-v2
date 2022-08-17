@@ -38,8 +38,7 @@ import classData from '../../data/classData';
 import { useAddQuestionsMutation } from '../../redux/services/questionApi';
 import Congratulations from '../../assets/announcement.svg';
 import OverlayLoader from '../../components/Loaders/OverlayLoader';
-
-const difficulties = ['Easy', 'Medium', 'Hard'];
+import { difficulties } from '../../components/Generate/config';
 
 const Contribute = () => {
   const toast = useToast();
@@ -49,7 +48,6 @@ const Contribute = () => {
     value: difficulty,
     setValue: setDifficulty,
   } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
-
   const group = getRootProps();
 
   const [options, setOptions] = useState([

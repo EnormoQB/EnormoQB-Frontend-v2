@@ -13,7 +13,6 @@ const colors = {
   },
   multiSelect: {
     300: '#C3D0F9',
-    500: '#C3D0F9',
   },
   hover: {
     600: '#1B1C1E22',

@@ -2,7 +2,7 @@ import { Box, Flex, IconButton, Text, Tooltip } from '@chakra-ui/react';
 import { RiFileDownloadFill } from 'react-icons/ri';
 import { BsBoxArrowInRight } from 'react-icons/bs';
 import Tag from './tag';
-import TagDivider from '../Accordion/Tags/divider';
+import TagDivider from '../QuestionAccordion/Tags/divider';
 
 const QuesPaper = ({ data }) => {
   return (

@@ -18,11 +18,15 @@ import {
   useToast,
   Textarea,
   Text,
+  HStack,
+  useRadioGroup,
 } from '@chakra-ui/react';
 import debounce from 'lodash.debounce';
 import { Fragment, useMemo, useRef, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
+import RadioCard from '../Contribute/radioCard';
+import { difficulties } from './config';
 
 const optionInitialState = [
   { value: '', isCorrect: false, id: Math.random() * 100 },
@@ -31,6 +35,14 @@ const optionInitialState = [
 
 const CustomQuestion = ({ addQues }) => {
   const toast = useToast();
+  const {
+    getRootProps,
+    getRadioProps,
+    value: difficulty,
+    setValue: setDifficulty,
+  } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
+  const group = getRootProps();
+
   const [options, setOptions] = useState(optionInitialState);
   const [openIndex, setOpenIndex] = useState(-1);
   const question = useRef();
@@ -112,6 +124,7 @@ const CustomQuestion = ({ addQues }) => {
   const resetFields = () => {
     question.current.value = '';
     setOptions(optionInitialState);
+    setDifficulty('Easy');
   };
 
   const handleSubmit = () => {
@@ -132,12 +145,12 @@ const CustomQuestion = ({ addQues }) => {
     }
 
     const data = {
-      question: question.current.value,
+      question: question.current.value.trim(),
       answer,
       options: opts,
-      _id: Math.random() * 1000000,
+      difficulty,
+      _id: `${Math.floor(Math.random() * 10e10)}`,
     };
-    console.log(data);
 
     if (data.question.length < 1) {
       errorToast('Question cannot be blank!');
@@ -278,6 +291,21 @@ const CustomQuestion = ({ addQues }) => {
                   </Fragment>
                 ))}
               </Flex>
+            </FormControl>
+            <FormControl mb={6}>
+              <FormLabel fontSize={18} htmlFor='difficulty'>
+                Difficulty Level
+              </FormLabel>
+              <HStack {...group} size='sm'>
+                {difficulties.map((value) => {
+                  const radio = getRadioProps({ value });
+                  return (
+                    <RadioCard key={value} {...radio}>
+                      {value}
+                    </RadioCard>
+                  );
+                })}
+              </HStack>
             </FormControl>
             <Flex gap='4' alignItems='center'>
               <Button

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import Cards from '../../components/Stats/cards';
 import LineGraph from '../../components/Graph/LineGraph';
 import DoughnutGraph from '../../components/Graph/DoughnutGraph';
-import Question from '../../components/Accordion';
+import Question from '../../components/QuestionAccordion';
 import { dummy } from '../../components/Generate/config';
 import { useGetStatsQuery } from '../../redux/services/statsApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';

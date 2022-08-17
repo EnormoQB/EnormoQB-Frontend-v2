@@ -113,6 +113,14 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
   };
 
   const handleAddTopic = () => {
+    if (topic === '') {
+      errorToast('Select a topic to add');
+      return;
+    }
+    if (topicQuesCount === '' && topicQuesCount <= 0) {
+      errorToast('Please input a number greater than 0 to add topic');
+      return;
+    }
     if (topicsList.filter((item) => item.name === topic.value).length === 0) {
       setTopicsList((prev) => [
         ...prev,
@@ -223,7 +231,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
         onConfirm={() => onConfirm[warning.type](warning.val)}
       />
       <FormControl mb={6}>
-        <FormLabel fontSize={19} htmlFor='institution'>
+        <FormLabel fontSize={18} htmlFor='institution'>
           Institution Name
         </FormLabel>
         <Input
@@ -236,7 +244,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
       <Flex justify='space-between'>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
           <FormControl mb={6}>
-            <FormLabel fontSize={19} htmlFor='examType'>
+            <FormLabel fontSize={18} htmlFor='examType'>
               Exam Type
             </FormLabel>
             <Input
@@ -247,7 +255,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
             />
           </FormControl>
           <FormControl mb={6} isRequired>
-            <FormLabel fontSize={19} htmlFor='board'>
+            <FormLabel fontSize={18} htmlFor='board'>
               Board
             </FormLabel>
             <Select
@@ -268,7 +276,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
         </Box>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
           <FormControl mb={6} isRequired>
-            <FormLabel fontSize={19} htmlFor='class'>
+            <FormLabel fontSize={18} htmlFor='class'>
               Class
             </FormLabel>
             <Select
@@ -282,7 +290,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
             />
           </FormControl>
           <FormControl isRequired mb={6}>
-            <FormLabel fontSize={19} htmlFor='subject'>
+            <FormLabel fontSize={18} htmlFor='subject'>
               Subject
             </FormLabel>
             <Select
@@ -315,7 +323,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
         />
       </FormControl>
       <FormControl mb={6} isRequired>
-        <FormLabel fontSize={19} htmlFor='noOfQues'>
+        <FormLabel fontSize={18} htmlFor='noOfQues'>
           Number/Marks Of Questions
         </FormLabel>
         <Flex justify='space-between'>
@@ -382,7 +390,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
       </FormControl>
       <Flex justify='space-between'>
         <Box w='48%'>
-          <Text fontSize={19} mb='8px' fontWeight={500}>
+          <Text fontSize={18} mb='8px' fontWeight={500}>
             Total Marks
           </Text>
           <Flex
@@ -400,7 +408,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
           </Flex>
         </Box>
         <FormControl mb={6} isRequired w='48%'>
-          <FormLabel fontSize={19} htmlFor='examTime'>
+          <FormLabel fontSize={18} htmlFor='examTime'>
             Total Time&nbsp;
             <Box display='inline' fontSize='15'>
               (in mins)
@@ -419,7 +427,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
         </FormControl>
       </Flex>
       <FormControl mb={6}>
-        <FormLabel fontSize={19} htmlFor='topics'>
+        <FormLabel fontSize={18} htmlFor='topics'>
           <Box display='inline-flex' alignItems='center' gap='2'>
             Topics
             <Tooltip
@@ -487,13 +495,13 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
             key={i}
             borderRadius='full'
             variant='solid'
-            bg='#C3D0F9'
+            bg='multiSelect.300'
           >
-            <TagLabel color='black' bg='#C3D0F9' fontSize={15}>
+            <TagLabel color='brand.600' bg='multiSelect.300' fontSize={15}>
               {`${item.name} : ${item.count}`}
             </TagLabel>
             <TagCloseButton
-              color='black'
+              color='brand.600'
               onClick={() => {
                 setTopicsList((prevValue) =>
                   prevValue.filter((val, idx) => idx !== i),
