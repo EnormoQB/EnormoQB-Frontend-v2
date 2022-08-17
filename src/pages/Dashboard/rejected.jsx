@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
 import Question from '../../components/Accordion';
 import Filter from '../../components/Filters';
@@ -6,16 +6,16 @@ import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
 const Rejected = () => {
+  const isInitialLoad = useRef(true);
   const [questions, setQuestions] = useState([]);
-  const [filter, setfilter] = useState({
-    status: 'rejected',
-  });
+  const [filter, setfilter] = useState({ status: 'rejected' });
 
   const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
 
   useEffect(() => {
     if (data) {
       setQuestions(data.data.questions || []);
+      isInitialLoad.current = false;
     }
   }, [data]);
 
@@ -35,7 +35,7 @@ const Rejected = () => {
         Questions
       </Heading>
       <Filter setfilter={setfilter} />
-      {isLoading || isFetching ? (
+      {isLoading || isFetching || isInitialLoad.current ? (
         <DashboardLoader height='calc(70vh - 64px)' />
       ) : (
         <>
