@@ -1,6 +1,6 @@
 import { Box, Heading } from '@chakra-ui/react';
 import QuesPapersFilter from '../../components/Filters/quesPapersFilter';
-import QuesPaper from '../../components/QuestionPapers/QuestionPaper';
+import QuesPaper from '../../components/QuestionPapers';
 import dummy from '../../components/QuestionPapers/config';
 
 const QuestionPapers = () => {
