@@ -11,7 +11,7 @@ import Generate from './Dashboard/generate';
 import Contribute from './Dashboard/contribute';
 import QuestionPapers from './Dashboard/questionPapers';
 import Perks from './Dashboard/perks';
-import Sendmail from './Dashboard/sendmail';
+import RequestContributions from './Dashboard/requestContributions';
 import NotFound from './NotFound';
 import Home from './Home';
 
@@ -33,7 +33,10 @@ const App = () => {
             <Route path='contribute' element={<Contribute />} />
             <Route path='questionpapers' element={<QuestionPapers />} />
             <Route path='perks' element={<Perks />} />
-            <Route path='sendmail' element={<Sendmail />} />
+            <Route
+              path='requestContributions'
+              element={<RequestContributions />}
+            />
           </Route>
           <Route path='*' element={<NotFound />} />
         </Route>
