@@ -33,7 +33,15 @@ export const questionsApi = createApi({
       },
     }),
     getQuestions: builder.query({
-      query: ({ userId, status, standard, subject, topics, difficulty }) => {
+      query: ({
+        userId,
+        status,
+        standard,
+        subject,
+        topics,
+        difficulty,
+        page,
+      }) => {
         const params = new URLSearchParams({
           ...(userId ? { userId } : {}),
           ...(status ? { status } : {}),
@@ -41,6 +49,7 @@ export const questionsApi = createApi({
           ...(subject ? { subject } : {}),
           ...(topics ? { topics } : {}),
           ...(difficulty ? { difficulty } : {}),
+          ...(page ? { page } : 1),
         });
         return {
           url: `${ApiEndpoints.questions.list.url}?${params.toString()}`,
@@ -50,11 +59,11 @@ export const questionsApi = createApi({
       },
     }),
     feedbackupdate: builder.mutation({
-      query: ({ feedback, id }) => {
+      query: ({ feedback, id, status }) => {
         return {
           url: `${ApiEndpoints.questions.feedback.url}/${id}`,
           method: 'patch',
-          data: { feedback },
+          data: { feedback, status },
           invalidatesTags: ['Questions'],
         };
       },

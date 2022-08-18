@@ -28,7 +28,7 @@ const ApiEndpoints = {
     },
     feedback: {
       method: 'PATCH',
-      url: 'api/questions/update/feedback',
+      url: 'api/questions/update',
     },
   },
   questionPapers: {

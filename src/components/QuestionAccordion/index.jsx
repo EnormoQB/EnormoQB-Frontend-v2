@@ -16,6 +16,7 @@ import {
   Text,
   Center,
   Box,
+  useToast,
 } from '@chakra-ui/react';
 import { BiExpand } from 'react-icons/bi';
 import Option from './option';
@@ -23,6 +24,7 @@ import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
 import FeedbackModal from '../Modal/Feedback';
 import SimilarQuestion from './similarQuestion';
+import { useFeedbackupdateMutation } from '../../redux/services/questionApi';
 
 const style = {
   height: '60vh',
@@ -62,13 +64,45 @@ const QuestionAccordion = ({ data, show, questions }) => {
 
   const handleReject = () => {};
 
+  const feedback = null;
+  const status = 'approved';
+  const id = data._id;
+  const [trigger] = useFeedbackupdateMutation();
+  const toast = useToast();
+
+  const AcceptQuestion = () => {
+    trigger({ feedback, id, status })
+      .then(() => {
+        toast({
+          id: 'generate',
+          title: 'success',
+          position: 'top-right',
+          description: 'Question Rejected !',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((err) => {
+        toast({
+          id: 'generate',
+          title: 'success',
+          position: 'top-right',
+          description: 'Some Error Occured !',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      });
+  };
+
   return (
     <Box>
       <FeedbackModal
         isOpen={modalOpen}
         onClose={onModalClose}
         onConfirm={handleReject}
-        id={data._id}
+        id={id}
       />
 
       <Accordion allowMultiple w='full'>
@@ -184,6 +218,7 @@ const QuestionAccordion = ({ data, show, questions }) => {
                       mr='4'
                       bg='brand.600'
                       _hover={{ backgroundColor: 'myGray.500' }}
+                      onClick={() => AcceptQuestion()}
                     >
                       Accept
                     </Button>
