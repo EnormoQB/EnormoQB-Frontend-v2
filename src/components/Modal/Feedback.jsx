@@ -25,12 +25,13 @@ const feedbackOptions = [
 const FeedbackModal = ({ onClose, isOpen, onConfirm, id }) => {
   const [feed, setFeed] = useState('');
   const [feedText, setFeedText] = useState('');
+  const status = 'rejected';
   const [trigger] = useFeedbackupdateMutation();
   const toast = useToast();
 
   const submit = () => {
     const feedback = feed.value === 'Others' ? feedText : feed.value;
-    trigger({ feedback, id })
+    trigger({ feedback, id, status })
       .then(() => {
         setFeed('');
         setFeedText('');

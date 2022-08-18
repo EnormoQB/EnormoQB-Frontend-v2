@@ -4,18 +4,20 @@ import Question from '../../components/QuestionAccordion';
 import Filter from '../../components/Filters';
 import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
+import Page from '../../components/Pagination/Page';
 import Empty from '../../components/Empty';
 
 const Rejected = () => {
   const isInitialLoad = useRef(true);
   const [questions, setQuestions] = useState([]);
-  const [filter, setfilter] = useState({ status: 'rejected' });
-
+  const [filter, setfilter] = useState({ status: 'pending', page: 1 });
+  const [metadata, setMetaData] = useState([]);
   const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
 
   useEffect(() => {
     if (data) {
       setQuestions(data.data.questions || []);
+      setMetaData(data.data.meta || []);
       isInitialLoad.current = false;
     }
   }, [data]);
@@ -41,8 +43,27 @@ const Rejected = () => {
       ) : (
         <>
           {questions.length === 0 && <Empty textContent='No Data Found!' />}
-          {questions.length !== 0 &&
-            questions.map((ques) => <Question key={ques._id} data={ques} />)}
+          {questions.length !== 0 ? (
+            <>
+              {questions.map((ques) => (
+                <Question
+                  key={ques._id}
+                  data={ques}
+                  questions={questions}
+                  show
+                />
+              ))}
+              <Page
+                pageNumber={filter.page}
+                setPageNumber={(page) => {
+                  setfilter((prev) => ({ ...prev, page }));
+                }}
+                metadata={metadata}
+              />
+            </>
+          ) : (
+            <br />
+          )}
         </>
       )}
     </Box>
