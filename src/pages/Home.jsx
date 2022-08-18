@@ -48,30 +48,31 @@ const Home = () => {
           imageSrc={LoginImg}
           animatedHead='Sign in'
           nonAnimatedHead=' to your free account'
-          content='All you need is your gmail address to create an account/sign in. Lorem ipsum dolor sit
-          amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.'
+          content="It's completely free of cost to get yourself registered on EnormoQB. 
+          All you need is your Gmail address to create an account or sign in. Your anonymity will be maintained. 
+          After logging in, you will land on the dashboard and become one of the many brilliant minds contributing 
+          to our question bank and helping to make the examination system better in India."
         />
         <ProcessBlock
           flexD='row-reverse'
           imageSrc={PostQuestionsImg}
-          animatedHead='Post questions'
-          nonAnimatedHead=' for review'
-          content='You can now add questions to our bank based on various filters provided. Wait for the reviewing committee to approve it. Lorem ipsum dolor sit
-          amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.'
+          animatedHead='Contribute'
+          nonAnimatedHead=' questions'
+          content='Once registered, you will be able to contribute questions to our enormous question pool and 
+          earn some exciting rewards. In order to do that you just have to follow some simple steps. 
+          You can add questions to our question bank by providing all the necessary details and based on various 
+          filters provided. Then wait for the reviewing committee to update the status of the question to approved or rejected.'
         />
         <ProcessBlock
           flexD='row'
           imageSrc={GenerateImg}
           animatedHead='Generate'
           nonAnimatedHead=' question papers'
-          content='Select the necessary filters and get a downloadable pdf of the randomly set exam paper. Lorem ipsum dolor sit
-          amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.'
+          content='Question papers can be generated with the questions available in the EnormoQB 
+          question bank by following some simple steps. Enter the required details and submit them. 
+          Then you can preview the question paper generated. New questions can be added and the 
+          questions can also be reordered manually. Then you can simply download the desidered 
+          question paper in a pdf format.'
         />
       </Flex>
       <About aboutRef={aboutRef} />
@@ -84,14 +85,14 @@ const Home = () => {
         flexWrap='wrap'
       >
         <FutureScopeCard
-          heading='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-          content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore.'
+          heading='Plagiarism'
+          content='The question submitted by the contributor would go through a plagiarism 
+          check so that the EnormoQB question bank will have original questions only.'
         />
         <FutureScopeCard
-          heading='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-          content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore.'
+          heading='Optical Character Recognition(OCR)'
+          content='Contributor would be able to upload the picture of the their handwritten 
+          question and EnormoQB will extract the question from the picture uploaded.'
         />
       </Flex>
       <Footer footerRef={footerRef} />

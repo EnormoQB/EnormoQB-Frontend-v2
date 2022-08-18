@@ -5,6 +5,7 @@ import DashboardLoader from '../../components/Loaders/DashboardLoader';
 import Filter from '../../components/Filters';
 import Question from '../../components/QuestionAccordion';
 import Page from '../../components/Pagination/Page';
+import Empty from '../../components/Empty';
 
 const Approved = () => {
   const isInitialLoad = useRef(true);
@@ -41,16 +42,28 @@ const Approved = () => {
         <DashboardLoader height='calc(70vh - 64px)' />
       ) : (
         <>
-          {questions.map((ques) => (
-            <Question key={ques._id} data={ques} />
-          ))}
-          <Page
-            pageNumber={filter.page}
-            setPageNumber={(page) => {
-              setfilter((prev) => ({ ...prev, page }));
-            }}
-            metadata={metadata}
-          />
+          {questions.length === 0 && <Empty textContent='No Data Found!' />}
+          {questions.length !== 0 ? (
+            <>
+              {questions.map((ques) => (
+                <Question
+                  key={ques._id}
+                  data={ques}
+                  questions={questions}
+                  show
+                />
+              ))}
+              <Page
+                pageNumber={filter.page}
+                setPageNumber={(page) => {
+                  setfilter((prev) => ({ ...prev, page }));
+                }}
+                metadata={metadata}
+              />
+            </>
+          ) : (
+            <br />
+          )}
         </>
       )}
     </Box>

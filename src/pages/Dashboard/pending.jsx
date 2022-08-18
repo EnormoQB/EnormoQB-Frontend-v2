@@ -5,6 +5,7 @@ import Filter from '../../components/Filters';
 import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 import Page from '../../components/Pagination/Page';
+import Empty from '../../components/Empty';
 
 const Pending = () => {
   const isInitialLoad = useRef(true);
@@ -41,7 +42,7 @@ const Pending = () => {
         <DashboardLoader height='calc(70vh - 64px)' />
       ) : (
         <>
-          {questions.length === 0 && <>No data!</>}
+          {questions.length === 0 && <Empty textContent='No Data Found!' />}
           {questions.length !== 0 ? (
             <>
               {questions.map((ques) => (
