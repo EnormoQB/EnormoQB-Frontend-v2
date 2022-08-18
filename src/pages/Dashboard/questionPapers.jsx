@@ -19,6 +19,7 @@ import QuesPaper from '../../components/QuestionPapers';
 const QuestionPapers = () => {
   const [paper, setpaper] = useState([]);
   const [history, sethistory] = useState([]);
+  const [role, setRole] = useState('admin');
   const { data, isLoading, isFetching } = usePreviousYearPaperQuery();
 
   const { data: historydata } = useUserPaperHistoryQuery();
@@ -48,34 +49,46 @@ const QuestionPapers = () => {
         Papers
       </Heading>
       <Box w='full'>
-        <Tabs isLazy defaultIndex={0} size='lg'>
-          <TabList>
-            <CustomTab>Previous Year</CustomTab>
-            <CustomTab>Your Papers</CustomTab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <QuesPapersFilter />
-              {isLoading || isFetching || paper.length === 0 ? (
-                <DashboardLoader />
-              ) : (
-                paper.map((ques, index) => (
-                  <QuesPaper key={index} data={ques} />
-                ))
-              )}
-            </TabPanel>
-            <TabPanel>
-              <QuesPapersFilter />
-              {isLoading || isFetching || paper.length === 0 ? (
-                <DashboardLoader />
-              ) : (
-                history.map((ques, index) => (
-                  <QuesPaper key={index} data={ques} />
-                ))
-              )}
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        {role.toLowerCase() === 'admin' ||
+        role.toLowerCase() === 'developer' ? (
+          <Tabs isLazy defaultIndex={0} size='lg'>
+            <TabList>
+              <CustomTab>Previous Year</CustomTab>
+              <CustomTab>Your Papers</CustomTab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <QuesPapersFilter />
+                {isLoading || isFetching || paper.length === 0 ? (
+                  <DashboardLoader />
+                ) : (
+                  paper.map((ques, index) => (
+                    <QuesPaper key={index} data={ques} />
+                  ))
+                )}
+              </TabPanel>
+              <TabPanel>
+                <QuesPapersFilter />
+                {isLoading || isFetching || paper.length === 0 ? (
+                  <DashboardLoader />
+                ) : (
+                  history.map((ques, index) => (
+                    <QuesPaper key={index} data={ques} />
+                  ))
+                )}
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        ) : (
+          <>
+            <QuesPapersFilter />
+            {isLoading || isFetching || paper.length === 0 ? (
+              <DashboardLoader />
+            ) : (
+              paper.map((ques, index) => <QuesPaper key={index} data={ques} />)
+            )}
+          </>
+        )}
       </Box>
     </Box>
   );
