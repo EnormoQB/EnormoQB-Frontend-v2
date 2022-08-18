@@ -22,6 +22,7 @@ import Option from './option';
 import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
 import FeedbackModal from '../Modal/Feedback';
+import SimilarQuestion from './similarQuestion';
 
 const style = {
   height: '60vh',
@@ -38,20 +39,14 @@ const style1 = {
   maxH: '80vh',
   width: '80vw',
   maxW: '80vw',
-  backgroundColor: 'white',
+  backgroundColor: 'brand.100',
   display: 'flex',
   flexDir: 'column',
-  justifyContent: 'center',
   position: 'fixed',
-  overflowX: 'scroll',
-  overflowY: 'scroll',
-  alignItems: 'center',
-  textAlign: 'center',
   padding: '30px',
-  borderRadius: '10px',
 };
 
-const Question = ({ data, show, questions }) => {
+const QuestionAccordion = ({ data, show, questions }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: modalOpen,
@@ -218,22 +213,27 @@ const Question = ({ data, show, questions }) => {
                       onClose={onModalCloseSimilarQuestion}
                       isCentered
                       motionPreset='slideInBottom'
-                      w='55vw'
-                      h='55vh'
-                      maxH='85vh'
                     >
                       <ModalOverlay />
                       <ModalContent sx={style1}>
-                        <ModalCloseButton
-                          _focus={{}}
-                          position='fixed'
-                          mt='80px'
-                          mr='170px'
-                        />
-                        <ModalBody>
-                          <Box pt='40px'>
+                        <ModalCloseButton _focus={{}} mr='1.5' mt='1.5' />
+                        <ModalBody p='0' h='100%'>
+                          <Text
+                            as='h3'
+                            fontWeight='600'
+                            fontSize='2xl'
+                            mb='3'
+                            pr={6}
+                            pl={3}
+                          >
+                            Similar Questions
+                          </Text>
+                          <Box overflow='auto' h='92%' pr={6} pl={3}>
                             {questions.map((ques) => (
-                              <Question key={ques._id.$oid} data={ques} />
+                              <SimilarQuestion
+                                key={ques._id.$oid}
+                                data={ques}
+                              />
                             ))}
                           </Box>
                         </ModalBody>
@@ -252,8 +252,8 @@ const Question = ({ data, show, questions }) => {
   );
 };
 
-export default Question;
+export default QuestionAccordion;
 
-Question.defaultProps = {
+QuestionAccordion.defaultProps = {
   show: false,
 };

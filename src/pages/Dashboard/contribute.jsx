@@ -38,8 +38,7 @@ import classData from '../../data/classData';
 import { useAddQuestionsMutation } from '../../redux/services/questionApi';
 import Congratulations from '../../assets/announcement.svg';
 import OverlayLoader from '../../components/Loaders/OverlayLoader';
-
-const difficulties = ['Easy', 'Medium', 'Hard'];
+import { difficulties } from '../../components/Generate/config';
 
 const Contribute = () => {
   const toast = useToast();
@@ -49,7 +48,6 @@ const Contribute = () => {
     value: difficulty,
     setValue: setDifficulty,
   } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
-
   const group = getRootProps();
 
   const [options, setOptions] = useState([
@@ -160,11 +158,6 @@ const Contribute = () => {
       }
     }
 
-    if (flag) {
-      errorToast('Delete the empty option or enter some value!');
-      return;
-    }
-
     const data = {
       standard: standard.value,
       subject: subject.value,
@@ -177,18 +170,18 @@ const Contribute = () => {
       userId: user._id,
     };
 
-    console.log(data.topics);
-
     if (data.question.length < 1) {
       errorToast('Question cannot be blank!');
     } else if (typeof data.subject === 'undefined') {
       errorToast('Subject cannot be blank!');
     } else if (data.topics.length === 0) {
       errorToast('Topics cannot be blank!');
+    } else if (flag) {
+      errorToast('Delete the empty option or enter some value!');
     } else if (!difficulties.includes(data.difficulty)) {
       errorToast('Select from given difficulties!');
     } else if (data.answer === '') {
-      errorToast('Answer cannot be blank!');
+      errorToast('Please mark a correct answer!');
     } else {
       setLoading(true);
 

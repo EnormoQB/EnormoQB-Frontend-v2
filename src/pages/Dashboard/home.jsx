@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import Cards from '../../components/Stats/cards';
 import LineGraph from '../../components/Graph/LineGraph';
 import DoughnutGraph from '../../components/Graph/DoughnutGraph';
-import Question from '../../components/Accordion';
+import Question from '../../components/QuestionAccordion';
 import { useGetStatsQuery } from '../../redux/services/statsApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 import { useReservedQuestionsQuery } from '../../redux/services/questionApi';
@@ -16,11 +16,7 @@ import { useGetSubjectsQuery } from '../../redux/services/subjectApi';
 const DashboardHome = () => {
   const user = useSelector((state) => state.userState.user);
   const { data, isLoading, isFetching } = useGetStatsQuery();
-  const {
-    data: subdata,
-    isLoading: subLoading,
-    isFetching: subFetching,
-  } = useGetSubjectsQuery();
+  const { data: subdata } = useGetSubjectsQuery();
 
   const [stats, setStats] = useState(null);
   const {
@@ -30,6 +26,7 @@ const DashboardHome = () => {
   } = useReservedQuestionsQuery();
 
   const [reservedDatastore, setreservedDatastore] = useState([]);
+
   useEffect(() => {
     if (data) {
       setStats(data.data);

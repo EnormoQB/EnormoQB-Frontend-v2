@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react';
+import { titleCase } from '../../../utils/helpers';
 
 const DifficultyTag = ({ content, isExpanded }) => {
   return (
@@ -12,7 +13,7 @@ const DifficultyTag = ({ content, isExpanded }) => {
       mr='2'
       borderRadius='md'
     >
-      {content}
+      {titleCase(content)}
     </Flex>
   );
 };

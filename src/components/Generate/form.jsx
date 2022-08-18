@@ -29,7 +29,7 @@ import { boardOptions, classOptions, difficulties } from './config';
 import WarningModal from '../Modal/Warning';
 import OverlayLoader from '../Loaders/OverlayLoader';
 
-const GenerateForm = ({ trigger }) => {
+const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
   const toast = useToast();
   const formDetails = useSelector((state) => state.generateState.generateForm);
   const dispatch = useDispatch();
@@ -52,8 +52,12 @@ const GenerateForm = ({ trigger }) => {
   const instructions = useRef();
   const [time, setTime] = useState('');
 
+  const easy = quesDiffDetails.Easy.count * quesDiffDetails.Easy.marks;
+  const medium = quesDiffDetails.Medium.count * quesDiffDetails.Medium.marks;
+  const hard = quesDiffDetails.Hard.count * quesDiffDetails.Hard.marks;
+  let totalMarks = easy + medium + hard;
+
   const onLoad = () => {
-    console.log('running');
     instituteName.current.value = formDetails.instituteName;
     setBoard(boardOptions.find((ele) => ele.value === formDetails.board));
     examType.current.value = formDetails.examType;
@@ -109,6 +113,14 @@ const GenerateForm = ({ trigger }) => {
   };
 
   const handleAddTopic = () => {
+    if (topic === '') {
+      errorToast('Select a topic to add');
+      return;
+    }
+    if (topicQuesCount === '' && topicQuesCount <= 0) {
+      errorToast('Please input a number greater than 0 to add topic');
+      return;
+    }
     if (topicsList.filter((item) => item.name === topic.value).length === 0) {
       setTopicsList((prev) => [
         ...prev,
@@ -119,13 +131,25 @@ const GenerateForm = ({ trigger }) => {
     setTopic('');
   };
 
-  const easy = quesDiffDetails.Easy.count * quesDiffDetails.Easy.marks;
-  const medium = quesDiffDetails.Medium.count * quesDiffDetails.Medium.marks;
-  const hard = quesDiffDetails.Hard.count * quesDiffDetails.Hard.marks;
-  let totalMarks = easy + medium + hard;
+  const resetFields = () => {
+    instituteName.current.value = '';
+    examType.current.value = '';
+    instructions.current.value = '';
+    setStandard({ value: '10', label: 'X' });
+    setSubject('');
+    setBoard('');
+    setSubject('');
+    setTopicsList([]);
+    setQuesDiffDetails({
+      Easy: { count: 0, marks: 1 },
+      Medium: { count: 0, marks: 1 },
+      Hard: { count: 0, marks: 1 },
+    });
+    setTime('');
+    totalMarks = 0;
+  };
 
   const onSubmit = () => {
-    // setLoading(true);
     const data = {
       instituteName: instituteName.current.value,
       standard: standard.value,
@@ -134,17 +158,15 @@ const GenerateForm = ({ trigger }) => {
       examType: examType.current.value,
       board: board.value,
       instructions: instructions.current.value,
-      time,
+      time: time.trim(),
       quesDiffDetails,
       totalMarks,
     };
 
-    console.log(quesDiffDetails.Easy.count);
-
     if (typeof data.board === 'undefined') {
       errorToast('Board cannot be blank!');
     } else if (typeof data.subject === 'undefined') {
-      errorToast('subject cannot be blank!');
+      errorToast('Subject cannot be blank!');
     } else if (
       quesDiffDetails.Easy.count === 0 &&
       quesDiffDetails.Medium.count === 0 &&
@@ -153,17 +175,17 @@ const GenerateForm = ({ trigger }) => {
       errorToast(
         'Number of question of at least 1 difficulty has to be entered!',
       );
+    } else if (data.time.length < 1) {
+      errorToast('Total time cannot be blank!');
+    } else if (data.time < 1) {
+      errorToast('Total time should be greater than 0!');
     } else {
       setLoading(true);
       const neededTopics = topicsList.map((item) => item.name);
-
       const completeTopicList = classData[10].Maths.filter(
         (item) => !neededTopics.includes(item),
       ).map((item) => {
-        return {
-          name: item,
-          count: -1,
-        };
+        return { name: item, count: -1 };
       });
 
       const previewData = {
@@ -184,26 +206,15 @@ const GenerateForm = ({ trigger }) => {
             id: 'generate',
             title: 'success',
             position: 'top-right',
-            description: 'Preview generated successfully!!',
+            description: 'Preview generated successfully!',
             status: 'success',
             duration: 3000,
             isClosable: true,
           });
-          instituteName.current.value = '';
-          examType.current.value = '';
-          instructions.current.value = '';
-          setStandard({ value: '10', label: 'X' });
-          setSubject('');
-          setBoard('');
-          setSubject('');
-          setTopicsList([]);
-          setQuesDiffDetails({
-            Easy: { count: 0, marks: 1 },
-            Medium: { count: 0, marks: 1 },
-            Hard: { count: 0, marks: 1 },
-          });
-          setTime('');
-          totalMarks = 0;
+          resetFields();
+          if (!isLoading && !isFetching) {
+            switchPreview();
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -220,7 +231,7 @@ const GenerateForm = ({ trigger }) => {
         onConfirm={() => onConfirm[warning.type](warning.val)}
       />
       <FormControl mb={6}>
-        <FormLabel fontSize={19} htmlFor='institution'>
+        <FormLabel fontSize={18} htmlFor='institution'>
           Institution Name
         </FormLabel>
         <Input
@@ -233,7 +244,7 @@ const GenerateForm = ({ trigger }) => {
       <Flex justify='space-between'>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
           <FormControl mb={6}>
-            <FormLabel fontSize={19} htmlFor='examType'>
+            <FormLabel fontSize={18} htmlFor='examType'>
               Exam Type
             </FormLabel>
             <Input
@@ -244,7 +255,7 @@ const GenerateForm = ({ trigger }) => {
             />
           </FormControl>
           <FormControl mb={6} isRequired>
-            <FormLabel fontSize={19} htmlFor='board'>
+            <FormLabel fontSize={18} htmlFor='board'>
               Board
             </FormLabel>
             <Select
@@ -265,7 +276,7 @@ const GenerateForm = ({ trigger }) => {
         </Box>
         <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
           <FormControl mb={6} isRequired>
-            <FormLabel fontSize={19} htmlFor='class'>
+            <FormLabel fontSize={18} htmlFor='class'>
               Class
             </FormLabel>
             <Select
@@ -279,7 +290,7 @@ const GenerateForm = ({ trigger }) => {
             />
           </FormControl>
           <FormControl isRequired mb={6}>
-            <FormLabel fontSize={19} htmlFor='subject'>
+            <FormLabel fontSize={18} htmlFor='subject'>
               Subject
             </FormLabel>
             <Select
@@ -312,7 +323,7 @@ const GenerateForm = ({ trigger }) => {
         />
       </FormControl>
       <FormControl mb={6} isRequired>
-        <FormLabel fontSize={19} htmlFor='noOfQues'>
+        <FormLabel fontSize={18} htmlFor='noOfQues'>
           Number/Marks Of Questions
         </FormLabel>
         <Flex justify='space-between'>
@@ -379,7 +390,7 @@ const GenerateForm = ({ trigger }) => {
       </FormControl>
       <Flex justify='space-between'>
         <Box w='48%'>
-          <Text fontSize={19} mb='8px' fontWeight={500}>
+          <Text fontSize={18} mb='8px' fontWeight={500}>
             Total Marks
           </Text>
           <Flex
@@ -397,7 +408,7 @@ const GenerateForm = ({ trigger }) => {
           </Flex>
         </Box>
         <FormControl mb={6} isRequired w='48%'>
-          <FormLabel fontSize={19} htmlFor='examTime'>
+          <FormLabel fontSize={18} htmlFor='examTime'>
             Total Time&nbsp;
             <Box display='inline' fontSize='15'>
               (in mins)
@@ -416,7 +427,7 @@ const GenerateForm = ({ trigger }) => {
         </FormControl>
       </Flex>
       <FormControl mb={6}>
-        <FormLabel fontSize={19} htmlFor='topics'>
+        <FormLabel fontSize={18} htmlFor='topics'>
           <Box display='inline-flex' alignItems='center' gap='2'>
             Topics
             <Tooltip
@@ -484,13 +495,13 @@ const GenerateForm = ({ trigger }) => {
             key={i}
             borderRadius='full'
             variant='solid'
-            bg='#C3D0F9'
+            bg='multiSelect.300'
           >
-            <TagLabel color='black' bg='#C3D0F9' fontSize={15}>
+            <TagLabel color='brand.600' bg='multiSelect.300' fontSize={15}>
               {`${item.name} : ${item.count}`}
             </TagLabel>
             <TagCloseButton
-              color='black'
+              color='brand.600'
               onClick={() => {
                 setTopicsList((prevValue) =>
                   prevValue.filter((val, idx) => idx !== i),
@@ -501,8 +512,20 @@ const GenerateForm = ({ trigger }) => {
         ))}
       </Wrap>
       <Flex justify='center'>
-        <Button mt={7} w={300} h={50} onClick={onSubmit}>
+        <Button mt={7} w={200} h={50} onClick={onSubmit}>
           SUBMIT
+        </Button>
+        <Button
+          ml={4}
+          mt={7}
+          w={200}
+          h={50}
+          bg='brand.300'
+          color='brand.600'
+          _hover={{ backgroundColor: 'brand.400' }}
+          onClick={resetFields}
+        >
+          Clear All
         </Button>
       </Flex>
     </Box>

@@ -3,7 +3,7 @@ import { Box, Flex, IconButton, Text, Tooltip } from '@chakra-ui/react';
 import { RiFileDownloadFill } from 'react-icons/ri';
 import { BsBoxArrowInRight } from 'react-icons/bs';
 import Tag from './tag';
-import TagDivider from '../Accordion/Tags/divider';
+import TagDivider from '../QuestionAccordion/Tags/divider';
 
 const QuesPaper = ({ data }) => {
   const [marks, setMarks] = useState(0);
@@ -31,13 +31,13 @@ const QuesPaper = ({ data }) => {
 
   return (
     <Flex
-      px='5'
-      py='6'
+      px='6'
+      py='4'
       borderRadius='10'
       bg='brand.100'
       boxShadow='rgba(0, 0, 0, 0.16) 0px 1px 4px'
       role='group'
-      my='4'
+      my='2'
     >
       <Box w='75%'>
         <Text as='h2' fontWeight='600' fontSize='lg'>

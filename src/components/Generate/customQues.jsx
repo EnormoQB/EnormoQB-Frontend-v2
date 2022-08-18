@@ -18,19 +18,46 @@ import {
   useToast,
   Textarea,
   Text,
+  HStack,
+  useRadioGroup,
 } from '@chakra-ui/react';
 import debounce from 'lodash.debounce';
 import { Fragment, useMemo, useRef, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
+import RadioCard from '../Contribute/radioCard';
+import { difficulties } from './config';
 
-const CustomQuestion = () => {
+const optionInitialState = [
+  { value: '', isCorrect: false, id: Math.random() * 100 },
+  { value: '', isCorrect: false, id: Math.random() * 100 },
+];
+
+const CustomQuestion = ({ addQues }) => {
   const toast = useToast();
-  const [options, setOptions] = useState([
-    { value: '', isCorrect: false, id: Math.random() * 100 },
-    { value: '', isCorrect: false, id: Math.random() * 100 },
-  ]);
+  const {
+    getRootProps,
+    getRadioProps,
+    value: difficulty,
+    setValue: setDifficulty,
+  } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
+  const group = getRootProps();
+
+  const [options, setOptions] = useState(optionInitialState);
+  const [openIndex, setOpenIndex] = useState(-1);
   const question = useRef();
+
+  const errorToast = (description) => {
+    toast({
+      id: 'fail',
+      title: 'Error',
+      position: 'top-right',
+      description,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   const changeHandler = (idx, e) => {
     setOptions((prevState) =>
@@ -82,15 +109,7 @@ const CustomQuestion = () => {
   const handleAnswer = (idx) => {
     if (options[idx].value === '') {
       if (!toast.isActive('answer')) {
-        toast({
-          id: 'answer',
-          title: 'Error',
-          position: 'top-right',
-          description: 'Answer cannot be blank!',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
+        errorToast('Answer cannot be blank!');
       }
       return;
     }
@@ -102,25 +121,57 @@ const CustomQuestion = () => {
     );
   };
 
-  const handleSubmit = () => {
-    let answer = null;
-    const opts = [];
+  const resetFields = () => {
+    question.current.value = '';
+    setOptions(optionInitialState);
+    setDifficulty('Easy');
+  };
 
-    options.forEach((item) => {
-      opts.push(item.value);
-      if (item.isCorrect) answer = item.value;
-    });
+  const handleSubmit = () => {
+    let answer = '';
+    const opts = [];
+    let flag = false;
+
+    for (let i = 0; i < options.length; i += 1) {
+      const val = options[i].value.trim();
+      if (val.length < 1) {
+        flag = true;
+        break;
+      }
+      opts.push(val);
+      if (options[i].isCorrect) {
+        answer = val;
+      }
+    }
 
     const data = {
-      question: question.current.value,
+      question: question.current.value.trim(),
       answer,
       options: opts,
+      difficulty,
+      _id: `${Math.floor(Math.random() * 10e10)}`,
     };
-    // console.log(data);
+    if (data.question.length < 1) {
+      errorToast('Question cannot be blank!');
+    } else if (flag) {
+      errorToast('Delete the empty option or enter some value!');
+    } else if (data.answer === '') {
+      errorToast('Please mark a correct answer!');
+    } else {
+      addQues(data);
+      resetFields();
+      setOpenIndex(-1);
+    }
   };
 
   return (
-    <Accordion my='2' mb='4' allowToggle>
+    <Accordion
+      my='2'
+      mb='4'
+      allowToggle
+      index={openIndex}
+      onChange={(i) => setOpenIndex(i)}
+    >
       <AccordionItem border='0px'>
         <h2>
           <AccordionButton
@@ -239,6 +290,21 @@ const CustomQuestion = () => {
                   </Fragment>
                 ))}
               </Flex>
+            </FormControl>
+            <FormControl mb={6}>
+              <FormLabel fontSize={18} htmlFor='difficulty'>
+                Difficulty Level
+              </FormLabel>
+              <HStack {...group} size='sm'>
+                {difficulties.map((value) => {
+                  const radio = getRadioProps({ value });
+                  return (
+                    <RadioCard key={value} {...radio}>
+                      {value}
+                    </RadioCard>
+                  );
+                })}
+              </HStack>
             </FormControl>
             <Flex gap='4' alignItems='center'>
               <Button

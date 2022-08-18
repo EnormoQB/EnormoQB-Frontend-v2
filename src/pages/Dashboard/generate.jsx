@@ -6,12 +6,16 @@ import {
   TabPanel,
   Heading,
 } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import CustomTab from '../../components/Generate/customTab';
 import GenerateForm from '../../components/Generate/form';
 import GenerateResult from '../../components/Generate/result';
 import { useLazyGeneratePreviewQuery } from '../../redux/services/questionPaperApi';
 
 const Generate = () => {
+  const [tabIndex, setTabIndex] = useState(0);
+  const formDetails = useSelector((state) => state.generateState.generateForm);
   const [trigger, { data, isLoading, isFetching }] =
     useLazyGeneratePreviewQuery();
 
@@ -31,10 +35,16 @@ const Generate = () => {
         </mark>
       </Heading>
       <Box w='full'>
-        <Tabs isLazy defaultIndex={0} size='lg'>
+        <Tabs
+          isLazy
+          defaultIndex={0}
+          size='lg'
+          index={tabIndex}
+          onChange={(i) => setTabIndex(i)}
+        >
           <TabList>
             <CustomTab>Form</CustomTab>
-            <CustomTab>Preview</CustomTab>
+            <CustomTab isDisabled={!formDetails}>Preview</CustomTab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -42,14 +52,11 @@ const Generate = () => {
                 trigger={trigger}
                 isLoading={isLoading}
                 isFetching={isFetching}
+                switchPreview={() => setTabIndex(1)}
               />
             </TabPanel>
             <TabPanel>
-              <GenerateResult
-                data={data}
-                isLoading={isLoading}
-                isFetching={isFetching}
-              />
+              <GenerateResult queryData={data} />
             </TabPanel>
           </TabPanels>
         </Tabs>

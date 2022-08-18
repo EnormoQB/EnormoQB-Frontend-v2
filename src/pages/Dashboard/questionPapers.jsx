@@ -8,24 +8,20 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import QuesPapersFilter from '../../components/Filters/quesPapersFilter';
-import QuesPaper from '../../components/QuestionPapers/questionPaper';
 import {
   usePreviousYearPaperQuery,
   useUserPaperHistoryQuery,
 } from '../../redux/services/questionPaperApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 import CustomTab from '../../components/Generate/customTab';
+import QuesPaper from '../../components/QuestionPapers';
 
 const QuestionPapers = () => {
   const [paper, setpaper] = useState([]);
   const [history, sethistory] = useState([]);
   const { data, isLoading, isFetching } = usePreviousYearPaperQuery();
 
-  const {
-    data: historydata,
-    isLoading: historyLoading,
-    isFetching: historyFetching,
-  } = useUserPaperHistoryQuery();
+  const { data: historydata } = useUserPaperHistoryQuery();
 
   useEffect(() => {
     if (data) {
