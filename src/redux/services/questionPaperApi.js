@@ -6,6 +6,7 @@ import axiosBaseQuery from './axiosBaseQuery';
 export const questionPaperApi = createApi({
   reducerPath: 'questionPaperApi',
   baseQuery: axiosBaseQuery,
+  tagTypes: ['QuestionPaper'],
   endpoints: (builder) => ({
     generatePreview: builder.query({
       query: (questionPaper) => ({
@@ -24,7 +25,25 @@ export const questionPaperApi = createApi({
         }
       },
     }),
+    previousYearPaper: builder.query({
+      query: () => ({
+        url: ApiEndpoints.questionPapers.previous.url,
+        method: 'get',
+        providesTags: ['PreviousYear'],
+      }),
+    }),
+    userPaperHistory: builder.query({
+      query: () => ({
+        url: ApiEndpoints.questionPapers.history.url,
+        method: 'get',
+        providesTags: ['PaperHistory'],
+      }),
+    }),
   }),
 });
 
-export const { useLazyGeneratePreviewQuery } = questionPaperApi;
+export const {
+  useLazyGeneratePreviewQuery,
+  usePreviousYearPaperQuery,
+  useUserPaperHistoryQuery,
+} = questionPaperApi;

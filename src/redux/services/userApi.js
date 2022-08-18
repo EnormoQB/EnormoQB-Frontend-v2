@@ -14,7 +14,7 @@ export const userApi = createApi({
           const data = await queryFulfilled;
           dispatch(setUser(data.data));
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       },
     }),

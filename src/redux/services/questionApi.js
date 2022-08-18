@@ -15,6 +15,23 @@ export const questionsApi = createApi({
         data: question,
       }),
     }),
+    generatePreview: builder.query({
+      query: (questionPaper) => ({
+        url: ApiEndpoints.questionPapers.preview.url,
+        method: 'post',
+        headers: { 'content-type': 'multipart/form-data' },
+        data: questionPaper,
+      }),
+    }),
+    reservedQuestions: builder.query({
+      query: () => {
+        return {
+          url: `${ApiEndpoints.questions.reserved.url}`,
+          method: 'get',
+          providesTags: ['Reserved'],
+        };
+      },
+    }),
     getQuestions: builder.query({
       query: ({ userId, status, standard, subject, topics, difficulty }) => {
         const params = new URLSearchParams({
@@ -32,6 +49,16 @@ export const questionsApi = createApi({
         };
       },
     }),
+    feedbackupdate: builder.mutation({
+      query: ({ feedback, id }) => {
+        return {
+          url: `${ApiEndpoints.questions.feedback.url}/${id}`,
+          method: 'patch',
+          data: { feedback },
+          invalidatesTags: ['Questions'],
+        };
+      },
+    }),
   }),
 });
 
@@ -39,4 +66,6 @@ export const {
   useAddQuestionsMutation,
   useGetQuestionsQuery,
   useLazyGeneratePreviewQuery,
+  useReservedQuestionsQuery,
+  useFeedbackupdateMutation,
 } = questionsApi;

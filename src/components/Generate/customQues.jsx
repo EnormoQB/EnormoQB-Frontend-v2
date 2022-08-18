@@ -151,7 +151,6 @@ const CustomQuestion = ({ addQues }) => {
       difficulty,
       _id: `${Math.floor(Math.random() * 10e10)}`,
     };
-
     if (data.question.length < 1) {
       errorToast('Question cannot be blank!');
     } else if (flag) {

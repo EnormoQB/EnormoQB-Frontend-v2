@@ -22,17 +22,39 @@ const ApiEndpoints = {
       method: 'GET',
       url: 'api/questions/list',
     },
+    reserved: {
+      method: 'GET',
+      url: 'api/questions/reserved',
+    },
+    feedback: {
+      method: 'PATCH',
+      url: 'api/questions/update/feedback',
+    },
   },
   questionPapers: {
     preview: {
       method: 'POST',
       url: 'api/questionPapers/preview',
     },
+    previous: {
+      method: 'GET',
+      url: 'api/questionPapers/previousyear',
+    },
+    history: {
+      method: 'GET',
+      url: 'api/questionPapers/userpapers',
+    },
   },
   stats: {
     get: {
       method: 'GET',
       url: 'api/questions/stats',
+    },
+  },
+  subjects: {
+    sub: {
+      method: 'GET',
+      url: 'api/subjectsData',
     },
   },
 };

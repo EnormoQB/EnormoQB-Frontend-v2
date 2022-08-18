@@ -10,19 +10,52 @@ import {
   Text,
   FormControl,
   Textarea,
+  useToast,
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { useState } from 'react';
+import { useFeedbackupdateMutation } from '../../redux/services/questionApi';
 
 const feedbackOptions = [
-  { value: '0', label: 'Irrelevant Question' },
-  { value: '1', label: 'Wrong Subject/Topic' },
+  { value: 'Irrelevant Question', label: 'Irrelevant Question' },
+  { value: 'Wrong Subject/Topic', label: 'Wrong Subject/Topic' },
   { value: 'Others', label: 'Others' },
 ];
 
-const FeedbackModal = ({ onClose, isOpen, onConfirm }) => {
-  const [feedback, setFeedback] = useState('');
+const FeedbackModal = ({ onClose, isOpen, onConfirm, id }) => {
+  const [feed, setFeed] = useState('');
   const [feedText, setFeedText] = useState('');
+  const [trigger] = useFeedbackupdateMutation();
+  const toast = useToast();
+
+  const submit = () => {
+    const feedback = feed.value === 'Others' ? feedText : feed.value;
+    trigger({ feedback, id })
+      .then(() => {
+        setFeed('');
+        setFeedText('');
+        toast({
+          id: 'generate',
+          title: 'success',
+          position: 'top-right',
+          description: 'Question Rejected !',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((err) => {
+        toast({
+          id: 'generate',
+          title: 'success',
+          position: 'top-right',
+          description: 'Some Error Occured !',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      });
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size='lg'>
@@ -43,11 +76,11 @@ const FeedbackModal = ({ onClose, isOpen, onConfirm }) => {
                   boxShadow: 'base',
                 }),
               }}
-              value={feedback}
-              onChange={(e) => setFeedback(e)}
+              value={feed}
+              onChange={(e) => setFeed(e)}
             />
           </FormControl>
-          {feedback.value === 'Others' && (
+          {feed.value === 'Others' && (
             <Textarea
               id='feedtext'
               placeholder='Enter Feedback'
@@ -73,6 +106,7 @@ const FeedbackModal = ({ onClose, isOpen, onConfirm }) => {
             onClick={() => {
               onConfirm();
               onClose();
+              submit();
             }}
           >
             Submit

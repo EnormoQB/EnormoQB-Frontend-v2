@@ -8,21 +8,43 @@ import Cards from '../../components/Stats/cards';
 import LineGraph from '../../components/Graph/LineGraph';
 import DoughnutGraph from '../../components/Graph/DoughnutGraph';
 import Question from '../../components/QuestionAccordion';
-import { dummy } from '../../components/Generate/config';
 import { useGetStatsQuery } from '../../redux/services/statsApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
+import { useReservedQuestionsQuery } from '../../redux/services/questionApi';
+import { useGetSubjectsQuery } from '../../redux/services/subjectApi';
 
 const DashboardHome = () => {
   const user = useSelector((state) => state.userState.user);
   const { data, isLoading, isFetching } = useGetStatsQuery();
+  const { data: subdata } = useGetSubjectsQuery();
+
   const [stats, setStats] = useState(null);
+  const {
+    data: reservedData,
+    isLoading: reservedIsLoading,
+    isFetching: reservedIsFetching,
+  } = useReservedQuestionsQuery();
+
+  const [reservedDatastore, setreservedDatastore] = useState([]);
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       setStats(data.data);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (subdata) {
+      //  All the Subjects and topics of each class
+      // console.log(subdata.data);
+    }
+  }, [subdata]);
+
+  useEffect(() => {
+    if (reservedData) {
+      setreservedDatastore(reservedData.data.reservedQuestions);
+    }
+  }, [reservedData]);
 
   return isLoading || isFetching || !stats ? (
     <DashboardLoader />
@@ -92,9 +114,15 @@ const DashboardHome = () => {
             Question Bank
           </mark>
         </Heading>
-        {dummy.map((ques) => (
-          <Question key={ques._id.$oid} data={ques} />
-        ))}
+        {reservedIsLoading ||
+        reservedIsFetching ||
+        reservedDatastore.length === 0 ? (
+          <DashboardLoader />
+        ) : (
+          reservedDatastore.map((ques, index) => (
+            <Question key={index} data={ques} />
+          ))
+        )}
       </Box>
     </div>
   );

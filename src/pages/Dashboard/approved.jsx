@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
 import { useGetQuestionsQuery } from '../../redux/services/questionApi';
-import Question from '../../components/QuestionAccordion';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 import Filter from '../../components/Filters';
+import Question from '../../components/QuestionAccordion';
 
 const Approved = () => {
   const isInitialLoad = useRef(true);
@@ -38,11 +38,7 @@ const Approved = () => {
       {isLoading || isFetching || isInitialLoad.current ? (
         <DashboardLoader height='calc(70vh - 64px)' />
       ) : (
-        <>
-          {questions.length === 0 && <>No data!</>}
-          {questions.length !== 0 &&
-            questions.map((ques) => <Question key={ques._id} data={ques} />)}
-        </>
+        questions.map((ques) => <Question key={ques._id} data={ques} />)
       )}
     </Box>
   );

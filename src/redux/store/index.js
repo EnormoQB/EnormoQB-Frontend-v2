@@ -6,6 +6,7 @@ import { questionPaperApi } from '../services/questionPaperApi';
 import userReducer from '../features/userSlice';
 import generateFormReducer from '../features/generateSlice';
 import { statsApi } from '../services/statsApi';
+import { subjectApi } from '../services/subjectApi';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [questionsApi.reducerPath]: questionsApi.reducer,
     [questionPaperApi.reducerPath]: questionPaperApi.reducer,
     [statsApi.reducerPath]: statsApi.reducer,
+    [subjectApi.reducerPath]: subjectApi.reducer,
     generateState: generateFormReducer,
   },
   devTools: process.env.NODE_ENV === 'development',
