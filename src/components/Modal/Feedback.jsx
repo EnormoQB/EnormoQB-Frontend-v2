@@ -10,7 +10,7 @@ import {
   Text,
   FormControl,
   Textarea,
-  toast,
+  useToast,
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { useState } from 'react';
@@ -23,26 +23,38 @@ const feedbackOptions = [
 ];
 
 const FeedbackModal = ({ onClose, isOpen, onConfirm, id }) => {
-  const [feed, setfeed] = useState('');
+  const [feed, setFeed] = useState('');
   const [feedText, setFeedText] = useState('');
   const [trigger] = useFeedbackupdateMutation();
+  const toast = useToast();
 
   const submit = () => {
     const feedback = feed.value === 'Others' ? feedText : feed.value;
-    console.log(feedback);
-    trigger({ feedback, id }).then(() => {
-      setfeed('');
-      setFeedText('');
-      toast({
-        id: 'generate',
-        title: 'success',
-        position: 'top-right',
-        description: 'Preview generated successfully!!',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+    trigger({ feedback, id })
+      .then(() => {
+        setFeed('');
+        setFeedText('');
+        toast({
+          id: 'generate',
+          title: 'success',
+          position: 'top-right',
+          description: 'Question Rejected !',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((err) => {
+        toast({
+          id: 'generate',
+          title: 'success',
+          position: 'top-right',
+          description: 'Some Error Occured !',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
       });
-    });
   };
 
   return (
@@ -65,7 +77,7 @@ const FeedbackModal = ({ onClose, isOpen, onConfirm, id }) => {
                 }),
               }}
               value={feed}
-              onChange={(e) => setfeed(e)}
+              onChange={(e) => setFeed(e)}
             />
           </FormControl>
           {feed.value === 'Others' && (

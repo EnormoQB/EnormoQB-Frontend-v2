@@ -55,6 +55,7 @@ export const questionsApi = createApi({
           url: `${ApiEndpoints.questions.feedback.url}/${id}`,
           method: 'patch',
           data: { feedback },
+          invalidatesTags: ['Questions'],
         };
       },
     }),
