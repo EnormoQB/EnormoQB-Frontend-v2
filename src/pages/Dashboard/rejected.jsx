@@ -4,6 +4,7 @@ import Question from '../../components/QuestionAccordion';
 import Filter from '../../components/Filters';
 import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
+import Empty from '../../components/Empty';
 
 const Rejected = () => {
   const isInitialLoad = useRef(true);
@@ -39,7 +40,7 @@ const Rejected = () => {
         <DashboardLoader height='calc(70vh - 64px)' />
       ) : (
         <>
-          {questions.length === 0 && <>No data!</>}
+          {questions.length === 0 && <Empty textContent='No Data Found!' />}
           {questions.length !== 0 &&
             questions.map((ques) => <Question key={ques._id} data={ques} />)}
         </>
