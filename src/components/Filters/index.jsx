@@ -4,7 +4,7 @@ import { Select } from 'chakra-react-select';
 import { classOptions, difficulties } from '../Generate/config';
 import classData from '../../data/classData';
 
-const Filter = ({ setfilter }) => {
+const Filter = ({ setfilter, pageNumber }) => {
   const [standard, setStandard] = useState('');
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
