@@ -10,7 +10,7 @@ import Empty from '../../components/Empty';
 const Rejected = () => {
   const isInitialLoad = useRef(true);
   const [questions, setQuestions] = useState([]);
-  const [filter, setfilter] = useState({ status: 'pending', page: 1 });
+  const [filter, setfilter] = useState({ status: 'rejected', page: 1 });
   const [metadata, setMetaData] = useState([]);
   const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
 

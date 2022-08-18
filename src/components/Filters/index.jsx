@@ -18,7 +18,20 @@ const Filter = ({ setfilter, pageNumber }) => {
       topics: topics.map((topic) => topic.value),
       difficulty: difficulty.value,
     }));
-    // console.log(standard, subject, difficulty);
+  };
+
+  const handleClearAll = () => {
+    setStandard('');
+    setSubject('');
+    setTopics('');
+    setDifficulty('');
+    setfilter((prev) => ({
+      ...prev,
+      standard: '',
+      subject: '',
+      topics: '',
+      difficulty: '',
+    }));
   };
 
   return (
@@ -104,9 +117,6 @@ const Filter = ({ setfilter, pageNumber }) => {
           }
           placeholder='Select Topics'
           chakraStyles={{
-            // container: (provided) => ({ ...provided, overflowX: 'auto' }),
-            // input: (provided) => ({ ...provided, overflowX: 'auto' }),
-            // inputContainer: (provided) => ({ ...provided, overflowX: 'auto' }),
             multiValue: (provided) => ({
               ...provided,
               flexShrink: '0',
@@ -126,11 +136,21 @@ const Filter = ({ setfilter, pageNumber }) => {
           }}
           closeMenuOnSelect={false}
           hideSelectedOptions={false}
-          // controlShouldRenderValue={false}
           value={topics}
           onChange={(val) => setTopics(val)}
         />
       </FormControl>
+      <Button
+        size='sm'
+        bg='brand.400'
+        color='brand.600'
+        _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
+        ml='auto'
+        flexShrink='0'
+        onClick={handleClearAll}
+      >
+        Clear All
+      </Button>
       <Button
         size='sm'
         bg='brand.400'

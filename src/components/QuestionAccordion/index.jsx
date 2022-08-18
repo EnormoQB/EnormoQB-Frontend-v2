@@ -62,22 +62,18 @@ const QuestionAccordion = ({ data, show, questions }) => {
     onClose: onModalCloseSimilarQuestion,
   } = useDisclosure();
 
-  const handleReject = () => {};
-
-  const feedback = null;
-  const status = 'approved';
   const id = data._id;
   const [trigger] = useFeedbackupdateMutation();
   const toast = useToast();
 
-  const AcceptQuestion = () => {
-    trigger({ feedback, id, status })
+  const handleUpdate = (status, feedback) => {
+    trigger({ feedback, id, status: status.toLowerCase() })
       .then(() => {
         toast({
           id: 'generate',
           title: 'success',
           position: 'top-right',
-          description: 'Question Rejected !',
+          description: `Question ${status} !`,
           status: 'success',
           duration: 3000,
           isClosable: true,
@@ -101,7 +97,7 @@ const QuestionAccordion = ({ data, show, questions }) => {
       <FeedbackModal
         isOpen={modalOpen}
         onClose={onModalClose}
-        onConfirm={handleReject}
+        onConfirm={(feedback) => handleUpdate('Rejected', feedback)}
         id={id}
       />
 
@@ -218,7 +214,7 @@ const QuestionAccordion = ({ data, show, questions }) => {
                       mr='4'
                       bg='brand.600'
                       _hover={{ backgroundColor: 'myGray.500' }}
-                      onClick={() => AcceptQuestion()}
+                      onClick={() => handleUpdate('Approved', null)}
                     >
                       Accept
                     </Button>

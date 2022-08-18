@@ -61,9 +61,7 @@ const Pending = () => {
                 metadata={metadata}
               />
             </>
-          ) : (
-            <br />
-          )}
+          ) : null}
         </>
       )}
     </Box>
