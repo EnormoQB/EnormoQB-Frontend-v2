@@ -136,6 +136,7 @@ const Contribute = () => {
   };
 
   const onSubmit = async () => {
+    // console.log(subjectsQCount.data.classDistribution[0].percent);
     let answer = '';
     const opts = [];
     let flag = false;
