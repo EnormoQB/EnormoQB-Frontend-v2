@@ -25,28 +25,7 @@ import DifficultyTag from './Tags/difficulty';
 import FeedbackModal from '../Modal/Feedback';
 import SimilarQuestion from './similarQuestion';
 import { useFeedbackupdateMutation } from '../../redux/services/questionApi';
-
-const style = {
-  height: '60vh',
-  width: '50vw',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  textAlign: 'center',
-  marginLeft: '-150px',
-};
-
-const style1 = {
-  height: '80vh',
-  maxH: '80vh',
-  width: '80vw',
-  maxW: '80vw',
-  backgroundColor: 'brand.100',
-  display: 'flex',
-  flexDir: 'column',
-  position: 'fixed',
-  padding: '30px',
-};
+import { getToast } from '../../utils/helpers';
 
 const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -69,28 +48,26 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
   const handleUpdate = (status, feedback) => {
     trigger({ feedback, id, status: status.toLowerCase() })
       .then(() => {
-        toast({
-          id: 'generate',
-          title: 'Success',
-          position: 'top-right',
-          description: `Question ${status} !`,
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
+        toast(
+          getToast({
+            id: 'generate',
+            title: 'Success',
+            description: `Question ${status}!`,
+            status: 'success',
+          }),
+        );
         removeQuestion();
       })
       .catch((err) => {
         console.log('Update Question', err);
-        toast({
-          id: 'generate',
-          title: 'Success',
-          position: 'top-right',
-          description: 'Some Error Occured!',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
+        toast(
+          getToast({
+            id: 'generate',
+            title: 'Error',
+            description: 'Some Error Occured!',
+            status: 'error',
+          }),
+        );
       });
   };
 
@@ -156,6 +133,11 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                         isAnswer={option === data.answer}
                       />
                     ))}
+                    {data.status === 'rejected' && data.feedback ? (
+                      <Text>
+                        <strong>Feedback :</strong> {data.feedback}
+                      </Text>
+                    ) : null}
                   </Flex>
                   {data.imageUrl && data.imageUrl !== '' && (
                     <Flex
@@ -200,7 +182,17 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                         <ModalOverlay />
                         <ModalContent bg='Transparent'>
                           <ModalCloseButton _focus={{}} />
-                          <ModalBody sx={style}>
+                          <ModalBody
+                            sx={{
+                              height: '60vh',
+                              width: '50vw',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              textAlign: 'center',
+                              marginLeft: '-150px',
+                            }}
+                          >
                             <Image src={data.imageUrl} alt='Question' />
                           </ModalBody>
                         </ModalContent>
@@ -248,7 +240,19 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                       motionPreset='slideInBottom'
                     >
                       <ModalOverlay />
-                      <ModalContent sx={style1}>
+                      <ModalContent
+                        sx={{
+                          height: '80vh',
+                          maxH: '80vh',
+                          width: '80vw',
+                          maxW: '80vw',
+                          backgroundColor: 'brand.100',
+                          display: 'flex',
+                          flexDir: 'column',
+                          position: 'fixed',
+                          padding: '30px',
+                        }}
+                      >
                         <ModalCloseButton _focus={{}} mr='1.5' mt='1.5' />
                         <ModalBody p='0' h='100%'>
                           <Text
