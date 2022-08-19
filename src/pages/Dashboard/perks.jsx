@@ -51,7 +51,7 @@ const Perks = () => {
             perkHeading='EnormoQB T-Shirt'
             perkSubHeading='Redeem our high quality t-shirts'
             points={points}
-            coins='20'
+            coins='500'
           />
           <PerkCard
             imgSrc={EnormoKit}
@@ -113,21 +113,6 @@ const Perks = () => {
                 activityDate={onedata.date}
               />
             ))}
-          {/* <ActivityCard
-            activityIcon={<TiTickOutline />}
-            heading='Your question got approved.'
-            activityDate='20 Aug 2022'
-          />
-          <ActivityCard
-            activityIcon={<IoIosArrowDropup />}
-            heading='Your earned 1 point.'
-            activityDate='20 Aug 2022'
-          />
-          <ActivityCard
-            activityIcon={<IoIosArrowDropdown />}
-            heading='Your used 500 points.'
-            activityDate='22 Aug 2022'
-          /> */}
         </Flex>
       </Flex>
     </Box>
