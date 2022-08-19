@@ -33,18 +33,36 @@ export const questionPaperApi = createApi({
       }),
     }),
     previousYearPaper: builder.query({
-      query: () => ({
-        url: ApiEndpoints.questionPapers.previous.url,
-        method: 'get',
-        providesTags: ['PreviousYear'],
-      }),
+      query: ({ subject, standard, board }) => {
+        const params = new URLSearchParams({
+          ...(standard ? { standard } : {}),
+          ...(subject ? { subject } : {}),
+          ...(board ? { board } : {}),
+        });
+        return {
+          url: `${
+            ApiEndpoints.questionPapers.previous.url
+          }?${params.toString()}`,
+          method: 'get',
+          providesTags: ['PreviousYear'],
+        };
+      },
     }),
     userPaperHistory: builder.query({
-      query: () => ({
-        url: ApiEndpoints.questionPapers.history.url,
-        method: 'get',
-        providesTags: ['PaperHistory'],
-      }),
+      query: ({ subject, standard, board }) => {
+        const params = new URLSearchParams({
+          ...(standard ? { standard } : {}),
+          ...(subject ? { subject } : {}),
+          ...(board ? { board } : {}),
+        });
+        return {
+          url: `${
+            ApiEndpoints.questionPapers.history.url
+          }?${params.toString()}`,
+          method: 'get',
+          providesTags: ['PreviousYear'],
+        };
+      },
     }),
   }),
 });
