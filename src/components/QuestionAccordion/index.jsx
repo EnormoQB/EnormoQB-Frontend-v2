@@ -35,7 +35,7 @@ const QuestionAccordion = ({ data, show, removeQuestion, similarq }) => {
     if (similarq) {
       if (similarq.length > 0) {
         similarq.forEach((element) => {
-          if (element.status === 'pending' || element.status === 'approved') {
+          if (element.status === 'approved') {
             setSimilarArray((prev) => [...prev, element]);
           }
         });
