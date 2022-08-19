@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import {
   Tabs,
   TabList,
@@ -20,7 +21,11 @@ import Empty from '../../components/Empty';
 const QuestionPapers = () => {
   const [paper, setpaper] = useState([]);
   const [history, sethistory] = useState([]);
-  const [role, setRole] = useState('admin');
+  const user = useSelector((state) => state.userState.user);
+  const userType = useMemo(
+    () => user?.userType.toLowerCase() || 'member',
+    [user],
+  );
   const [filter, setFilter] = useState({
     standard: '',
     subject: '',
@@ -56,8 +61,7 @@ const QuestionPapers = () => {
         Papers
       </Heading>
       <Box w='full'>
-        {role.toLowerCase() === 'admin' ||
-        role.toLowerCase() === 'developer' ? (
+        {userType === 'admin' || userType === 'developer' ? (
           <Tabs isLazy defaultIndex={0} size='lg'>
             <TabList>
               <CustomTab>Previous Year</CustomTab>
