@@ -3,13 +3,13 @@ import { Box, Flex, Heading } from '@chakra-ui/react';
 import SendMailCard from '../../components/RequestContributions/sendMailCard';
 import QuesPapersFilter from '../../components/Filters/quesPapersFilter';
 import dummy from '../../components/RequestContributions/config';
-import { useQuestionspertopicQuery } from '../../redux/services/questionApi';
+import { useQuestionsPerTopicQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
 const RequestContributions = () => {
   const [topicData, setTopicData] = useState([]);
-  const [filter, setFilter] = useState({});
-  const { data, isLoading, isFetching } = useQuestionspertopicQuery(filter);
+  const [filter, setFilter] = useState({ standard: '10', subject: 'Maths' });
+  const { data, isLoading, isFetching } = useQuestionsPerTopicQuery(filter);
   const Minques = 10;
   useEffect(() => {
     if (data) {

@@ -76,16 +76,15 @@ export const questionsApi = createApi({
         };
       },
     }),
-    questionspertopic: builder.query({
-      query: ({ subject, standard, board }) => {
+    questionsPerTopic: builder.query({
+      query: ({ subject, standard }) => {
+        const params = new URLSearchParams({
+          ...(standard ? { standard } : {}),
+          ...(subject ? { subject } : {}),
+        });
         return {
-          url: `${ApiEndpoints.questions.perTopic.url}`,
+          url: `${ApiEndpoints.questions.perTopic.url}?${params.toString()}`,
           method: 'get',
-          data: {
-            subject: subject === '' ? 'Maths' : subject,
-            standard: standard === '' ? '10' : standard,
-            board: board === '' ? 'CBSE' : board,
-          },
         };
       },
     }),
@@ -99,5 +98,5 @@ export const {
   useReservedQuestionsQuery,
   useLazySwitchQuestionQuery,
   useFeedbackupdateMutation,
-  useQuestionspertopicQuery,
+  useQuestionsPerTopicQuery,
 } = questionsApi;
