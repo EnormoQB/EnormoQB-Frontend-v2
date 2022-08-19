@@ -28,7 +28,15 @@ export const questionsApi = createApi({
         return {
           url: `${ApiEndpoints.questions.reserved.url}`,
           method: 'get',
-          providesTags: ['Reserved'],
+        };
+      },
+    }),
+    switchQuestion: builder.query({
+      query: ({ id }) => {
+        const params = new URLSearchParams({ id });
+        return {
+          url: `${ApiEndpoints.questions.switch.url}?${params.toString()}`,
+          method: 'get',
         };
       },
     }),
@@ -76,5 +84,6 @@ export const {
   useGetQuestionsQuery,
   useLazyGeneratePreviewQuery,
   useReservedQuestionsQuery,
+  useLazySwitchQuestionQuery,
   useFeedbackupdateMutation,
 } = questionsApi;

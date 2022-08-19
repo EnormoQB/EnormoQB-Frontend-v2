@@ -23,7 +23,10 @@ import { Select } from 'chakra-react-select';
 import { FaPlus } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFormData } from '../../redux/features/generateSlice';
+import {
+  setFormData,
+  setPreviewData,
+} from '../../redux/features/generateSlice';
 import classData from '../../data/classData';
 import { boardOptions, classOptions, difficulties } from './config';
 import WarningModal from '../Modal/Warning';
@@ -31,7 +34,9 @@ import OverlayLoader from '../Loaders/OverlayLoader';
 
 const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
   const toast = useToast();
-  const formDetails = useSelector((state) => state.generateState.generateForm);
+  const { generateForm: formDetails, customQues } = useSelector(
+    (state) => state.generateState,
+  );
   const dispatch = useDispatch();
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
@@ -182,11 +187,11 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
     } else {
       setLoading(true);
       const neededTopics = topicsList.map((item) => item.name);
-      const completeTopicList = classData[10].Maths.filter(
-        (item) => !neededTopics.includes(item),
-      ).map((item) => {
-        return { name: item, count: -1 };
-      });
+      const completeTopicList = classData[data.standard][data.subject]
+        .filter((item) => !neededTopics.includes(item))
+        .map((item) => {
+          return { name: item, count: -1 };
+        });
 
       const previewData = {
         standard: standard.value,
@@ -200,11 +205,11 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
       dispatch(setFormData(data));
 
       trigger(previewData)
-        .then(() => {
+        .then((res) => {
           setLoading(false);
           toast({
             id: 'generate',
-            title: 'success',
+            title: 'Success',
             position: 'top-right',
             description: 'Preview generated successfully!',
             status: 'success',
@@ -213,6 +218,8 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
           });
           resetFields();
           if (!isLoading && !isFetching) {
+            console.log(res);
+            dispatch(setPreviewData([...customQues, ...res.data.data]));
             switchPreview();
           }
         })
