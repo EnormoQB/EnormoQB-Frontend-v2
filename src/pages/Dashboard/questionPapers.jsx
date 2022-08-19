@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import {
   Tabs,
   TabList,
@@ -15,18 +16,29 @@ import {
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 import CustomTab from '../../components/Generate/customTab';
 import QuesPaper from '../../components/QuestionPapers';
+import Empty from '../../components/Empty';
 
 const QuestionPapers = () => {
   const [paper, setpaper] = useState([]);
   const [history, sethistory] = useState([]);
-  const [role, setRole] = useState('admin');
-  const { data, isLoading, isFetching } = usePreviousYearPaperQuery();
+  const user = useSelector((state) => state.userState.user);
+  const userType = useMemo(
+    () => user?.userType.toLowerCase() || 'member',
+    [user],
+  );
+  const [filter, setFilter] = useState({
+    standard: '',
+    subject: '',
+    board: '',
+  });
 
-  const { data: historydata } = useUserPaperHistoryQuery();
+  const { data, isLoading, isFetching } = usePreviousYearPaperQuery(filter);
+  const { data: historydata } = useUserPaperHistoryQuery(filter);
 
   useEffect(() => {
     if (data) {
       setpaper(data.data);
+      console.log(data.data);
     }
     if (historydata) {
       sethistory(historydata.data);
@@ -49,8 +61,7 @@ const QuestionPapers = () => {
         Papers
       </Heading>
       <Box w='full'>
-        {role.toLowerCase() === 'admin' ||
-        role.toLowerCase() === 'developer' ? (
+        {userType === 'admin' || userType === 'developer' ? (
           <Tabs isLazy defaultIndex={0} size='lg'>
             <TabList>
               <CustomTab>Previous Year</CustomTab>
@@ -58,34 +69,79 @@ const QuestionPapers = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <QuesPapersFilter />
-                {isLoading || isFetching || paper.length === 0 ? (
+                <QuesPapersFilter
+                  filter={filter}
+                  setFilter={setFilter}
+                  showBoard={1}
+                />
+                {isLoading || isFetching ? (
                   <DashboardLoader />
                 ) : (
-                  paper.map((ques, index) => (
-                    <QuesPaper key={index} data={ques} />
-                  ))
+                  <>
+                    {paper.length === 0 && (
+                      <Empty textContent='No Data Found!' />
+                    )}
+                    {paper.length !== 0 ? (
+                      <>
+                        {paper.map((ques, index) => (
+                          <QuesPaper key={index} data={ques} />
+                        ))}
+                      </>
+                    ) : (
+                      <br />
+                    )}
+                  </>
                 )}
               </TabPanel>
               <TabPanel>
-                <QuesPapersFilter />
-                {isLoading || isFetching || paper.length === 0 ? (
+                <QuesPapersFilter
+                  filter={filter}
+                  setFilter={setFilter}
+                  showBoard={1}
+                />
+                {isLoading || isFetching ? (
                   <DashboardLoader />
                 ) : (
-                  history.map((ques, index) => (
-                    <QuesPaper key={index} data={ques} />
-                  ))
+                  <>
+                    {history.length === 0 && (
+                      <Empty textContent='No Data Found!' />
+                    )}
+                    {history.length !== 0 ? (
+                      <>
+                        {history.map((ques, index) => (
+                          <QuesPaper key={index} data={ques} />
+                        ))}
+                      </>
+                    ) : (
+                      <br />
+                    )}
+                  </>
                 )}
               </TabPanel>
             </TabPanels>
           </Tabs>
         ) : (
           <>
-            <QuesPapersFilter />
-            {isLoading || isFetching || paper.length === 0 ? (
+            <QuesPapersFilter
+              filter={filter}
+              setFilter={setFilter}
+              showBoard={1}
+            />
+            {isLoading || isFetching ? (
               <DashboardLoader />
             ) : (
-              paper.map((ques, index) => <QuesPaper key={index} data={ques} />)
+              <>
+                {paper.length === 0 && <Empty textContent='No Data Found!' />}
+                {paper.length !== 0 ? (
+                  <>
+                    {paper.map((ques, index) => (
+                      <QuesPaper key={index} data={ques} />
+                    ))}
+                  </>
+                ) : (
+                  <br />
+                )}
+              </>
             )}
           </>
         )}

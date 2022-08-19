@@ -67,7 +67,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
     instituteName.current.value = formDetails.instituteName;
     setBoard(boardOptions.find((ele) => ele.value === formDetails.board));
     examType.current.value = formDetails.examType;
-    instructions.current.value = formDetails.instructions;
+    instructions.current.value = JSON.parse(formDetails.instructions);
     setQuesDiffDetails(formDetails.quesDiffDetails);
     setStandard(classOptions.find((ele) => ele.value === formDetails.standard));
     setSubject({ value: formDetails.subject, label: formDetails.subject });
@@ -75,19 +75,36 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
     setTopicsList(formDetails.topics);
   };
 
+  const resetFields = () => {
+    instituteName.current.value = '';
+    examType.current.value = '';
+    instructions.current.value = '';
+    setStandard({ value: '10', label: 'X' });
+    setSubject('');
+    setBoard('');
+    setSubject('');
+    setTopicsList([]);
+    setQuesDiffDetails({
+      Easy: { count: 0, marks: 1 },
+      Medium: { count: 0, marks: 1 },
+      Hard: { count: 0, marks: 1 },
+    });
+    setTime('');
+    totalMarks = 0;
+  };
+
   useEffect(() => {
     console.log(formDetails);
     if (formDetails) onLoad();
+    else resetFields();
   }, [formDetails]);
 
   const errorToast = (description) => {
-    toast(
-      getToast({
-        title: 'Error',
-        description,
-        status: 'error',
-      }),
-    );
+    if (!toast.isActive('error')) {
+      toast(
+        getToast({ id: 'error', title: 'Error', description, status: 'error' }),
+      );
+    }
   };
 
   const onConfirm = {
@@ -135,24 +152,6 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
     setTopic('');
   };
 
-  const resetFields = () => {
-    instituteName.current.value = '';
-    examType.current.value = '';
-    instructions.current.value = '';
-    setStandard({ value: '10', label: 'X' });
-    setSubject('');
-    setBoard('');
-    setSubject('');
-    setTopicsList([]);
-    setQuesDiffDetails({
-      Easy: { count: 0, marks: 1 },
-      Medium: { count: 0, marks: 1 },
-      Hard: { count: 0, marks: 1 },
-    });
-    setTime('');
-    totalMarks = 0;
-  };
-
   const onSubmit = () => {
     const data = {
       instituteName: instituteName.current.value,
@@ -161,7 +160,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
       topics: topicsList,
       examType: examType.current.value,
       board: board.value,
-      instructions: instructions.current.value,
+      instructions: JSON.stringify(instructions.current.value),
       time: time.trim(),
       quesDiffDetails,
       totalMarks,
@@ -208,7 +207,6 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
           setLoading(false);
           toast(
             getToast({
-              id: 'generate',
               title: 'Success',
               description: 'Preview generated successfully!',
               status: 'success',

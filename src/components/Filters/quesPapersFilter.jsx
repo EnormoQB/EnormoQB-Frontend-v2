@@ -4,19 +4,33 @@ import { Select } from 'chakra-react-select';
 import { classOptions, boardOptions } from '../Generate/config';
 import classData from '../../data/classData';
 
-const QuesPapersFilter = ({ setFilter }) => {
-  const [standard, setStandard] = useState('');
-  const [subject, setSubject] = useState('');
+const QuesPapersFilter = ({ setFilter, filter, showBoard }) => {
+  const [standard, setStandard] = useState(
+    filter.standard === '' ? '' : { value: filter.standard, label: 'X' },
+  );
+  const [subject, setSubject] = useState(
+    filter.subject === '' ? '' : { value: filter.subject, label: 'Maths' },
+  );
   const [board, setBoard] = useState('');
 
   const handleApply = () => {
-    // console.log('yo');
     setFilter((prev) => ({
       ...prev,
       standard: standard.value,
       subject: subject.value,
       board: board.value,
     }));
+  };
+
+  const handleClearAll = () => {
+    setFilter({
+      standard: '',
+      subject: '',
+      board: '',
+    });
+    setStandard('');
+    setSubject('');
+    setBoard('');
   };
 
   return (
@@ -68,29 +82,42 @@ const QuesPapersFilter = ({ setFilter }) => {
           value={subject}
         />
       </FormControl>
-      <FormControl w='15%' flexShrink='0'>
-        <Select
-          size='sm'
-          options={boardOptions}
-          placeholder='Board'
-          chakraStyles={{
-            control: (provided) => ({
-              ...provided,
-              boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
-              border: 'none',
-            }),
-          }}
-          onChange={(e) => setBoard(e)}
-          value={board}
-        />
-      </FormControl>
 
+      {showBoard === 1 && (
+        <FormControl w='15%' flexShrink='0'>
+          <Select
+            size='sm'
+            options={boardOptions}
+            placeholder='Board'
+            chakraStyles={{
+              control: (provided) => ({
+                ...provided,
+                boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
+                border: 'none',
+              }),
+            }}
+            onChange={(e) => setBoard(e)}
+            value={board}
+          />
+        </FormControl>
+      )}
       <Button
         size='sm'
         bg='brand.400'
         color='brand.600'
         _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
         ml='auto'
+        flexShrink='0'
+        onClick={handleClearAll}
+      >
+        Clear All
+      </Button>
+      <Button
+        size='sm'
+        bg='brand.400'
+        color='brand.600'
+        _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
+        // ml='auto'
         flexShrink='0'
         onClick={handleApply}
       >

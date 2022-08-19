@@ -3,7 +3,6 @@ import { FaCoins } from 'react-icons/fa';
 
 const PerkCard = (props) => {
   const value = Number(props.coins) >= props.points;
-  console.log(value, Number(props.coins), props.points);
   return (
     <Flex
       flexDirection='column'
@@ -35,7 +34,7 @@ const PerkCard = (props) => {
           _hover={
             !value
               ? { cursor: 'pointer', bgColor: 'blue.300' }
-              : { bgColor: 'brand.300' }
+              : { bgColor: 'brand.300', cursor: 'not-allowed' }
           }
           color='brand.100'
         >

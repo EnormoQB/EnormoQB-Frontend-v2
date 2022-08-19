@@ -2,18 +2,16 @@ import { useEffect, useState } from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import SendMailCard from '../../components/RequestContributions/sendMailCard';
 import QuesPapersFilter from '../../components/Filters/quesPapersFilter';
-import dummy from '../../components/RequestContributions/config';
-import { useQuestionspertopicQuery } from '../../redux/services/questionApi';
+import { useQuestionsPerTopicQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
 const RequestContributions = () => {
   const [topicData, setTopicData] = useState([]);
-  const [filter, setFilter] = useState({});
-  const { data, isLoading, isFetching } = useQuestionspertopicQuery(filter);
+  const [filter, setFilter] = useState({ standard: '10', subject: 'Maths' });
+  const { data, isLoading, isFetching } = useQuestionsPerTopicQuery(filter);
   const Minques = 10;
   useEffect(() => {
     if (data) {
-      console.log(data.data);
       setTopicData(data.data);
     }
   }, [data]);
@@ -33,16 +31,8 @@ const RequestContributions = () => {
         </mark>
         Contributions
       </Heading>
-      <QuesPapersFilter setFilter={setFilter} />
+      <QuesPapersFilter setFilter={setFilter} filter={filter} showBoard={0} />
       <Flex justifyContent='space-evenly' wrap='wrap'>
-        {/* {dummy.map((dummydata) => (
-          <SendMailCard
-            key={dummydata.id}
-            needContributions={dummydata.needContributions}
-            topicName={dummydata.topicName}
-            quesCount={dummydata.quesCount}
-          />
-        ))} */}
         {topicData.lenght === 0 || isLoading || isFetching ? (
           <DashboardLoader />
         ) : (
@@ -52,8 +42,6 @@ const RequestContributions = () => {
               needContributions={Minques >= eachtopicdata.count ? 'Yes' : 'No'}
               topicName={eachtopicdata.topic}
               quesCount={eachtopicdata.count}
-              standard={eachtopicdata.standard}
-              subject={eachtopicdata.subject}
             />
           ))
         )}

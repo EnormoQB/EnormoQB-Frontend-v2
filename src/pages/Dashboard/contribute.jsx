@@ -71,13 +71,11 @@ const Contribute = () => {
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const errorToast = (description) => {
-    toast(
-      getToast({
-        title: 'Error',
-        description,
-        status: 'error',
-      }),
-    );
+    if (!toast.isActive('error')) {
+      toast(
+        getToast({ id: 'error', title: 'Error', description, status: 'error' }),
+      );
+    }
   };
 
   const changeHandler = (idx, e) => {
@@ -105,7 +103,7 @@ const Contribute = () => {
           return index !== idx;
         }),
       );
-    } else {
+    } else if (!toast.isActive('option-limit')) {
       toast(
         getToast({
           id: 'option-limit',
