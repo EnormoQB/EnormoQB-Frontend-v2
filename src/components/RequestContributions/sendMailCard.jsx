@@ -53,7 +53,6 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
             {quesCount}
           </Box>
           <Box fontSize='xs' color='gray.500'>
-            {' '}
             Question Count
           </Box>
         </Flex>

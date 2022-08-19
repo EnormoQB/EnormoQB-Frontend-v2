@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Heading, Flex } from '@chakra-ui/react';
 import { FaCoins } from 'react-icons/fa';
 import { TiTickOutline } from 'react-icons/ti';
@@ -9,8 +9,25 @@ import Shirt from '../../assets/tshirt.svg';
 import Voucher from '../../assets/voucher.svg';
 import EnormoKit from '../../assets/enormokit.svg';
 import LaptopSleeve from '../../assets/laptopSleeve.svg';
+import { useGetUserDataQuery } from '../../redux/services/userApi';
 
 const Perks = () => {
+  const { data, isLoading, isFetching } = useGetUserDataQuery();
+  const [history, setHistory] = useState([]);
+  const [points, setPoints] = useState(0);
+
+  useEffect(() => {
+    if (data) {
+      // setHistory(data.history);
+      if (data.history.length < 8) {
+        setHistory(data.history);
+      } else {
+        setHistory(data.history.slice(-8).reverse());
+      }
+      setPoints(data.points);
+    }
+  }, [data]);
+
   return (
     <Box>
       <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
@@ -33,13 +50,15 @@ const Perks = () => {
             imgTitle='Redeem Your Free T-Shirts'
             perkHeading='EnormoQB T-Shirt'
             perkSubHeading='Redeem our high quality t-shirts'
-            coins='500'
+            points={points}
+            coins='20'
           />
           <PerkCard
             imgSrc={EnormoKit}
             imgTitle='Exclusive EnormoQB Kit'
             perkHeading='EnormoQB Kit'
             perkSubHeading='Includes official t-shirt, keychain and sticker'
+            points={points}
             coins='1000'
           />
           <PerkCard
@@ -47,6 +66,7 @@ const Perks = () => {
             imgTitle='EnormoQB Laptop Sleeve'
             perkHeading='EnormoQB Laptop Sleeve'
             perkSubHeading="EnormoQB's exclusive laptop sleeve"
+            points={points}
             coins='1500'
           />
           <PerkCard
@@ -54,6 +74,7 @@ const Perks = () => {
             imgTitle='Redeem Your Vouchers'
             perkHeading='EnormoQB Vouchers'
             perkSubHeading='Redeem vouchers worth Rs.5000'
+            points={points}
             coins='3000'
           />
         </Flex>
@@ -71,34 +92,28 @@ const Perks = () => {
               <FaCoins style={{ marginRight: '8px' }} />
               Your Coins{' '}
             </Flex>
-            <Box>500</Box>
+            <Box>{points}</Box>
           </Flex>
-          <ActivityCard
-            activityIcon={<TiTickOutline />}
-            heading='Your question got approved.'
-            activityDate='14 Aug 2022'
-          />
-          <ActivityCard
-            activityIcon={<IoIosArrowDropup />}
-            heading='Your earned 1 point.'
-            activityDate='14 Aug 2022'
-          />
-          <ActivityCard
-            activityIcon={<TiTickOutline />}
-            heading='Your question got approved.'
-            activityDate='16 Aug 2022'
-          />
-          <ActivityCard
-            activityIcon={<IoIosArrowDropup />}
-            heading='Your earned 1 point.'
-            activityDate='16 Aug 2022'
-          />
-          <ActivityCard
-            activityIcon={<IoIosArrowDropdown />}
-            heading='Your used 500 points.'
-            activityDate='16 Aug 2022'
-          />
-          <ActivityCard
+          {!isLoading &&
+            !isFetching &&
+            history.map((onedata, index) => (
+              <ActivityCard
+                key={index}
+                activityIcon={
+                  // eslint-disable-next-line no-nested-ternary
+                  onedata.icon === 'check' ? (
+                    <TiTickOutline />
+                  ) : onedata.icon === 'up' ? (
+                    <IoIosArrowDropup />
+                  ) : (
+                    <IoIosArrowDropdown />
+                  )
+                }
+                heading={onedata.text}
+                activityDate={onedata.date}
+              />
+            ))}
+          {/* <ActivityCard
             activityIcon={<TiTickOutline />}
             heading='Your question got approved.'
             activityDate='20 Aug 2022'
@@ -112,7 +127,7 @@ const Perks = () => {
             activityIcon={<IoIosArrowDropdown />}
             heading='Your used 500 points.'
             activityDate='22 Aug 2022'
-          />
+          /> */}
         </Flex>
       </Flex>
     </Box>

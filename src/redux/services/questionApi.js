@@ -76,6 +76,18 @@ export const questionsApi = createApi({
         };
       },
     }),
+    questionsPerTopic: builder.query({
+      query: ({ subject, standard }) => {
+        const params = new URLSearchParams({
+          ...(standard ? { standard } : {}),
+          ...(subject ? { subject } : {}),
+        });
+        return {
+          url: `${ApiEndpoints.questions.perTopic.url}?${params.toString()}`,
+          method: 'get',
+        };
+      },
+    }),
   }),
 });
 
@@ -86,4 +98,5 @@ export const {
   useReservedQuestionsQuery,
   useLazySwitchQuestionQuery,
   useFeedbackupdateMutation,
+  useQuestionsPerTopicQuery,
 } = questionsApi;

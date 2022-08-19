@@ -30,6 +30,10 @@ const ApiEndpoints = {
       method: 'PATCH',
       url: 'api/questions/update',
     },
+    perTopic: {
+      method: 'GET',
+      url: 'api/questions/perTopic',
+    },
     switch: {
       method: 'GET',
       url: 'api/questions/switch',
