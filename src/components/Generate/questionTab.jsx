@@ -11,7 +11,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { MdDelete } from 'react-icons/md';
 import { AiOutlineMenu } from 'react-icons/ai';
 
-const QuestionTab = ({ data, index, isDragging, onDelete }) => {
+const QuestionTab = ({ data, index, isDragging, onDelete, handleSwitch }) => {
   return (
     <Draggable draggableId={data._id} index={index}>
       {(provided) => (
@@ -57,6 +57,7 @@ const QuestionTab = ({ data, index, isDragging, onDelete }) => {
                 opacity='0'
                 transition='opacity ease-in-out 200ms'
                 mr='2'
+                onClick={handleSwitch}
               >
                 Switch
               </Button>
