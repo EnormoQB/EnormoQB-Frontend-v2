@@ -46,7 +46,12 @@ const Rejected = () => {
           {questions.length !== 0 ? (
             <>
               {questions.map((ques) => (
-                <Question key={ques._id} data={ques} questions={questions} />
+                <Question
+                  key={ques._id}
+                  data={ques}
+                  questions={questions}
+                  showEdit
+                />
               ))}
               <Page
                 pageNumber={filter.page}
