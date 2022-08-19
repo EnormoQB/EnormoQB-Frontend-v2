@@ -88,6 +88,15 @@ export const questionsApi = createApi({
         };
       },
     }),
+    deleteQuestion: builder.mutation({
+      query: ({ id }) => {
+        return {
+          url: `${ApiEndpoints.questions.delete.url}/${id}`,
+          method: 'delete',
+          invalidatesTags: ['Questions'],
+        };
+      },
+    }),
   }),
 });
 
@@ -99,4 +108,5 @@ export const {
   useLazySwitchQuestionQuery,
   useFeedbackupdateMutation,
   useQuestionsPerTopicQuery,
+  useDeleteQuestionMutation,
 } = questionsApi;

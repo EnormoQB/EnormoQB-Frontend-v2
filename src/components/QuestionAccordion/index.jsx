@@ -24,7 +24,10 @@ import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
 import FeedbackModal from '../Modal/Feedback';
 import SimilarQuestion from './similarQuestion';
-import { useFeedbackupdateMutation } from '../../redux/services/questionApi';
+import {
+  useFeedbackupdateMutation,
+  useDeleteQuestionMutation,
+} from '../../redux/services/questionApi';
 import { getToast } from '../../utils/helpers';
 
 const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
@@ -43,6 +46,7 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
 
   const id = data._id;
   const [trigger] = useFeedbackupdateMutation();
+  const [triggerDelete] = useDeleteQuestionMutation();
   const toast = useToast();
 
   const handleUpdate = (status, feedback) => {
@@ -68,7 +72,29 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
         );
       });
   };
-
+  const deleteQuestion = () => {
+    triggerDelete({ id })
+      .then(() => {
+        toast(
+          getToast({
+            title: 'Success',
+            description: `Question deleted!`,
+            status: 'success',
+          }),
+        );
+        removeQuestion();
+      })
+      .catch((err) => {
+        console.log('Update Error', err);
+        toast(
+          getToast({
+            title: 'Error',
+            description: 'Some Error Occured!',
+            status: 'error',
+          }),
+        );
+      });
+  };
   return (
     <Box>
       <FeedbackModal
@@ -199,7 +225,7 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                   )}
                 </Flex>
                 {show ? (
-                  <Box mt='3'>
+                  <Box mt='3' w='full'>
                     <Button
                       fontSize='sm'
                       fontWeight='medium'
@@ -274,6 +300,16 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                         </ModalBody>
                       </ModalContent>
                     </Modal>
+                    <Button
+                      fontSize='sm'
+                      fontWeight='medium'
+                      ml='auto'
+                      bg='brand.600'
+                      _hover={{ backgroundColor: 'myGray.500' }}
+                      onClick={() => deleteQuestion()}
+                    >
+                      Delete
+                    </Button>
                   </Box>
                 ) : null}
               </AccordionPanel>
