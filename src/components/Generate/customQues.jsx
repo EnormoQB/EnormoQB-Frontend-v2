@@ -25,6 +25,7 @@ import debounce from 'lodash.debounce';
 import { Fragment, useMemo, useRef, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
+import { getToast } from '../../utils/helpers';
 import RadioCard from '../Contribute/radioCard';
 import { difficulties } from './config';
 
@@ -48,15 +49,11 @@ const CustomQuestion = ({ addQues }) => {
   const question = useRef();
 
   const errorToast = (description) => {
-    toast({
-      id: 'fail',
-      title: 'Error',
-      position: 'top-right',
-      description,
-      status: 'error',
-      duration: 3000,
-      isClosable: true,
-    });
+    if (!toast.isActive('error')) {
+      toast(
+        getToast({ id: 'error', title: 'Error', description, status: 'error' }),
+      );
+    }
   };
 
   const changeHandler = (idx, e) => {
@@ -85,15 +82,14 @@ const CustomQuestion = ({ addQues }) => {
         }),
       );
     } else if (!toast.isActive('option-limit')) {
-      toast({
-        id: 'option-limit',
-        title: 'Options',
-        position: 'top-right',
-        description: 'Minimum options must be 2',
-        status: 'info',
-        duration: 3000,
-        isClosable: true,
-      });
+      toast(
+        getToast({
+          id: 'option-limit',
+          title: 'Options',
+          description: 'Minimum options must be 2',
+          status: 'info',
+        }),
+      );
     }
   };
 
@@ -108,9 +104,7 @@ const CustomQuestion = ({ addQues }) => {
 
   const handleAnswer = (idx) => {
     if (options[idx].value === '') {
-      if (!toast.isActive('answer')) {
-        errorToast('Answer cannot be blank!');
-      }
+      errorToast('Answer cannot be blank!');
       return;
     }
     setOptions((prevValue) =>
@@ -149,6 +143,7 @@ const CustomQuestion = ({ addQues }) => {
       answer,
       options: opts,
       difficulty,
+      custom: true,
       _id: `${Math.floor(Math.random() * 10e10)}`,
     };
     if (data.question.length < 1) {

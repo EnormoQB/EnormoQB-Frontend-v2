@@ -21,6 +21,7 @@ const QuestionPapers = () => {
   const [history, sethistory] = useState([]);
   const [role, setRole] = useState('admin');
   const { data, isLoading, isFetching } = usePreviousYearPaperQuery();
+  const [filter, setFilter] = useState({ standard: '', subject: '' });
 
   const { data: historydata } = useUserPaperHistoryQuery();
 
@@ -58,7 +59,11 @@ const QuestionPapers = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <QuesPapersFilter />
+                <QuesPapersFilter
+                  filter={filter}
+                  setFilter={setFilter}
+                  showBoard={1}
+                />
                 {isLoading || isFetching || paper.length === 0 ? (
                   <DashboardLoader />
                 ) : (
@@ -68,7 +73,11 @@ const QuestionPapers = () => {
                 )}
               </TabPanel>
               <TabPanel>
-                <QuesPapersFilter />
+                <QuesPapersFilter
+                  filter={filter}
+                  setFilter={setFilter}
+                  showBoard={1}
+                />
                 {isLoading || isFetching || paper.length === 0 ? (
                   <DashboardLoader />
                 ) : (
@@ -81,7 +90,11 @@ const QuestionPapers = () => {
           </Tabs>
         ) : (
           <>
-            <QuesPapersFilter />
+            <QuesPapersFilter
+              filter={filter}
+              setFilter={setFilter}
+              showBoard={1}
+            />
             {isLoading || isFetching || paper.length === 0 ? (
               <DashboardLoader />
             ) : (

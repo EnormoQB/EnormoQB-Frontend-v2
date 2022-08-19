@@ -55,7 +55,7 @@ const Generate = () => {
               />
             </TabPanel>
             <TabPanel>
-              <GenerateResult />
+              <GenerateResult switchForm={() => setTabIndex(0)} />
             </TabPanel>
           </TabPanels>
         </Tabs>

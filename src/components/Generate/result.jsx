@@ -7,12 +7,13 @@ import QuestionTab from './questionTab';
 import {
   setPreviewData,
   setCustomQues,
+  setFormData,
 } from '../../redux/features/generateSlice';
-import { titleCase } from '../../utils/helpers';
+import { getToast, titleCase } from '../../utils/helpers';
 import { useLazySwitchQuestionQuery } from '../../redux/services/questionApi';
 import { useLazyGeneratePdfQuery } from '../../redux/services/questionPaperApi';
 
-const GenerateResult = () => {
+const GenerateResult = ({ switchForm }) => {
   const toast = useToast();
   const {
     generateForm: formDetails,
@@ -22,7 +23,8 @@ const GenerateResult = () => {
   const dispatch = useDispatch();
   const [isDragging, setIsDragging] = useState(null);
   const [triggerSwitch] = useLazySwitchQuestionQuery();
-  const [triggerPdf] = useLazyGeneratePdfQuery();
+  const [triggerPdf, { isLoading: isPdfLoading, isFetching: isPdfFetching }] =
+    useLazyGeneratePdfQuery();
 
   const handleOnDragStart = (e) => {
     setIsDragging(e.source.index);
@@ -69,7 +71,16 @@ const GenerateResult = () => {
   };
 
   const generatePdf = () => {
-    triggerSwitch().then(() => {});
+    const data = {
+      ...formDetails,
+      questionList: previewData,
+    };
+    triggerPdf(data).then(() => {
+      switchForm();
+      dispatch(setFormData(null));
+      dispatch(setPreviewData([]));
+      dispatch(setCustomQues([]));
+    });
   };
 
   const handleSwitch = (id, idx) => {
@@ -80,38 +91,34 @@ const GenerateResult = () => {
           const finalPreview = Array.from(previewData);
           finalPreview[idx] = { ...res.data.data, switched: true };
           dispatch(setPreviewData(finalPreview));
-          toast({
-            id: 'switch',
-            title: 'Success',
-            position: 'top-right',
-            description: 'Question switched! Kindly check for duplicates',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          });
-        } else {
-          toast({
-            id: 'switch',
-            title: 'Error',
-            position: 'top-right',
-            description: 'No question found to switch!',
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-          });
+          toast(
+            getToast({
+              description: 'Question switched! Kindly check for duplicates',
+            }),
+          );
+        } else if (!toast.isActive('error')) {
+          toast(
+            getToast({
+              id: 'error',
+              title: 'Error',
+              description: 'No question found to switch!',
+              status: 'error',
+            }),
+          );
         }
       })
       .catch((err) => {
         console.log(err);
-        toast({
-          id: 'switch',
-          title: 'Error',
-          position: 'top-right',
-          description: 'Some error occured!',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
+        if (!toast.isActive('error')) {
+          toast(
+            getToast({
+              id: 'error',
+              title: 'Error',
+              description: 'Some error occured!',
+              status: 'error',
+            }),
+          );
+        }
       });
   };
 
@@ -144,7 +151,7 @@ const GenerateResult = () => {
             )}
           </Box>
         )}
-        <Flex justify='space-between' alignItems='center' mt='3'>
+        <Flex justify='space-between' alignItems='center' mt='3' px='4'>
           {formDetails.time && (
             <Text as='p' fontSize='md'>
               <Text as='span' fontWeight='500'>
@@ -161,12 +168,12 @@ const GenerateResult = () => {
           </Text>
         </Flex>
         {formDetails.instructions && (
-          <Box mt='3'>
+          <Box mt='3' px='4'>
             <Text as='p' fontSize='md' fontWeight='500'>
               Exam Instructions:
             </Text>
             <Text as='p' sx={{ whiteSpace: 'pre' }} fontSize='15px'>
-              {formDetails.instructions}
+              {JSON.parse(formDetails.instructions)}
             </Text>
           </Box>
         )}
@@ -194,9 +201,18 @@ const GenerateResult = () => {
         </Droppable>
       </DragDropContext>
       <Flex justify='center'>
-        <Button mt={7} w={200} h={50} onClick={generatePdf}>
-          Generate PDF
-        </Button>
+        {previewData.length > 0 && (
+          <Button
+            mt={7}
+            w={200}
+            h={50}
+            onClick={generatePdf}
+            isLoading={isPdfLoading || isPdfFetching}
+            loadingText='Generating'
+          >
+            Generate PDF
+          </Button>
+        )}
       </Flex>
     </Box>
   );
