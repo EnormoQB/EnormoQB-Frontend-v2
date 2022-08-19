@@ -155,6 +155,11 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                         isAnswer={option === data.answer}
                       />
                     ))}
+                    {data.status === 'rejected' && data.feedback ? (
+                      <Text>
+                        <strong>Feedback :</strong> {data.feedback}
+                      </Text>
+                    ) : null}
                   </Flex>
                   {data.imageUrl && data.imageUrl !== '' && (
                     <Flex
