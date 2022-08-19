@@ -4,21 +4,11 @@ import { Select } from 'chakra-react-select';
 import { classOptions, difficulties } from '../Generate/config';
 import classData from '../../data/classData';
 
-const Filter = ({ setfilter, pageNumber }) => {
+const Filter = ({ setfilter }) => {
   const [standard, setStandard] = useState('');
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
   const [difficulty, setDifficulty] = useState('');
-
-  const handleApply = () => {
-    setfilter((prev) => ({
-      ...prev,
-      standard: standard.value,
-      subject: subject.value,
-      topics: topics.map((topic) => topic.value),
-      difficulty: difficulty.value,
-    }));
-  };
 
   const handleClearAll = () => {
     setStandard('');
@@ -32,6 +22,35 @@ const Filter = ({ setfilter, pageNumber }) => {
       topics: '',
       difficulty: '',
     }));
+  };
+
+  const handleApply = () => {
+    if (
+      standard === '' &&
+      subject === '' &&
+      topics === '' &&
+      difficulty === ''
+    ) {
+      handleClearAll();
+    } else if (
+      difficulty !== '' &&
+      standard === '' &&
+      subject === '' &&
+      topics === ''
+    ) {
+      setfilter((prev) => ({
+        ...prev,
+        difficulty: difficulty.value,
+      }));
+    } else {
+      setfilter((prev) => ({
+        ...prev,
+        standard: standard.value,
+        subject: subject.value,
+        topics: topics.map((topic) => topic.value),
+        difficulty: difficulty.value,
+      }));
+    }
   };
 
   return (
