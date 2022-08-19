@@ -42,13 +42,22 @@ const DoughnutGraph = () => {
         const { height } = chart;
         const { ctx } = chart;
         ctx.restore();
+
         const fontSize = (height / 100).toFixed(2);
         ctx.font = `${fontSize}em Poppins`;
         ctx.textBaseline = 'top';
-        const text = `${standardsQCount.data.totalQuestions}`;
-        const textX = Math.round((width - ctx.measureText(text).width) / 2);
-        const textY = height / 3;
-        ctx.fillText(text, textX, textY);
+        const text1 = `${standardsQCount.data.totalQuestions}`;
+        const textX = Math.round((width - ctx.measureText(text1).width) / 2);
+        const textY = height / 3.3;
+        ctx.fillText(text1, textX, textY);
+
+        const fontSize1 = (height / 275).toFixed(2);
+        ctx.font = `${fontSize1}em Poppins`;
+        ctx.textBaseline = 'top';
+        const text2 = 'Total Questions';
+        const textX2 = Math.round((width - ctx.measureText(text1).width) / 3.5);
+        const textY2 = height / 2.1;
+        ctx.fillText(text2, textX2, textY2);
         ctx.save();
       },
     },
