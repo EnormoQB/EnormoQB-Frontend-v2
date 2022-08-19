@@ -32,12 +32,14 @@ const QuestionAccordion = ({ data, show, removeQuestion, similarq }) => {
   const [similarArray, setSimilarArray] = useState([]);
 
   useEffect(() => {
-    if (similarq.length > 0) {
-      similarq.forEach((element) => {
-        if (element.status === 'pending' || element.status === 'approved') {
-          setSimilarArray((prev) => [...prev, element]);
-        }
-      });
+    if (similarq) {
+      if (similarq.length > 0) {
+        similarq.forEach((element) => {
+          if (element.status === 'pending' || element.status === 'approved') {
+            setSimilarArray((prev) => [...prev, element]);
+          }
+        });
+      }
     }
   }, [similarq]);
   const { isOpen, onOpen, onClose } = useDisclosure();
