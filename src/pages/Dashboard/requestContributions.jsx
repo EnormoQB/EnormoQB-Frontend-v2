@@ -1,5 +1,5 @@
 import { Box, Flex, Heading } from '@chakra-ui/react';
-import SendMailCard from '../../components/RequestContributions/SendMailCard';
+import SendMailCard from '../../components/RequestContributions/sendMailCard';
 import QuesPapersFilter from '../../components/Filters/quesPapersFilter';
 import dummy from '../../components/RequestContributions/config';
 

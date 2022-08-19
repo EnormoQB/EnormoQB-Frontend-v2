@@ -4,7 +4,7 @@ import Question from '../../components/QuestionAccordion';
 import Filter from '../../components/Filters';
 import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
-import Page from '../../components/Pagination/Page';
+import Page from '../../components/Pagination';
 import Empty from '../../components/Empty';
 
 const Pending = () => {
@@ -50,6 +50,11 @@ const Pending = () => {
                   key={ques._id}
                   data={ques}
                   questions={questions}
+                  removeQuestion={() => {
+                    setQuestions((prev) =>
+                      prev.filter((item) => item._id !== ques._id),
+                    );
+                  }}
                   show
                 />
               ))}

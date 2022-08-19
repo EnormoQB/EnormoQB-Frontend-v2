@@ -2,33 +2,12 @@ import { Chart } from 'chart.js';
 
 Chart.defaults.font.family = 'Poppins';
 
-export const lineGraph = {
-  options: {
-    responsive: true,
-    legend: { display: false },
-    plugins: {
-      legend: { position: 'bottom' },
-      title: { display: false, text: 'Data' },
-    },
-  },
-  data: {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        label: 'Questions Contributed per month',
-        data: [
-          { x: 'January', y: 200 },
-          { x: 'February', y: 100 },
-          { x: 'March', y: 900 },
-          { x: 'April', y: 500 },
-          { x: 'May', y: 700 },
-          { x: 'June', y: 300 },
-          { x: 'July', y: 800 },
-        ],
-        borderColor: '#005CE6',
-        backgroundColor: '#005CE6',
-      },
-    ],
+export const lineGraphOptions = {
+  responsive: true,
+  legend: { display: false },
+  plugins: {
+    legend: { position: 'bottom' },
+    title: { display: false, text: 'Data' },
   },
 };
 

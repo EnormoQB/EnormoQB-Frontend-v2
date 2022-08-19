@@ -48,7 +48,7 @@ const style1 = {
   padding: '30px',
 };
 
-const QuestionAccordion = ({ data, show, questions }) => {
+const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: modalOpen,
@@ -78,6 +78,7 @@ const QuestionAccordion = ({ data, show, questions }) => {
           duration: 3000,
           isClosable: true,
         });
+        removeQuestion();
       })
       .catch((err) => {
         console.log('Update Question', err);
@@ -272,9 +273,7 @@ const QuestionAccordion = ({ data, show, questions }) => {
                       </ModalContent>
                     </Modal>
                   </Box>
-                ) : (
-                  <br />
-                )}
+                ) : null}
               </AccordionPanel>
             </>
           )}
