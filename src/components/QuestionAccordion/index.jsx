@@ -18,9 +18,11 @@ import {
   Center,
   Box,
   useToast,
+  IconButton,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { BiExpand } from 'react-icons/bi';
+import { AiFillFlag } from 'react-icons/ai';
 import Option from './option';
 import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
@@ -272,6 +274,14 @@ const QuestionAccordion = ({
                         {similarArray.length} Similar Questions
                       </Button>
                     )}
+                    <IconButton
+                      position='absolute'
+                      right='6.5%'
+                      bg='#ffbfbf'
+                      color='black'
+                      icon={<AiFillFlag />}
+                      _hover={{ backgroundColor: '#ff8080' }}
+                    />
                     <Modal
                       isOpen={modalOpenSimilarQuestion}
                       onClose={onModalCloseSimilarQuestion}

@@ -9,7 +9,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { lineGraphOptions } from './config';
 
 ChartJS.register(
   CategoryScale,
@@ -25,6 +24,14 @@ ChartJS.defaults.scale.grid.display = false;
 ChartJS.defaults.font.family = 'Poppins';
 
 const LineGraph = ({ contribution }) => {
+  const options = {
+    responsive: true,
+    legend: { display: false },
+    plugins: {
+      legend: { position: 'bottom' },
+      title: { display: false, text: 'Data' },
+    },
+  };
   const config = {
     labels: contribution.map((item) => item._id),
     datasets: [
@@ -40,7 +47,7 @@ const LineGraph = ({ contribution }) => {
     ],
   };
 
-  return <Line options={lineGraphOptions} data={config} />;
+  return <Line options={options} data={config} />;
 };
 
 export default LineGraph;
