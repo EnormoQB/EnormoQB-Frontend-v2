@@ -71,7 +71,7 @@ const DashboardHome = () => {
   return isLoading || isFetching || !stats ? (
     <DashboardLoader />
   ) : (
-    <>
+    <Box mx='-12' my='-8'>
       <Flex
         w='full'
         h='18vh'
@@ -164,7 +164,7 @@ const DashboardHome = () => {
           )}
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
