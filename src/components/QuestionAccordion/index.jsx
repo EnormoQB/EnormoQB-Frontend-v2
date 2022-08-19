@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   Flex,
   Accordion,
@@ -27,7 +28,20 @@ import SimilarQuestion from './similarQuestion';
 import { useFeedbackupdateMutation } from '../../redux/services/questionApi';
 import { getToast } from '../../utils/helpers';
 
-const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
+const QuestionAccordion = ({ data, show, removeQuestion, similarq }) => {
+  const [similarArray, setSimilarArray] = useState([]);
+
+  useEffect(() => {
+    if (similarq) {
+      if (similarq.length > 0) {
+        similarq.forEach((element) => {
+          if (element.status === 'pending' || element.status === 'approved') {
+            setSimilarArray((prev) => [...prev, element]);
+          }
+        });
+      }
+    }
+  }, [similarq]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: modalOpen,
@@ -221,16 +235,19 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                     >
                       Reject
                     </Button>
-                    <Button
-                      fontSize='sm'
-                      fontWeight='medium'
-                      bg='brand.300'
-                      color='brand.600'
-                      _hover={{ backgroundColor: 'brand.350' }}
-                      onClick={onModalOpenSimilarQuestion}
-                    >
-                      {questions.length} Similar Questions
-                    </Button>
+
+                    {similarArray.length !== 0 && (
+                      <Button
+                        fontSize='sm'
+                        fontWeight='medium'
+                        bg='brand.300'
+                        color='brand.600'
+                        _hover={{ backgroundColor: 'brand.350' }}
+                        onClick={onModalOpenSimilarQuestion}
+                      >
+                        {similarArray.length} Similar Questions
+                      </Button>
+                    )}
                     <Modal
                       isOpen={modalOpenSimilarQuestion}
                       onClose={onModalCloseSimilarQuestion}
@@ -264,7 +281,7 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                             Similar Questions
                           </Text>
                           <Box overflow='auto' h='92%' pr={6} pl={3}>
-                            {questions.map((ques) => (
+                            {similarArray.map((ques) => (
                               <SimilarQuestion
                                 key={ques._id.$oid}
                                 data={ques}

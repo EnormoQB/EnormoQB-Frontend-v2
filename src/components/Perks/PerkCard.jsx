@@ -3,7 +3,6 @@ import { FaCoins } from 'react-icons/fa';
 
 const PerkCard = (props) => {
   const value = Number(props.coins) >= props.points;
-  console.log(value, Number(props.coins), props.points);
   return (
     <Flex
       flexDirection='column'
