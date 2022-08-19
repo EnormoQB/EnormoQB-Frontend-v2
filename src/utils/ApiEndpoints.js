@@ -46,7 +46,7 @@ const ApiEndpoints = {
     },
     generate: {
       method: 'POST',
-      url: 'api/questionPapers/generate',
+      url: 'api/questionPapers/generatePaper',
     },
     history: {
       method: 'GET',

@@ -31,6 +31,7 @@ import classData from '../../data/classData';
 import { boardOptions, classOptions, difficulties } from './config';
 import WarningModal from '../Modal/Warning';
 import OverlayLoader from '../Loaders/OverlayLoader';
+import { getToast } from '../../utils/helpers';
 
 const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
   const toast = useToast();
@@ -80,15 +81,13 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
   }, [formDetails]);
 
   const errorToast = (description) => {
-    toast({
-      id: 'fail',
-      title: 'Error',
-      position: 'top-right',
-      description,
-      status: 'error',
-      duration: 3000,
-      isClosable: true,
-    });
+    toast(
+      getToast({
+        title: 'Error',
+        description,
+        status: 'error',
+      }),
+    );
   };
 
   const onConfirm = {
@@ -207,15 +206,14 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
       trigger(previewData)
         .then((res) => {
           setLoading(false);
-          toast({
-            id: 'generate',
-            title: 'Success',
-            position: 'top-right',
-            description: 'Preview generated successfully!',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          });
+          toast(
+            getToast({
+              id: 'generate',
+              title: 'Success',
+              description: 'Preview generated successfully!',
+              status: 'success',
+            }),
+          );
           resetFields();
           if (!isLoading && !isFetching) {
             console.log(res);

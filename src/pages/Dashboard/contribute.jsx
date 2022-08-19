@@ -39,6 +39,7 @@ import { useAddQuestionsMutation } from '../../redux/services/questionApi';
 import Congratulations from '../../assets/announcement.svg';
 import OverlayLoader from '../../components/Loaders/OverlayLoader';
 import { difficulties } from '../../components/Generate/config';
+import { getToast } from '../../utils/helpers';
 
 const Contribute = () => {
   const toast = useToast();
@@ -68,15 +69,13 @@ const Contribute = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const errorToast = (description) => {
-    toast({
-      id: 'fail',
-      title: 'Error',
-      position: 'top-right',
-      description,
-      status: 'error',
-      duration: 3000,
-      isClosable: true,
-    });
+    toast(
+      getToast({
+        title: 'Error',
+        description,
+        status: 'error',
+      }),
+    );
   };
 
   const changeHandler = (idx, e) => {
@@ -104,16 +103,15 @@ const Contribute = () => {
           return index !== idx;
         }),
       );
-    } else if (!toast.isActive('option-limit')) {
-      toast({
-        id: 'option-limit',
-        title: 'Options',
-        position: 'top-right',
-        description: 'Minimum options must be 2',
-        status: 'info',
-        duration: 3000,
-        isClosable: true,
-      });
+    } else {
+      toast(
+        getToast({
+          id: 'option-limit',
+          title: 'Options',
+          description: 'Minimum options must be 2',
+          status: 'info',
+        }),
+      );
     }
   };
 
@@ -128,9 +126,7 @@ const Contribute = () => {
 
   const handleAnswer = (idx) => {
     if (options[idx].value === '') {
-      if (!toast.isActive('answer')) {
-        errorToast('Answer cannot be blank!');
-      }
+      errorToast('Answer cannot be blank!');
       return;
     }
     setOptions((prevValue) =>

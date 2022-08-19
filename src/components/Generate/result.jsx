@@ -8,7 +8,7 @@ import {
   setPreviewData,
   setCustomQues,
 } from '../../redux/features/generateSlice';
-import { titleCase } from '../../utils/helpers';
+import { getToast, titleCase } from '../../utils/helpers';
 import { useLazySwitchQuestionQuery } from '../../redux/services/questionApi';
 import { useLazyGeneratePdfQuery } from '../../redux/services/questionPaperApi';
 
@@ -69,7 +69,13 @@ const GenerateResult = () => {
   };
 
   const generatePdf = () => {
-    triggerSwitch().then(() => {});
+    const data = {
+      ...formDetails,
+      questionList: previewData,
+    };
+    triggerPdf(data).then((res) => {
+      console.log(res.data);
+    });
   };
 
   const handleSwitch = (id, idx) => {
@@ -80,38 +86,30 @@ const GenerateResult = () => {
           const finalPreview = Array.from(previewData);
           finalPreview[idx] = { ...res.data.data, switched: true };
           dispatch(setPreviewData(finalPreview));
-          toast({
-            id: 'switch',
-            title: 'Success',
-            position: 'top-right',
-            description: 'Question switched! Kindly check for duplicates',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          });
+          toast(
+            getToast({
+              description: 'Question switched! Kindly check for duplicates',
+            }),
+          );
         } else {
-          toast({
-            id: 'switch',
-            title: 'Error',
-            position: 'top-right',
-            description: 'No question found to switch!',
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-          });
+          toast(
+            getToast({
+              title: 'Error',
+              description: 'No question found to switch!',
+              status: 'error',
+            }),
+          );
         }
       })
       .catch((err) => {
         console.log(err);
-        toast({
-          id: 'switch',
-          title: 'Error',
-          position: 'top-right',
-          description: 'Some error occured!',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
+        toast(
+          getToast({
+            title: 'Error',
+            description: 'Some error occured!',
+            status: 'error',
+          }),
+        );
       });
   };
 
