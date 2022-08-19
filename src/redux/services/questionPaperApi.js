@@ -25,6 +25,13 @@ export const questionPaperApi = createApi({
         }
       },
     }),
+    generatePdf: builder.query({
+      query: (questionPaper) => ({
+        url: ApiEndpoints.questionPapers.generate.url,
+        method: 'post',
+        data: questionPaper,
+      }),
+    }),
     previousYearPaper: builder.query({
       query: () => ({
         url: ApiEndpoints.questionPapers.previous.url,
@@ -44,6 +51,7 @@ export const questionPaperApi = createApi({
 
 export const {
   useLazyGeneratePreviewQuery,
+  useLazyGeneratePdfQuery,
   usePreviousYearPaperQuery,
   useUserPaperHistoryQuery,
 } = questionPaperApi;

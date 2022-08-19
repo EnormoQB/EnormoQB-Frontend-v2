@@ -16,8 +16,7 @@ import { useLazyGeneratePreviewQuery } from '../../redux/services/questionPaperA
 const Generate = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const formDetails = useSelector((state) => state.generateState.generateForm);
-  const [trigger, { data, isLoading, isFetching }] =
-    useLazyGeneratePreviewQuery();
+  const [trigger, { isLoading, isFetching }] = useLazyGeneratePreviewQuery();
 
   return (
     <div id='generateForm'>
@@ -56,7 +55,7 @@ const Generate = () => {
               />
             </TabPanel>
             <TabPanel>
-              <GenerateResult queryData={data} />
+              <GenerateResult />
             </TabPanel>
           </TabPanels>
         </Tabs>

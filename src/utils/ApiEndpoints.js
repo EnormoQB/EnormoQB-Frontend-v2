@@ -30,6 +30,10 @@ const ApiEndpoints = {
       method: 'PATCH',
       url: 'api/questions/update',
     },
+    switch: {
+      method: 'GET',
+      url: 'api/questions/switch',
+    },
   },
   questionPapers: {
     preview: {
@@ -39,6 +43,10 @@ const ApiEndpoints = {
     previous: {
       method: 'GET',
       url: 'api/questionPapers/previousyear',
+    },
+    generate: {
+      method: 'POST',
+      url: 'api/questionPapers/generate',
     },
     history: {
       method: 'GET',

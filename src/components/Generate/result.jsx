@@ -1,15 +1,19 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text, Button, useToast } from '@chakra-ui/react';
 import CustomQuestion from './customQues';
 import QuestionTab from './questionTab';
 import {
   setPreviewData,
   setCustomQues,
 } from '../../redux/features/generateSlice';
+import { titleCase } from '../../utils/helpers';
+import { useLazySwitchQuestionQuery } from '../../redux/services/questionApi';
+import { useLazyGeneratePdfQuery } from '../../redux/services/questionPaperApi';
 
-const GenerateResult = ({ queryData }) => {
+const GenerateResult = () => {
+  const toast = useToast();
   const {
     generateForm: formDetails,
     previewData,
@@ -17,12 +21,8 @@ const GenerateResult = ({ queryData }) => {
   } = useSelector((state) => state.generateState);
   const dispatch = useDispatch();
   const [isDragging, setIsDragging] = useState(null);
-
-  useEffect(() => {
-    if (queryData && previewData.length === 0) {
-      dispatch(setPreviewData(queryData?.data || []));
-    }
-  }, [queryData]);
+  const [triggerSwitch] = useLazySwitchQuestionQuery();
+  const [triggerPdf] = useLazyGeneratePdfQuery();
 
   const handleOnDragStart = (e) => {
     setIsDragging(e.source.index);
@@ -41,14 +41,22 @@ const GenerateResult = ({ queryData }) => {
     dispatch(setPreviewData(items));
   };
 
+  const calculateMarks = useMemo(() => {
+    let marks = 0;
+    previewData.forEach((ques) => {
+      marks += formDetails.quesDiffDetails[titleCase(ques.difficulty)].marks;
+    });
+    return marks;
+  }, [previewData]);
+
   const handleDelete = useCallback(
-    (idx) => {
-      console.log(previewData, idx);
-      dispatch(
-        setPreviewData(previewData.filter((item, index) => idx !== index)),
-      );
+    (idx, id) => {
+      const finalPreview = Array.from(previewData);
+      finalPreview.splice(idx, 1);
+      dispatch(setPreviewData(finalPreview));
+      dispatch(setCustomQues(customQues.filter((item) => item._id !== id)));
     },
-    [previewData],
+    [previewData, customQues],
   );
 
   const addCustomQues = (data) => {
@@ -58,6 +66,53 @@ const GenerateResult = ({ queryData }) => {
     finalPreview.unshift(data);
     dispatch(setCustomQues(newArray));
     dispatch(setPreviewData(finalPreview));
+  };
+
+  const generatePdf = () => {
+    triggerSwitch().then(() => {});
+  };
+
+  const handleSwitch = (id, idx) => {
+    triggerSwitch({ id })
+      .then((res) => {
+        console.log(res.data);
+        if (Object.keys(res?.data.data).length > 0) {
+          const finalPreview = Array.from(previewData);
+          finalPreview[idx] = { ...res.data.data, switched: true };
+          dispatch(setPreviewData(finalPreview));
+          toast({
+            id: 'switch',
+            title: 'Success',
+            position: 'top-right',
+            description: 'Question switched! Kindly check for duplicates',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            id: 'switch',
+            title: 'Error',
+            position: 'top-right',
+            description: 'No question found to switch!',
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast({
+          id: 'switch',
+          title: 'Error',
+          position: 'top-right',
+          description: 'Some error occured!',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      });
   };
 
   return (
@@ -95,14 +150,14 @@ const GenerateResult = ({ queryData }) => {
               <Text as='span' fontWeight='500'>
                 Time allowed:&nbsp;
               </Text>
-              {`${formDetails.time} minutes`}
+              {`${formDetails.time} mins`}
             </Text>
           )}
           <Text as='p' fontSize='md'>
             <Text as='span' fontWeight='500'>
               Maximum Marks:&nbsp;
             </Text>
-            {formDetails.totalMarks}
+            {calculateMarks}
           </Text>
         </Flex>
         {formDetails.instructions && (
@@ -125,11 +180,12 @@ const GenerateResult = ({ queryData }) => {
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {previewData.map((ques, idx) => (
                 <QuestionTab
-                  key={ques._id}
+                  key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
                   index={idx}
                   data={ques}
                   isDragging={isDragging}
-                  onDelete={() => handleDelete(idx)}
+                  onDelete={() => handleDelete(idx, ques._id)}
+                  handleSwitch={() => handleSwitch(ques._id, idx)}
                 />
               ))}
               {provided.placeholder}
@@ -137,6 +193,11 @@ const GenerateResult = ({ queryData }) => {
           )}
         </Droppable>
       </DragDropContext>
+      <Flex justify='center'>
+        <Button mt={7} w={200} h={50} onClick={generatePdf}>
+          Generate PDF
+        </Button>
+      </Flex>
     </Box>
   );
 };
