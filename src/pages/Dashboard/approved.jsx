@@ -4,7 +4,7 @@ import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 import Filter from '../../components/Filters';
 import Question from '../../components/QuestionAccordion';
-import Page from '../../components/Pagination/Page';
+import Page from '../../components/Pagination';
 import Empty from '../../components/Empty';
 
 const Approved = () => {
@@ -46,12 +46,7 @@ const Approved = () => {
           {questions.length !== 0 ? (
             <>
               {questions.map((ques) => (
-                <Question
-                  key={ques._id}
-                  data={ques}
-                  questions={questions}
-                  show
-                />
+                <Question key={ques._id} data={ques} questions={questions} />
               ))}
               <Page
                 pageNumber={filter.page}

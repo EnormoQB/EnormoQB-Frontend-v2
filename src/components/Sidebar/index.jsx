@@ -15,7 +15,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { MdOutlineLogout } from 'react-icons/md';
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
 import { useSelector } from 'react-redux';
-import NavItems from './NavItems';
+import NavItems from './navItems';
 import { navItems } from './config';
 import LogoWhite from '../../assets/mainLogoWhite.svg';
 import LogoIcon from '../../assets/favicon.svg';

@@ -9,7 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { lineGraph } from './config';
+import { lineGraphOptions } from './config';
 
 ChartJS.register(
   CategoryScale,
@@ -40,7 +40,7 @@ const LineGraph = ({ contribution }) => {
     ],
   };
 
-  return <Line options={lineGraph.options} data={config} />;
+  return <Line options={lineGraphOptions} data={config} />;
 };
 
 export default LineGraph;

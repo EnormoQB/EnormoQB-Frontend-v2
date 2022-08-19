@@ -3,33 +3,22 @@ import { FaForward, FaBackward } from 'react-icons/fa';
 import { IoMdPlay } from 'react-icons/io';
 
 const Page = ({ pageNumber, setPageNumber, metadata }) => {
-  console.log(metadata);
-
   const FirstPage = () => {
     setPageNumber(1);
-    console.log(pageNumber);
   };
 
   const PreviousPage = () => {
-    if (pageNumber > 1) {
-      setPageNumber(pageNumber - 1);
-    }
-    if (pageNumber < 0) {
-      setPageNumber(1);
-    }
-    console.log(pageNumber);
+    setPageNumber(pageNumber > 1 ? pageNumber - 1 : 1);
   };
 
   const NextPage = () => {
     if (pageNumber < metadata.totalPages) {
       setPageNumber(pageNumber + 1);
     }
-    console.log(pageNumber);
   };
 
   const LastPage = () => {
     setPageNumber(metadata.totalPages);
-    console.log(pageNumber);
   };
 
   return (
