@@ -4,13 +4,19 @@ import { Select } from 'chakra-react-select';
 import { classOptions, boardOptions } from '../Generate/config';
 import classData from '../../data/classData';
 
-const QuesPapersFilter = () => {
+const QuesPapersFilter = ({ setFilter }) => {
   const [standard, setStandard] = useState('');
   const [subject, setSubject] = useState('');
   const [board, setBoard] = useState('');
 
   const handleApply = () => {
     // console.log('yo');
+    setFilter((prev) => ({
+      ...prev,
+      standard: standard.value,
+      subject: subject.value,
+      board: board.value,
+    }));
   };
 
   return (

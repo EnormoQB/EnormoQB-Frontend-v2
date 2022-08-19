@@ -76,6 +76,19 @@ export const questionsApi = createApi({
         };
       },
     }),
+    questionspertopic: builder.query({
+      query: ({ subject, standard, board }) => {
+        return {
+          url: `${ApiEndpoints.questions.perTopic.url}`,
+          method: 'get',
+          data: {
+            subject: subject === '' ? 'Maths' : subject,
+            standard: standard === '' ? '10' : standard,
+            board: board === '' ? 'CBSE' : board,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -86,4 +99,5 @@ export const {
   useReservedQuestionsQuery,
   useLazySwitchQuestionQuery,
   useFeedbackupdateMutation,
+  useQuestionspertopicQuery,
 } = questionsApi;

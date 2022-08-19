@@ -2,6 +2,8 @@ import { Box, Flex, Image } from '@chakra-ui/react';
 import { FaCoins } from 'react-icons/fa';
 
 const PerkCard = (props) => {
+  const value = Number(props.coins) >= props.points;
+  console.log(value, Number(props.coins), props.points);
   return (
     <Flex
       flexDirection='column'
@@ -29,8 +31,12 @@ const PerkCard = (props) => {
           py='2'
           alignItems='center'
           borderRadius='8'
-          bgColor='blue.400'
-          _hover={{ cursor: 'pointer', bgColor: 'blue.300' }}
+          bgColor={!value ? 'blue.400' : 'brand.600'}
+          _hover={
+            !value
+              ? { cursor: 'pointer', bgColor: 'blue.300' }
+              : { bgColor: 'brand.600' }
+          }
           color='brand.100'
         >
           <Box mr='2'>{props.coins}</Box>

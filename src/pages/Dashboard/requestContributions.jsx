@@ -1,9 +1,23 @@
+import { useEffect, useState } from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import SendMailCard from '../../components/RequestContributions/sendMailCard';
 import QuesPapersFilter from '../../components/Filters/quesPapersFilter';
 import dummy from '../../components/RequestContributions/config';
+import { useQuestionspertopicQuery } from '../../redux/services/questionApi';
+import DashboardLoader from '../../components/Loaders/DashboardLoader';
 
 const RequestContributions = () => {
+  const [topicData, setTopicData] = useState([]);
+  const [filter, setFilter] = useState({});
+  const { data, isLoading, isFetching } = useQuestionspertopicQuery(filter);
+  const Minques = 10;
+  useEffect(() => {
+    if (data) {
+      console.log(data.data);
+      setTopicData(data.data);
+    }
+  }, [data]);
+
   return (
     <Box>
       <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
@@ -19,16 +33,30 @@ const RequestContributions = () => {
         </mark>
         Contributions
       </Heading>
-      <QuesPapersFilter />
+      <QuesPapersFilter setFilter={setFilter} />
       <Flex justifyContent='space-evenly' wrap='wrap'>
-        {dummy.map((data) => (
+        {/* {dummy.map((dummydata) => (
           <SendMailCard
-            key={data.id}
-            needContributions={data.needContributions}
-            topicName={data.topicName}
-            quesCount={data.quesCount}
+            key={dummydata.id}
+            needContributions={dummydata.needContributions}
+            topicName={dummydata.topicName}
+            quesCount={dummydata.quesCount}
           />
-        ))}
+        ))} */}
+        {topicData.lenght === 0 || isLoading || isFetching ? (
+          <DashboardLoader />
+        ) : (
+          topicData.map((eachtopicdata) => (
+            <SendMailCard
+              key={eachtopicdata.id}
+              needContributions={Minques >= eachtopicdata.count ? 'Yes' : 'No'}
+              topicName={eachtopicdata.topic}
+              quesCount={eachtopicdata.count}
+              standard={eachtopicdata.standard}
+              subject={eachtopicdata.subject}
+            />
+          ))
+        )}
       </Flex>
     </Box>
   );

@@ -12,7 +12,13 @@ import {
 } from '@chakra-ui/react';
 import { MdOutgoingMail } from 'react-icons/md';
 
-const SendMailCard = ({ needContributions, topicName, quesCount }) => {
+const SendMailCard = ({
+  needContributions,
+  topicName,
+  quesCount,
+  standard,
+  subject,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const style1 = {
     height: '30vh',
@@ -44,8 +50,11 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
       // mx='3'
       mb='5'
     >
-      <Flex fontSize='sm' fontWeight='medium' color='gray.500'>
+      <Flex fontSize='sm' fontWeight='medium' color='gray.500' height='45px'>
         {topicName}
+      </Flex>
+      <Flex fontSize='sm' fontWeight='medium' color='gray.500' height='25px'>
+        Class {standard} • {subject}
       </Flex>
       <Flex mt='2' justifyContent='space-between' alignItems='center'>
         <Flex flexDirection='column'>
