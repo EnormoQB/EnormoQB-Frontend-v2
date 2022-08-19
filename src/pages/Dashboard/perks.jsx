@@ -51,7 +51,7 @@ const Perks = () => {
             perkHeading='EnormoQB T-Shirt'
             perkSubHeading='Redeem our high quality t-shirts'
             points={points}
-            coins='500'
+            coins='20'
           />
           <PerkCard
             imgSrc={EnormoKit}
