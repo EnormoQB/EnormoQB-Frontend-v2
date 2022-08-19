@@ -18,6 +18,7 @@ import {
   Box,
   useToast,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { BiExpand } from 'react-icons/bi';
 import Option from './option';
 import Tag from './Tags/tag';
@@ -27,8 +28,15 @@ import SimilarQuestion from './similarQuestion';
 import { useFeedbackupdateMutation } from '../../redux/services/questionApi';
 import { getToast } from '../../utils/helpers';
 
-const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
+const QuestionAccordion = ({
+  data,
+  show,
+  questions,
+  removeQuestion,
+  showEdit,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
   const {
     isOpen: modalOpen,
     onOpen: onModalOpen,
@@ -106,7 +114,7 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                   <Flex mt='2' alignItems='center' wrap='wrap'>
                     <Tag content={`Class ${data.standard}`} />
                     <Tag content={data.subject} />
-                    {data.topics?.map((topic) => (
+                    {data.topic?.map((topic) => (
                       <Tag key={topic} content={topic} />
                     ))}
                     <DifficultyTag
@@ -200,6 +208,22 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
                     </Flex>
                   )}
                 </Flex>
+                {showEdit && (
+                  <Button
+                    fontSize='sm'
+                    fontWeight='medium'
+                    mr='4'
+                    bg='brand.600'
+                    _hover={{ backgroundColor: 'myGray.500' }}
+                    onClick={() =>
+                      navigate(`/dashboard/contribute?id=${data._id}`, {
+                        state: data,
+                      })
+                    }
+                  >
+                    Edit
+                  </Button>
+                )}
                 {show ? (
                   <Box mt='3'>
                     <Button
