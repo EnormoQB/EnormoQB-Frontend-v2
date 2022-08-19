@@ -22,6 +22,17 @@ const QuesPapersFilter = ({ setFilter, filter, showBoard }) => {
     }));
   };
 
+  const handleClearAll = () => {
+    setFilter({
+      standard: '',
+      subject: '',
+      board: '',
+    });
+    setStandard('');
+    setSubject('');
+    setBoard('');
+  };
+
   return (
     <Flex alignItems='center' gap='4' mb='6'>
       <FormControl w='10%' flexShrink='0'>
@@ -90,13 +101,23 @@ const QuesPapersFilter = ({ setFilter, filter, showBoard }) => {
           />
         </FormControl>
       )}
-
       <Button
         size='sm'
         bg='brand.400'
         color='brand.600'
         _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
         ml='auto'
+        flexShrink='0'
+        onClick={handleClearAll}
+      >
+        Clear All
+      </Button>
+      <Button
+        size='sm'
+        bg='brand.400'
+        color='brand.600'
+        _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
+        // ml='auto'
         flexShrink='0'
         onClick={handleApply}
       >
