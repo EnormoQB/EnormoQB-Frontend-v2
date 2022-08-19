@@ -7,6 +7,7 @@ import TagDivider from '../QuestionAccordion/Tags/divider';
 
 const QuesPaper = ({ data }) => {
   const [marks, setMarks] = useState(0);
+
   useEffect(() => {
     if (data) {
       const EasyQues = ((data || {}).quesDiffDetails || {}).Easy;

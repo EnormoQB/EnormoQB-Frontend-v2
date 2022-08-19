@@ -50,7 +50,6 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
       .then(() => {
         toast(
           getToast({
-            id: 'generate',
             title: 'Success',
             description: `Question ${status}!`,
             status: 'success',
@@ -59,10 +58,9 @@ const QuestionAccordion = ({ data, show, questions, removeQuestion }) => {
         removeQuestion();
       })
       .catch((err) => {
-        console.log('Update Question', err);
+        console.log('Update Error', err);
         toast(
           getToast({
-            id: 'generate',
             title: 'Error',
             description: 'Some Error Occured!',
             status: 'error',
