@@ -11,26 +11,10 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { MdOutgoingMail } from 'react-icons/md';
+import { TiTick, TiTimes } from 'react-icons/ti';
 
 const SendMailCard = ({ needContributions, topicName, quesCount }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const style1 = {
-    height: '30vh',
-    maxH: '30vh',
-    width: '40vw',
-    maxW: '40vw',
-    backgroundColor: 'white',
-    display: 'flex',
-    flexDir: 'column',
-    justifyContent: 'center',
-    position: 'fixed',
-    overflowX: 'hidden',
-    overflowY: 'hidden',
-    alignItems: 'center',
-    textAlign: 'center',
-    padding: '30px',
-    borderRadius: '10px',
-  };
   return (
     <Flex
       flexDirection='column'
@@ -75,51 +59,43 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
           onClose={onClose}
           isCentered
           motionPreset='slideInBottom'
-          w='55vw'
-          h='55vh'
-          maxH='85vh'
         >
           <ModalOverlay />
-          <ModalContent sx={style1}>
-            <ModalCloseButton
-              _focus={{}}
-              position='fixed'
-              mt='260px'
-              mr='470px'
-            />
-            <ModalBody>
-              <Box display='flex' flexDir='column' alignItems='center'>
+          <ModalContent>
+            <ModalCloseButton _focus={{}} />
+            <ModalBody p='10'>
+              <Box display='flex' flexDir='column' alignItems='center' my='4'>
                 <Flex
                   mb='20px'
-                  fontSize='20px'
+                  fontSize='xl'
                   fontWeight='medium'
-                  mt='10px'
-                  alignItems='center'
+                  textAlign='center'
                 >
-                  Do you want to continue to send mail to all the contributors?
+                  Are you sure you want to continue sending mail to all the
+                  contributors?
                 </Flex>
-                <Box display='flex' justifyContent='flex-end'>
+                <Flex justifyContent='center'>
                   <Button
-                    fontSize='sm'
                     fontWeight='medium'
                     bg='brand.400'
                     color='brand.600'
-                    mr='4'
+                    rightIcon={<TiTick size='18px' />}
+                    mx='2'
                     _hover={{ backgroundColor: 'brand.450' }}
                   >
-                    Accept
+                    Yes
                   </Button>
                   <Button
-                    fontSize='sm'
                     fontWeight='medium'
-                    mr='4'
+                    mx='2'
                     bg='brand.600'
+                    rightIcon={<TiTimes size='18px' />}
                     _hover={{ backgroundColor: 'myGray.500' }}
                     onClick={onClose}
                   >
-                    Reject
+                    No
                   </Button>
-                </Box>
+                </Flex>
               </Box>
             </ModalBody>
           </ModalContent>

@@ -46,13 +46,13 @@ const QuesPaper = ({ data }) => {
           {data.name}
         </Text>
         <Flex wrap='wrap' mt='2.5' alignItems='center'>
-          <Tag content={data.instituteName} />
+          {/* <Tag content={data.instituteName} />
           <TagDivider />
           <Tag content={data.examType || <span>Board Exam</span>} />
-          <TagDivider />
+          <TagDivider /> */}
           <Tag content={data.board} />
           <TagDivider />
-          <Tag content={data.standard} />
+          <Tag content={`Grade ${data.standard}`} />
           <TagDivider />
           <Tag content={data.subject} />
           <TagDivider />
