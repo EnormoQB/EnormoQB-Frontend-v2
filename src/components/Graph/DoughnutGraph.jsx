@@ -8,17 +8,17 @@ const DoughnutGraph = () => {
   const { data: standardsQCount } = useGetStatsQuery();
 
   const data = {
-    labels: ['XIIth Standard Questions', 'Xth Standard Questions'],
+    labels: ['X Class Questions Percentage', 'XII Class Questions Percentage'],
     datasets: [
       {
         label: '# of Votes',
         data: [
-          standardsQCount?.data?.classDistribution[0].percent,
           standardsQCount?.data?.classDistribution[1].percent,
+          standardsQCount?.data?.classDistribution[0].percent,
         ],
         color: '#005CE6',
-        backgroundColor: ['#DEE3F5', '#005CE6'],
-        borderColor: ['#DEE3F5', '#005CE6'],
+        backgroundColor: ['#005CE6', '#DEE3F5'],
+        borderColor: ['#005CE6', '#DEE3F5'],
         borderWidth: 1,
       },
     ],
@@ -55,7 +55,7 @@ const DoughnutGraph = () => {
         ctx.font = `${fontSize1}em Poppins`;
         ctx.textBaseline = 'top';
         const text2 = 'Total Questions';
-        const textX2 = Math.round((width - ctx.measureText(text1).width) / 3.4);
+        const textX2 = Math.round((width - ctx.measureText(text1).width) / 3.3);
         const textY2 = height / 2.1;
         ctx.fillText(text2, textX2, textY2);
         ctx.save();

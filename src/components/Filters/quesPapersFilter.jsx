@@ -16,9 +16,9 @@ const QuesPapersFilter = ({ setFilter, filter, showBoard }) => {
   const handleApply = () => {
     setFilter((prev) => ({
       ...prev,
-      standard: standard.value,
-      subject: subject.value,
-      board: board.value,
+      standard: standard ? standard.value : '',
+      subject: subject ? subject.value : '',
+      board: board ? board.value : '',
     }));
   };
 
