@@ -30,11 +30,11 @@ const PerkCard = (props) => {
           py='2'
           alignItems='center'
           borderRadius='8'
-          bgColor={!value ? 'blue.400' : 'brand.300'}
+          bgColor={!value ? 'blue.400' : 'gray.400'}
           _hover={
             !value
               ? { cursor: 'pointer', bgColor: 'blue.300' }
-              : { bgColor: 'brand.300', cursor: 'not-allowed' }
+              : { bgColor: 'gray.500', cursor: 'not-allowed' }
           }
           color='brand.100'
         >
