@@ -32,7 +32,7 @@ const hour = new Date().getHours();
 
 const DashboardHome = () => {
   const dayMode = useMemo(() => {
-    console.log(hour);
+    // console.log(hour);
     if (hour > 18 || hour < 6) return 'night';
     return 'day';
   }, [hour]);
