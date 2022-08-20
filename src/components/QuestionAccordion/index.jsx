@@ -227,6 +227,7 @@ const QuestionAccordion = ({
                     fontSize='sm'
                     fontWeight='medium'
                     mr='4'
+                    mt='3'
                     bg='brand.600'
                     _hover={{ backgroundColor: 'myGray.500' }}
                     onClick={() =>

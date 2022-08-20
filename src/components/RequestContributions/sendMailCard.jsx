@@ -41,7 +41,7 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
       borderBottomWidth='medium'
       color={needContributions === 'Yes' ? '' : 'gray.500'}
       borderBottomColor={needContributions === 'Yes' ? 'brand.500' : 'gray.300'}
-      // mx='3'
+      mx='1'
       mb='5'
     >
       <Flex fontSize='sm' fontWeight='medium' color='gray.500'>
