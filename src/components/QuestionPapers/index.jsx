@@ -77,6 +77,7 @@ const QuesPaper = ({ data }) => {
             onClick={() => {
               const linkElement = document.createElement('a');
               linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.questionKey}`;
+              linkElement.target = '_blank';
               linkElement.click();
             }}
           />
@@ -94,6 +95,7 @@ const QuesPaper = ({ data }) => {
             onClick={() => {
               const linkElement = document.createElement('a');
               linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.answerKey}`;
+              linkElement.target = '_blank';
               linkElement.click();
             }}
           />
