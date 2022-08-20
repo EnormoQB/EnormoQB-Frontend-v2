@@ -41,17 +41,8 @@ export const questionsApi = createApi({
       },
     }),
     getQuestions: builder.query({
-      query: ({
-        userId,
-        status,
-        standard,
-        subject,
-        topics,
-        difficulty,
-        page,
-      }) => {
+      query: ({ status, standard, subject, topics, difficulty, page }) => {
         const params = new URLSearchParams({
-          ...(userId ? { userId } : {}),
           ...(status ? { status } : {}),
           ...(standard ? { standard } : {}),
           ...(subject ? { subject } : {}),
@@ -88,6 +79,15 @@ export const questionsApi = createApi({
         };
       },
     }),
+    deleteQuestion: builder.mutation({
+      query: ({ id }) => {
+        return {
+          url: `${ApiEndpoints.questions.delete.url}/${id}`,
+          method: 'delete',
+          invalidatesTags: ['Questions'],
+        };
+      },
+    }),
   }),
 });
 
@@ -99,4 +99,5 @@ export const {
   useLazySwitchQuestionQuery,
   useFeedbackupdateMutation,
   useQuestionsPerTopicQuery,
+  useDeleteQuestionMutation,
 } = questionsApi;

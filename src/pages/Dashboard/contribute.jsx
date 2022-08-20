@@ -65,7 +65,7 @@ const Contribute = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const { state: quesEditData } = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const question = useRef();
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();

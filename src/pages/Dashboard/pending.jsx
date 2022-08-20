@@ -12,7 +12,10 @@ const Pending = () => {
   const [questions, setQuestions] = useState([]);
   const [filter, setfilter] = useState({ status: 'pending', page: 1 });
   const [metadata, setMetaData] = useState([]);
-  const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
+  const { data, isLoading, isFetching } = useGetQuestionsQuery(filter, {
+    refetchOnMountOrArgChange: true,
+  });
+
   useEffect(() => {
     if (data) {
       setQuestions(data.data.questions || []);
@@ -54,7 +57,7 @@ const Pending = () => {
                       prev.filter((item) => item._id !== ques._id),
                     );
                   }}
-                  similarq={ques.similarQuestions}
+                  similarQues={ques.similarQuestions}
                   show
                 />
               ))}

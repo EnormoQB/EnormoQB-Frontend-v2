@@ -38,6 +38,10 @@ const ApiEndpoints = {
       method: 'GET',
       url: 'api/questions/switch',
     },
+    delete: {
+      method: 'DELETE',
+      url: 'api/questions/delete',
+    },
   },
   questionPapers: {
     preview: {
