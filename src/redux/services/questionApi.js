@@ -41,17 +41,8 @@ export const questionsApi = createApi({
       },
     }),
     getQuestions: builder.query({
-      query: ({
-        userId,
-        status,
-        standard,
-        subject,
-        topics,
-        difficulty,
-        page,
-      }) => {
+      query: ({ status, standard, subject, topics, difficulty, page }) => {
         const params = new URLSearchParams({
-          ...(userId ? { userId } : {}),
           ...(status ? { status } : {}),
           ...(standard ? { standard } : {}),
           ...(subject ? { subject } : {}),

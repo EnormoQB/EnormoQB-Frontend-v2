@@ -12,7 +12,7 @@ const Approved = () => {
   const [questions, setQuestions] = useState([]);
   const [filter, setfilter] = useState({ status: 'approved', page: 1 });
   const [metadata, setMetaData] = useState([]);
-  const { data, isLoading, isFetching } = useGetQuestionsQuery();
+  const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
 
   useEffect(() => {
     if (data) {
