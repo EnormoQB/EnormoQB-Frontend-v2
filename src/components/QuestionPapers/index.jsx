@@ -4,6 +4,7 @@ import { RiFileDownloadFill } from 'react-icons/ri';
 import { BsBoxArrowInRight } from 'react-icons/bs';
 import Tag from './tag';
 import TagDivider from '../QuestionAccordion/Tags/divider';
+import DifficultyTag from '../QuestionAccordion/Tags/difficulty';
 
 const QuesPaper = ({ data }) => {
   const [marks, setMarks] = useState(0);
@@ -58,6 +59,8 @@ const QuesPaper = ({ data }) => {
           <Tag content={`${marks} Marks`} />
           <TagDivider />
           <Tag content={`${data.time} Minutes`} />
+          <TagDivider />
+          <DifficultyTag content={data.status} />
         </Flex>
       </Box>
       <Flex ml='auto' alignItems='center'>
