@@ -34,7 +34,7 @@ const PerkCard = (props) => {
           _hover={
             !value
               ? { cursor: 'pointer', bgColor: 'blue.300' }
-              : { bgColor: 'brand.300' }
+              : { bgColor: 'brand.300', cursor: 'not-allowed' }
           }
           color='brand.100'
         >

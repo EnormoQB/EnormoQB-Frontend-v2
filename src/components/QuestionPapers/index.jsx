@@ -71,6 +71,11 @@ const QuesPaper = ({ data }) => {
             _hover={{ backgroundColor: 'brand.400' }}
             transition='opacity ease-in-out 200ms'
             mr='4'
+            onClick={() => {
+              const linkElement = document.createElement('a');
+              linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.questionKey}`;
+              linkElement.click();
+            }}
           />
         </Tooltip>
         <Tooltip label='Download' fontSize='xs'>
@@ -83,6 +88,11 @@ const QuesPaper = ({ data }) => {
             _hover={{ backgroundColor: 'brand.400' }}
             transition='opacity ease-in-out 200ms'
             mr='4'
+            onClick={() => {
+              const linkElement = document.createElement('a');
+              linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.answerKey}`;
+              linkElement.click();
+            }}
           />
         </Tooltip>
       </Flex>

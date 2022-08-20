@@ -18,8 +18,11 @@ import {
   Center,
   Box,
   useToast,
+  IconButton,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { BiExpand } from 'react-icons/bi';
+import { AiFillFlag } from 'react-icons/ai';
 import Option from './option';
 import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
@@ -31,21 +34,29 @@ import {
 } from '../../redux/services/questionApi';
 import { getToast } from '../../utils/helpers';
 
-const QuestionAccordion = ({ data, show, removeQuestion, similarq }) => {
+const QuestionAccordion = ({
+  data,
+  show,
+  removeQuestion,
+  similarQues,
+  showEdit,
+}) => {
   const [similarArray, setSimilarArray] = useState([]);
 
   useEffect(() => {
-    if (similarq) {
-      if (similarq.length > 0) {
-        similarq.forEach((element) => {
+    if (similarQues) {
+      if (similarQues.length > 0) {
+        similarQues.forEach((element) => {
           if (element.status === 'pending' || element.status === 'approved') {
             setSimilarArray((prev) => [...prev, element]);
           }
         });
       }
     }
-  }, [similarq]);
+  }, [similarQues]);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
   const {
     isOpen: modalOpen,
     onOpen: onModalOpen,
@@ -144,7 +155,7 @@ const QuestionAccordion = ({ data, show, removeQuestion, similarq }) => {
                   <Flex mt='2' alignItems='center' wrap='wrap'>
                     <Tag content={`Class ${data.standard}`} />
                     <Tag content={data.subject} />
-                    {data.topics?.map((topic) => (
+                    {data.topic?.map((topic) => (
                       <Tag key={topic} content={topic} />
                     ))}
                     <DifficultyTag
@@ -238,6 +249,22 @@ const QuestionAccordion = ({ data, show, removeQuestion, similarq }) => {
                     </Flex>
                   )}
                 </Flex>
+                {showEdit && (
+                  <Button
+                    fontSize='sm'
+                    fontWeight='medium'
+                    mr='4'
+                    bg='brand.600'
+                    _hover={{ backgroundColor: 'myGray.500' }}
+                    onClick={() =>
+                      navigate(`/dashboard/contribute?id=${data._id}`, {
+                        state: data,
+                      })
+                    }
+                  >
+                    Edit
+                  </Button>
+                )}
                 {show ? (
                   <Box mt='3' w='full'>
                     <Button
@@ -274,6 +301,14 @@ const QuestionAccordion = ({ data, show, removeQuestion, similarq }) => {
                         {similarArray.length} Similar Questions
                       </Button>
                     )}
+                    <IconButton
+                      position='absolute'
+                      right='6.5%'
+                      bg='#ffbfbf'
+                      color='black'
+                      icon={<AiFillFlag />}
+                      _hover={{ backgroundColor: '#ff8080' }}
+                    />
                     <Modal
                       isOpen={modalOpenSimilarQuestion}
                       onClose={onModalCloseSimilarQuestion}
