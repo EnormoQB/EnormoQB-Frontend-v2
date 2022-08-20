@@ -79,6 +79,7 @@ const QuesPaper = ({ data }) => {
               linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.questionKey}`;
               linkElement.target = '_blank';
               linkElement.click();
+              linkElement.remove();
             }}
           />
         </Tooltip>
@@ -97,6 +98,7 @@ const QuesPaper = ({ data }) => {
               linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.answerKey}`;
               linkElement.target = '_blank';
               linkElement.click();
+              linkElement.remove();
             }}
           />
         </Tooltip>
