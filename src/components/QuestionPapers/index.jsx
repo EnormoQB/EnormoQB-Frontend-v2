@@ -4,6 +4,7 @@ import { RiFileDownloadFill } from 'react-icons/ri';
 import { BsBoxArrowInRight } from 'react-icons/bs';
 import Tag from './tag';
 import TagDivider from '../QuestionAccordion/Tags/divider';
+import DifficultyTag from '../QuestionAccordion/Tags/difficulty';
 
 const QuesPaper = ({ data }) => {
   const [marks, setMarks] = useState(0);
@@ -58,6 +59,8 @@ const QuesPaper = ({ data }) => {
           <Tag content={`${marks} Marks`} />
           <TagDivider />
           <Tag content={`${data.time} Minutes`} />
+          <TagDivider />
+          <DifficultyTag content={data.status} />
         </Flex>
       </Box>
       <Flex ml='auto' alignItems='center'>
@@ -74,6 +77,7 @@ const QuesPaper = ({ data }) => {
             onClick={() => {
               const linkElement = document.createElement('a');
               linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.questionKey}`;
+              linkElement.target = '_blank';
               linkElement.click();
             }}
           />
@@ -91,6 +95,7 @@ const QuesPaper = ({ data }) => {
             onClick={() => {
               const linkElement = document.createElement('a');
               linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.answerKey}`;
+              linkElement.target = '_blank';
               linkElement.click();
             }}
           />

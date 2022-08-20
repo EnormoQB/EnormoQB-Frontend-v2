@@ -38,7 +38,6 @@ const QuestionPapers = () => {
   useEffect(() => {
     if (data) {
       setpaper(data.data);
-      console.log(data.data);
     }
     if (historydata) {
       sethistory(historydata.data);
@@ -87,9 +86,7 @@ const QuestionPapers = () => {
                           <QuesPaper key={index} data={ques} />
                         ))}
                       </>
-                    ) : (
-                      <br />
-                    )}
+                    ) : null}
                   </>
                 )}
               </TabPanel>
@@ -112,9 +109,7 @@ const QuestionPapers = () => {
                           <QuesPaper key={index} data={ques} />
                         ))}
                       </>
-                    ) : (
-                      <br />
-                    )}
+                    ) : null}
                   </>
                 )}
               </TabPanel>
