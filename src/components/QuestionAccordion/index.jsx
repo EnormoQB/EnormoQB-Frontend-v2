@@ -31,20 +31,21 @@ import {
 } from '../../redux/services/questionApi';
 import { getToast } from '../../utils/helpers';
 
-const QuestionAccordion = ({ data, show, removeQuestion, similarq }) => {
+const QuestionAccordion = ({ data, show, removeQuestion, similarQues }) => {
   const [similarArray, setSimilarArray] = useState([]);
 
   useEffect(() => {
-    if (similarq) {
-      if (similarq.length > 0) {
-        similarq.forEach((element) => {
+    if (similarQues) {
+      if (similarQues.length > 0) {
+        similarQues.forEach((element) => {
           if (element.status === 'pending' || element.status === 'approved') {
             setSimilarArray((prev) => [...prev, element]);
           }
         });
       }
     }
-  }, [similarq]);
+  }, [similarQues]);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: modalOpen,
@@ -144,7 +145,7 @@ const QuestionAccordion = ({ data, show, removeQuestion, similarq }) => {
                   <Flex mt='2' alignItems='center' wrap='wrap'>
                     <Tag content={`Class ${data.standard}`} />
                     <Tag content={data.subject} />
-                    {data.topics?.map((topic) => (
+                    {data.topic?.map((topic) => (
                       <Tag key={topic} content={topic} />
                     ))}
                     <DifficultyTag
