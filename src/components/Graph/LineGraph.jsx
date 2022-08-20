@@ -59,7 +59,9 @@ const LineGraph = ({ contribution }) => {
     ],
   };
 
-  return <Line options={options} data={config} />;
+  return (
+    <Line style={{ maxHeight: '330px' }} options={options} data={config} />
+  );
 };
 
 export default LineGraph;

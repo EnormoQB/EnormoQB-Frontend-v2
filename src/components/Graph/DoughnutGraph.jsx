@@ -63,7 +63,14 @@ const DoughnutGraph = () => {
     },
   ];
 
-  return <Doughnut data={data} options={options} plugins={plugins} />;
+  return (
+    <Doughnut
+      style={{ maxWidth: '300px', maxHeight: '330px' }}
+      data={data}
+      options={options}
+      plugins={plugins}
+    />
+  );
 };
 
 export default DoughnutGraph;
