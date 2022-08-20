@@ -248,7 +248,7 @@ const QuestionAccordion = ({
                 </Flex>
                 <Flex mt='3' w='full'>
                   {showEdit && (
-                    <Flex alignItems='center'>
+                    <Flex alignItems='center' w='full'>
                       {data.status === 'rejected' && data.feedback && (
                         <Text mr='4'>
                           <strong>Feedback :</strong>&nbsp;

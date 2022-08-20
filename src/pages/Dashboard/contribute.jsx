@@ -58,7 +58,6 @@ const Contribute = () => {
     { value: '', isCorrect: false, id: Math.random() * 100 },
     { value: '', isCorrect: false, id: Math.random() * 100 },
   ]);
-  const user = useSelector((state) => state.userState.user);
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState([]);
@@ -70,6 +69,7 @@ const Contribute = () => {
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const errorToast = (description) => {
     if (!toast.isActive('error')) {
       toast(
@@ -138,7 +138,6 @@ const Contribute = () => {
   };
 
   const onSubmit = async () => {
-    // console.log(subjectsQCount.data.classDistribution[0].percent);
     let answer = '';
     const opts = [];
     let flag = false;
@@ -164,8 +163,10 @@ const Contribute = () => {
       answerExplanation: explanation.current.value.trim(),
       answer,
       options: opts,
-      userId: user._id,
+      ...(searchParams.get('id') && { id: searchParams.get('id') }),
     };
+
+    console.log(data);
 
     if (data.question.length < 1) {
       errorToast('Question cannot be blank!');
@@ -228,7 +229,6 @@ const Contribute = () => {
         });
         return newOptions;
       });
-
       setStandard({
         value: quesEditData.standard,
         label: quesEditData.standard === '10' ? 'X' : 'XII',
@@ -260,14 +260,7 @@ const Contribute = () => {
             Question
           </mark>
         </Heading>
-        <Button
-          disabled={loading}
-          onClick={() => {
-            onSubmit();
-          }}
-          w={150}
-          h={45}
-        >
+        <Button disabled={loading} onClick={onSubmit} w={150} h={45}>
           SUBMIT
         </Button>
         <Modal isOpen={isOpen} onClose={onClose} size='lg'>

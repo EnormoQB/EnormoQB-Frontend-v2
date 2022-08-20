@@ -12,6 +12,10 @@ const ApiEndpoints = {
       method: 'GET',
       url: '/auth/user',
     },
+    toggleStatus: {
+      method: 'POST',
+      url: '/auth/toggleStatus',
+    },
   },
   questions: {
     add: {
