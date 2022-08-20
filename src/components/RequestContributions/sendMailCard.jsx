@@ -14,23 +14,6 @@ import { MdOutgoingMail } from 'react-icons/md';
 
 const SendMailCard = ({ needContributions, topicName, quesCount }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const style1 = {
-    height: '30vh',
-    maxH: '30vh',
-    width: '40vw',
-    maxW: '40vw',
-    backgroundColor: 'white',
-    display: 'flex',
-    flexDir: 'column',
-    justifyContent: 'center',
-    position: 'fixed',
-    overflowX: 'hidden',
-    overflowY: 'hidden',
-    alignItems: 'center',
-    textAlign: 'center',
-    padding: '30px',
-    borderRadius: '10px',
-  };
   return (
     <Flex
       flexDirection='column'
@@ -39,12 +22,11 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
       p='3'
       w='24%'
       borderBottomWidth='medium'
-      color={needContributions === 'Yes' ? '' : 'gray.500'}
-      borderBottomColor={needContributions === 'Yes' ? 'brand.500' : 'gray.300'}
-      // mx='3'
+      color={needContributions ? '' : 'gray.500'}
+      borderBottomColor={needContributions ? 'brand.500' : 'gray.300'}
       mb='5'
     >
-      <Flex fontSize='sm' fontWeight='medium' color='gray.500'>
+      <Flex fontSize='sm' fontWeight='medium' color='gray.500' mb='auto'>
         {topicName}
       </Flex>
       <Flex mt='2' justifyContent='space-between' alignItems='center'>
@@ -67,8 +49,8 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
             color: 'gray.100',
             cursor: 'not-allowed',
           }}
-          _hover={needContributions === 'Yes' ? null : { color: 'gray.100' }}
-          disabled={needContributions !== 'Yes'}
+          _hover={{ ...(!needContributions && { color: 'gray.100' }) }}
+          disabled={!needContributions}
         />
         <Modal
           isOpen={isOpen}
@@ -80,7 +62,25 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
           maxH='85vh'
         >
           <ModalOverlay />
-          <ModalContent sx={style1}>
+          <ModalContent
+            sx={{
+              height: '30vh',
+              maxH: '30vh',
+              width: '40vw',
+              maxW: '40vw',
+              backgroundColor: 'brand.100',
+              display: 'flex',
+              flexDir: 'column',
+              justifyContent: 'center',
+              position: 'fixed',
+              overflowX: 'hidden',
+              overflowY: 'hidden',
+              alignItems: 'center',
+              textAlign: 'center',
+              padding: '30px',
+              borderRadius: '10px',
+            }}
+          >
             <ModalCloseButton
               _focus={{}}
               position='fixed'
