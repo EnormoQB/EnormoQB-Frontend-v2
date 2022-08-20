@@ -4,7 +4,13 @@ import { Select } from 'chakra-react-select';
 import { classOptions, boardOptions } from '../Generate/config';
 import classData from '../../data/classData';
 
-const QuesPapersFilter = ({ setFilter, filter, showBoard }) => {
+const QuesPapersFilter = ({
+  setFilter,
+  filter,
+  showBoard,
+  validateApply,
+  noClear,
+}) => {
   const [standard, setStandard] = useState(
     filter.standard === '' ? '' : { value: filter.standard, label: 'X' },
   );
@@ -14,6 +20,9 @@ const QuesPapersFilter = ({ setFilter, filter, showBoard }) => {
   const [board, setBoard] = useState('');
 
   const handleApply = () => {
+    if (!validateApply()) {
+      return;
+    }
     setFilter((prev) => ({
       ...prev,
       standard: standard ? standard.value : '',
@@ -101,23 +110,25 @@ const QuesPapersFilter = ({ setFilter, filter, showBoard }) => {
           />
         </FormControl>
       )}
+      {!noClear && (
+        <Button
+          size='sm'
+          bg='brand.400'
+          color='brand.600'
+          _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
+          ml='auto'
+          flexShrink='0'
+          onClick={handleClearAll}
+        >
+          Clear All
+        </Button>
+      )}
       <Button
         size='sm'
         bg='brand.400'
         color='brand.600'
         _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
-        ml='auto'
-        flexShrink='0'
-        onClick={handleClearAll}
-      >
-        Clear All
-      </Button>
-      <Button
-        size='sm'
-        bg='brand.400'
-        color='brand.600'
-        _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
-        // ml='auto'
+        ml={noClear && 'auto'}
         flexShrink='0'
         onClick={handleApply}
       >
@@ -128,3 +139,8 @@ const QuesPapersFilter = ({ setFilter, filter, showBoard }) => {
 };
 
 export default QuesPapersFilter;
+
+QuesPapersFilter.defaultProps = {
+  validateApply: () => true,
+  noClear: false,
+};

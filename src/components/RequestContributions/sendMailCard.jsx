@@ -23,12 +23,11 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
       p='3'
       w='24%'
       borderBottomWidth='medium'
-      color={needContributions === 'Yes' ? '' : 'gray.500'}
-      borderBottomColor={needContributions === 'Yes' ? 'brand.500' : 'gray.300'}
-      mx='1'
+      color={needContributions ? '' : 'gray.500'}
+      borderBottomColor={needContributions ? 'brand.500' : 'gray.300'}
       mb='5'
     >
-      <Flex fontSize='sm' fontWeight='medium' color='gray.500'>
+      <Flex fontSize='sm' fontWeight='medium' color='gray.500' mb='auto'>
         {topicName}
       </Flex>
       <Flex mt='2' justifyContent='space-between' alignItems='center'>
@@ -51,8 +50,8 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
             color: 'gray.100',
             cursor: 'not-allowed',
           }}
-          _hover={needContributions === 'Yes' ? null : { color: 'gray.100' }}
-          disabled={needContributions !== 'Yes'}
+          _hover={{ ...(!needContributions && { color: 'gray.100' }) }}
+          disabled={!needContributions}
         />
         <Modal
           isOpen={isOpen}

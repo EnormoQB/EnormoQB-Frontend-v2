@@ -8,13 +8,13 @@ const DoughnutGraph = () => {
   const { data: standardsQCount } = useGetStatsQuery();
 
   const data = {
-    labels: ['X Class Questions Percentage', 'XII Class Questions Percentage'],
+    labels: ['Class X Questions', 'Class XII Questions'],
     datasets: [
       {
         label: '# of Votes',
         data: [
-          standardsQCount?.data?.classDistribution[1].percent,
-          standardsQCount?.data?.classDistribution[0].percent,
+          standardsQCount?.data?.classDistribution[1].value,
+          standardsQCount?.data?.classDistribution[0].value,
         ],
         color: '#005CE6',
         backgroundColor: ['#005CE6', '#DEE3F5'],

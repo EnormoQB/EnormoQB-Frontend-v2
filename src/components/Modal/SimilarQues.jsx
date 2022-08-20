@@ -38,7 +38,7 @@ const SimilarQuesModal = ({ modalOpen, onModalClose, similarArray }) => {
           </Text>
           <Box overflow='auto' h='92%' pr={6} pl={3}>
             {similarArray.map((ques) => (
-              <SimilarQuestion key={ques._id.$oid} data={ques} />
+              <SimilarQuestion key={ques._id} data={ques} />
             ))}
           </Box>
         </ModalBody>

@@ -1,20 +1,40 @@
 import { useEffect, useState } from 'react';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading, useToast } from '@chakra-ui/react';
 import SendMailCard from '../../components/RequestContributions/sendMailCard';
 import QuesPapersFilter from '../../components/Filters/quesPapersFilter';
 import { useQuestionsPerTopicQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
+import { getToast } from '../../utils/helpers';
+
+const minQues = 10;
 
 const RequestContributions = () => {
+  const toast = useToast();
   const [topicData, setTopicData] = useState([]);
   const [filter, setFilter] = useState({ standard: '10', subject: 'Maths' });
   const { data, isLoading, isFetching } = useQuestionsPerTopicQuery(filter);
-  const Minques = 10;
+
   useEffect(() => {
     if (data) {
       setTopicData(data.data);
     }
   }, [data]);
+
+  const validateApply = () => {
+    if (filter.standard === '' || filter.subject === '') {
+      if (!toast.isActive('general')) {
+        toast(
+          getToast({
+            status: 'error',
+            description: 'Please choose standard and subject!',
+            title: 'Error',
+          }),
+        );
+      }
+      return false;
+    }
+    return true;
+  };
 
   return (
     <Box>
@@ -31,21 +51,30 @@ const RequestContributions = () => {
         </mark>
         Contributions
       </Heading>
-      <QuesPapersFilter setFilter={setFilter} filter={filter} showBoard={0} />
-      <Flex justifyContent='space-evenly' wrap='wrap'>
-        {topicData.lenght === 0 || isLoading || isFetching ? (
-          <DashboardLoader />
-        ) : (
-          topicData.map((eachtopicdata) => (
+      <QuesPapersFilter
+        setFilter={setFilter}
+        filter={filter}
+        showBoard={0}
+        validateApply={validateApply}
+        noClear
+      />
+      {topicData.length === 0 || isLoading || isFetching ? (
+        <DashboardLoader />
+      ) : (
+        <Flex wrap='wrap' justify='space-between'>
+          {topicData.map((item, idx) => (
             <SendMailCard
-              key={eachtopicdata.id}
-              needContributions={Minques >= eachtopicdata.count ? 'Yes' : 'No'}
-              topicName={eachtopicdata.topic}
-              quesCount={eachtopicdata.count}
+              key={`${item.subject}${item.topic}${idx}`}
+              needContributions={minQues >= item.count}
+              topicName={item.topic}
+              quesCount={item.count}
             />
-          ))
-        )}
-      </Flex>
+          ))}
+          {[...Array(4 - (topicData.length % 4)).keys()].map(() => (
+            <Box key={Math.random() * 100000} w='24%' h='3' />
+          ))}
+        </Flex>
+      )}
     </Box>
   );
 };

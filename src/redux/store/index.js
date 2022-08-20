@@ -25,6 +25,7 @@ export const store = configureStore({
     questionPaperApi.middleware,
     userApi.middleware,
     statsApi.middleware,
+    subjectApi.middleware,
   ],
 });
 export const useAppDispatch = () => useDispatch();
