@@ -19,15 +19,17 @@ import {
   Box,
   useToast,
   IconButton,
+  Tooltip,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { BiExpand } from 'react-icons/bi';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import { AiFillFlag } from 'react-icons/ai';
 import Option from './option';
 import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
 import FeedbackModal from '../Modal/Feedback';
-import SimilarQuestion from './similarQuestion';
+import SimilarQuesModal from '../Modal/SimilarQues';
 import {
   useFeedbackupdateMutation,
   useDeleteQuestionMutation,
@@ -134,7 +136,7 @@ const QuestionAccordion = ({
           borderTop='none'
           borderBottom='none'
           borderRadius='lg'
-          my='2'
+          my='2.5'
           boxShadow='rgba(0, 0, 0, 0.16) 0px 1px 4px'
         >
           {({ isExpanded }) => (
@@ -182,11 +184,6 @@ const QuestionAccordion = ({
                         isAnswer={option === data.answer}
                       />
                     ))}
-                    {data.status === 'rejected' && data.feedback ? (
-                      <Text>
-                        <strong>Feedback :</strong> {data.feedback}
-                      </Text>
-                    ) : null}
                   </Flex>
                   {data.imageUrl && data.imageUrl !== '' && (
                     <Flex
@@ -249,122 +246,96 @@ const QuestionAccordion = ({
                     </Flex>
                   )}
                 </Flex>
-                {showEdit && (
-                  <Button
-                    fontSize='sm'
-                    fontWeight='medium'
-                    mr='4'
-                    mt='3'
-                    bg='brand.600'
-                    _hover={{ backgroundColor: 'myGray.500' }}
-                    onClick={() =>
-                      navigate(`/dashboard/contribute?id=${data._id}`, {
-                        state: data,
-                      })
-                    }
-                  >
-                    Edit
-                  </Button>
-                )}
-                {show ? (
-                  <Box mt='3' w='full'>
-                    <Button
-                      fontSize='sm'
-                      fontWeight='medium'
-                      mr='4'
-                      bg='brand.600'
-                      _hover={{ backgroundColor: 'myGray.500' }}
-                      onClick={() => handleUpdate('Approved', null)}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      fontSize='sm'
-                      fontWeight='medium'
-                      bg='brand.400'
-                      color='brand.600'
-                      mr='4'
-                      _hover={{ backgroundColor: 'brand.450' }}
-                      onClick={onModalOpen}
-                    >
-                      Reject
-                    </Button>
-
-                    {similarArray.length !== 0 && (
+                <Flex mt='3' w='full'>
+                  {showEdit && (
+                    <Flex alignItems='center'>
+                      {data.status === 'rejected' && data.feedback && (
+                        <Text mr='4'>
+                          <strong>Feedback :</strong>&nbsp;
+                          <span>{data.feedback}</span>
+                        </Text>
+                      )}
                       <Button
                         fontSize='sm'
                         fontWeight='medium'
-                        bg='brand.300'
-                        color='brand.600'
-                        _hover={{ backgroundColor: 'brand.350' }}
-                        onClick={onModalOpenSimilarQuestion}
+                        ml={data.feedback && 'auto'}
+                        bg='brand.600'
+                        _hover={{ backgroundColor: 'myGray.500' }}
+                        rightIcon={<MdEdit />}
+                        flexShrink='0'
+                        onClick={() =>
+                          navigate(`/dashboard/contribute?id=${data._id}`, {
+                            state: data,
+                          })
+                        }
                       >
-                        {similarArray.length} Similar Questions
+                        <span>Edit</span>
                       </Button>
-                    )}
-                    <IconButton
-                      position='absolute'
-                      right='6.5%'
-                      bg='#ffbfbf'
-                      color='black'
-                      icon={<AiFillFlag />}
-                      _hover={{ backgroundColor: '#ff8080' }}
-                    />
-                    <Modal
-                      isOpen={modalOpenSimilarQuestion}
-                      onClose={onModalCloseSimilarQuestion}
-                      isCentered
-                      motionPreset='slideInBottom'
-                    >
-                      <ModalOverlay />
-                      <ModalContent
-                        sx={{
-                          height: '80vh',
-                          maxH: '80vh',
-                          width: '80vw',
-                          maxW: '80vw',
-                          backgroundColor: 'brand.100',
-                          display: 'flex',
-                          flexDir: 'column',
-                          position: 'fixed',
-                          padding: '30px',
-                        }}
+                    </Flex>
+                  )}
+                  {show && (
+                    <>
+                      <Button
+                        fontSize='sm'
+                        fontWeight='medium'
+                        mr='4'
+                        bg='brand.600'
+                        _hover={{ backgroundColor: 'myGray.500' }}
+                        onClick={() => handleUpdate('Approved', null)}
                       >
-                        <ModalCloseButton _focus={{}} mr='1.5' mt='1.5' />
-                        <ModalBody p='0' h='100%'>
-                          <Text
-                            as='h3'
-                            fontWeight='600'
-                            fontSize='2xl'
-                            mb='3'
-                            pr={6}
-                            pl={3}
+                        Accept
+                      </Button>
+                      <Button
+                        fontSize='sm'
+                        fontWeight='medium'
+                        bg='brand.400'
+                        color='brand.600'
+                        mr='4'
+                        _hover={{ backgroundColor: 'brand.450' }}
+                        onClick={onModalOpen}
+                      >
+                        Reject
+                      </Button>
+                      {similarArray.length !== 0 && (
+                        <>
+                          <Button
+                            fontSize='sm'
+                            fontWeight='medium'
+                            bg='brand.300'
+                            color='brand.600'
+                            _hover={{ backgroundColor: 'brand.350' }}
+                            onClick={onModalOpenSimilarQuestion}
                           >
-                            Similar Questions
-                          </Text>
-                          <Box overflow='auto' h='92%' pr={6} pl={3}>
-                            {similarArray.map((ques) => (
-                              <SimilarQuestion
-                                key={ques._id.$oid}
-                                data={ques}
-                              />
-                            ))}
-                          </Box>
-                        </ModalBody>
-                      </ModalContent>
-                    </Modal>
-                    <Button
-                      fontSize='sm'
-                      fontWeight='medium'
-                      ml='auto'
-                      bg='brand.600'
-                      _hover={{ backgroundColor: 'myGray.500' }}
-                      onClick={() => deleteQuestion()}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                ) : null}
+                            {similarArray.length} Similar Questions
+                          </Button>
+                          <SimilarQuesModal
+                            modalOpen={modalOpenSimilarQuestion}
+                            onModalClose={onModalCloseSimilarQuestion}
+                            similarArray={similarArray}
+                          />
+                        </>
+                      )}
+                      <Flex ml='auto' alignItems='center'>
+                        <Tooltip label='Delete' fontSize='xs'>
+                          <IconButton
+                            icon={<MdDelete />}
+                            bg='brand.300'
+                            color='brand.600'
+                            onClick={() => deleteQuestion()}
+                            mr='4'
+                          />
+                        </Tooltip>
+                        <Tooltip label='Report' fontSize='xs'>
+                          <IconButton
+                            icon={<AiFillFlag />}
+                            bg='brand.300'
+                            color='brand.600'
+                          />
+                        </Tooltip>
+                      </Flex>
+                    </>
+                  )}
+                </Flex>
               </AccordionPanel>
             </>
           )}

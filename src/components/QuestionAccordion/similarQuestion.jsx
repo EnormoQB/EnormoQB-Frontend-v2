@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { titleCase } from '../../utils/helpers';
 
 const SimilarQuestion = ({ data }) => {
   return (
@@ -10,8 +11,10 @@ const SimilarQuestion = ({ data }) => {
       bg='brand.100'
       boxShadow='rgba(0, 0, 0, 0.16) 0px 1px 4px'
       role='group'
+      justify='space-between'
+      alignItems='flex-start'
     >
-      <Box w='100%'>
+      <Box>
         <Text as='h3' fontWeight='semibold' fontSize='17px' mr='2'>
           {`Q. ${data.question}`}
         </Text>
@@ -22,6 +25,9 @@ const SimilarQuestion = ({ data }) => {
             </Text>
           ))}
         </Flex>
+      </Box>
+      <Box bg='brand.400' borderRadius='5' px='2.5' py='1.5'>
+        {titleCase(data.status)}
       </Box>
     </Flex>
   );

@@ -2,7 +2,7 @@ import { Flex, IconButton } from '@chakra-ui/react';
 import { FaForward, FaBackward } from 'react-icons/fa';
 import { IoMdPlay } from 'react-icons/io';
 
-const Page = ({ pageNumber, setPageNumber, metadata }) => {
+const Pagination = ({ pageNumber, setPageNumber, metadata }) => {
   const FirstPage = () => {
     setPageNumber(1);
   };
@@ -50,9 +50,8 @@ const Page = ({ pageNumber, setPageNumber, metadata }) => {
         mr='15px'
         onClick={() => PreviousPage()}
       />
-      <Flex fontSize='20px' ml='15px' mr='15px'>
-        {pageNumber}&nbsp;
-        <span fontWeight='100'>of</span>&nbsp;{metadata.totalPages}
+      <Flex fontSize='16px' mx='4'>
+        {`${pageNumber} of ${metadata.totalPages}`}
       </Flex>
       <IconButton
         variant='outline'
@@ -78,4 +77,4 @@ const Page = ({ pageNumber, setPageNumber, metadata }) => {
   );
 };
 
-export default Page;
+export default Pagination;
