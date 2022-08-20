@@ -1,5 +1,4 @@
 import { useState, Fragment, useRef, useMemo, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import {
   FormControl,
   FormLabel,
@@ -165,8 +164,6 @@ const Contribute = () => {
       options: opts,
       ...(searchParams.get('id') && { id: searchParams.get('id') }),
     };
-
-    console.log(data);
 
     if (data.question.length < 1) {
       errorToast('Question cannot be blank!');

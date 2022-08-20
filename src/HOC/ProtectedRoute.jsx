@@ -1,22 +1,14 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { userApi } from '../redux/services/userApi';
+import { useSelector } from 'react-redux';
+import { useGetUserDataQuery } from '../redux/services/userApi';
 import FullScreenLoader from '../components/Loaders/FullScreenLoader';
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
+  const user = useSelector((state) => state.userState.user);
+  const { isLoading, isFetching } = useGetUserDataQuery(null, { skip: false });
 
-  const { isLoading, isFetching } = userApi.endpoints.getUserData.useQuery(
-    null,
-    { skip: false },
-  );
-
-  const loading = isLoading || isFetching;
-
-  const user = userApi.endpoints.getUserData.useQueryState(null, {
-    selectFromResult: ({ data }) => data,
-  });
-
-  if (loading) {
+  if (isLoading || isFetching) {
     return <FullScreenLoader />;
   }
 
