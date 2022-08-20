@@ -1,4 +1,4 @@
-import { useState, Fragment, useRef, useMemo } from 'react';
+import { useState, Fragment, useRef, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   FormControl,
@@ -29,6 +29,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 import debounce from 'lodash.debounce';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { Select } from 'chakra-react-select';
 import { MdDelete } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
@@ -39,7 +40,7 @@ import { useAddQuestionsMutation } from '../../redux/services/questionApi';
 import Congratulations from '../../assets/announcement.svg';
 import OverlayLoader from '../../components/Loaders/OverlayLoader';
 import { difficulties } from '../../components/Generate/config';
-import { getToast } from '../../utils/helpers';
+import { getToast, titleCase } from '../../utils/helpers';
 
 const Contribute = () => {
   const toast = useToast();
@@ -63,11 +64,12 @@ const Contribute = () => {
   const [topics, setTopics] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { state: quesEditData } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const question = useRef();
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const errorToast = (description) => {
     if (!toast.isActive('error')) {
       toast(
@@ -136,6 +138,7 @@ const Contribute = () => {
   };
 
   const onSubmit = async () => {
+    // console.log(subjectsQCount.data.classDistribution[0].percent);
     let answer = '';
     const opts = [];
     let flag = false;
@@ -210,6 +213,35 @@ const Contribute = () => {
         });
     }
   };
+
+  useEffect(() => {
+    if (quesEditData !== null && searchParams.get('id') === quesEditData._id) {
+      setImage(null);
+      setOptions((prev) => {
+        const newOptions = quesEditData.options.map((option, idx) => {
+          document.querySelector(`#option${idx + 1}`).value = option;
+          return {
+            value: option,
+            isCorrect: option === quesEditData.answer,
+            id: prev[idx].id,
+          };
+        });
+        return newOptions;
+      });
+
+      setStandard({
+        value: quesEditData.standard,
+        label: quesEditData.standard === '10' ? 'X' : 'XII',
+      });
+      setSubject({ value: quesEditData.subject, label: quesEditData.subject });
+      setTopics(
+        quesEditData.topic.map((item) => ({ value: item, label: item })),
+      );
+      question.current.value = quesEditData.question;
+      explanation.current.value = quesEditData.answerExplanation;
+      setDifficulty(titleCase(quesEditData.difficulty));
+    }
+  }, [quesEditData]);
 
   return (
     <Box>
@@ -330,6 +362,7 @@ const Contribute = () => {
                     </Flex>
                     <InputGroup>
                       <Input
+                        id={`option${idx + 1}`}
                         placeholder={`Option ${idx + 1}`}
                         w='full'
                         minW='unset'
