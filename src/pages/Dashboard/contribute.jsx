@@ -33,6 +33,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import { Select } from 'chakra-react-select';
 import { MdDelete } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
+import { HiOutlineRefresh } from 'react-icons/hi';
 import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
 import classData from '../../data/classData';
@@ -42,6 +43,7 @@ import Locked from '../../assets/locked.svg';
 import OverlayLoader from '../../components/Loaders/OverlayLoader';
 import { difficulties } from '../../components/Generate/config';
 import { getToast, titleCase } from '../../utils/helpers';
+import { useLazyGetUserDataQuery } from '../../redux/services/userApi';
 
 const Contribute = () => {
   const user = useSelector((state) => state.userState.user);
@@ -71,6 +73,7 @@ const Contribute = () => {
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [triggerGetUser] = useLazyGetUserDataQuery();
 
   const errorToast = (description) => {
     if (!toast.isActive('error')) {
@@ -247,9 +250,26 @@ const Contribute = () => {
     }
   }, [quesEditData]);
 
+  const refresh = async () => {
+    try {
+      await triggerGetUser();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const freezeCondition = useMemo(() => {
+    if (user?.status?.freezedDetails.lastFreezed === null) return false;
+    const isFreezed = user?.status?.value !== 'active';
+    const lastFreezeTime = new Date(
+      user?.status?.freezedDetails.lastFreezed,
+    ).getTime();
+    const currTime = new Date().getTime();
+    return isFreezed && currTime - lastFreezeTime < 6.048e8;
+  }, [user]);
+
   return (
     <Box>
-      {user?.status?.value === 'active' ? (
+      {freezeCondition ? (
         <Flex
           w='full'
           h='calc(100vh - 10vh - 64px)'
@@ -262,6 +282,15 @@ const Contribute = () => {
             Your account has been freezed due to violation of the Code of
             Conduct
           </Text>
+          <Button
+            mt={7}
+            _hover={{ backgroundColor: 'myGray.500' }}
+            rightIcon={<HiOutlineRefresh />}
+            flexShrink='0'
+            onClick={refresh}
+          >
+            <span>Refresh</span>
+          </Button>
         </Flex>
       ) : (
         <Box>
