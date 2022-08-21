@@ -38,6 +38,7 @@ import ImageUploader from '../../components/ImageUploader';
 import classData from '../../data/classData';
 import { useAddQuestionsMutation } from '../../redux/services/questionApi';
 import Congratulations from '../../assets/announcement.svg';
+import Locked from '../../assets/locked.svg';
 import OverlayLoader from '../../components/Loaders/OverlayLoader';
 import { difficulties } from '../../components/Generate/config';
 import { getToast, titleCase } from '../../utils/helpers';
@@ -248,14 +249,16 @@ const Contribute = () => {
 
   return (
     <Box>
-      {user?.status?.value !== 'active' ? (
+      {user?.status?.value === 'active' ? (
         <Flex
           w='full'
-          h='calc(100vh - 70px)'
+          h='calc(100vh - 10vh - 64px)'
           justify='center'
           alignItems='center'
+          direction='column'
         >
-          <Text>
+          <Image src={Locked} alt='access denied' h='270px' mb='8' />
+          <Text w={['100%', '100%', '80%', '70%', '42%']} textAlign='center'>
             Your account has been freezed due to violation of the Code of
             Conduct
           </Text>

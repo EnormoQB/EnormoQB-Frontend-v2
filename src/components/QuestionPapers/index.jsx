@@ -60,7 +60,7 @@ const QuesPaper = ({ data }) => {
           <TagDivider /> */}
           <Tag content={data.board} />
           <TagDivider />
-          <Tag content={`Grade ${data.standard}`} />
+          <Tag content={`Class ${data.standard}`} />
           <TagDivider />
           <Tag content={data.subject} />
           <TagDivider />
