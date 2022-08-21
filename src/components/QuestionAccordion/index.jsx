@@ -35,6 +35,11 @@ import {
   useDeleteQuestionMutation,
 } from '../../redux/services/questionApi';
 import { getToast } from '../../utils/helpers';
+import WarningModal from '../Modal/Warning';
+import {
+  useLazyGetUserDataQuery,
+  useToggleStatusMutation,
+} from '../../redux/services/userApi';
 
 const QuestionAccordion = ({
   data,
@@ -43,7 +48,35 @@ const QuestionAccordion = ({
   similarQues,
   showEdit,
 }) => {
+  const toast = useToast();
   const [similarArray, setSimilarArray] = useState([]);
+  const [warnModalData, setWarnModalData] = useState({
+    title: 'Title',
+    body: 'Body',
+    onConfirm: () => {},
+  });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+  const {
+    isOpen: modalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: modalOpenSimilarQuestion,
+    onOpen: onModalOpenSimilarQuestion,
+    onClose: onModalCloseSimilarQuestion,
+  } = useDisclosure();
+  const {
+    isOpen: isWarnOpen,
+    onOpen: onWarnOpen,
+    onClose: onWarnClose,
+  } = useDisclosure();
+  const id = data._id;
+  const [trigger] = useFeedbackupdateMutation();
+  const [triggerDelete] = useDeleteQuestionMutation();
+  const [triggerToggleStatus] = useToggleStatusMutation();
+  const [triggerGetUser] = useLazyGetUserDataQuery();
 
   useEffect(() => {
     if (similarQues) {
@@ -57,48 +90,53 @@ const QuestionAccordion = ({
     }
   }, [similarQues]);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
-  const {
-    isOpen: modalOpen,
-    onOpen: onModalOpen,
-    onClose: onModalClose,
-  } = useDisclosure();
-
-  const {
-    isOpen: modalOpenSimilarQuestion,
-    onOpen: onModalOpenSimilarQuestion,
-    onClose: onModalCloseSimilarQuestion,
-  } = useDisclosure();
-
-  const id = data._id;
-  const [trigger] = useFeedbackupdateMutation();
-  const [triggerDelete] = useDeleteQuestionMutation();
-  const toast = useToast();
-
-  const handleUpdate = (status, feedback) => {
-    trigger({ feedback, id, status: status.toLowerCase() })
-      .then(() => {
-        toast(
-          getToast({
-            title: 'Success',
-            description: `Question ${status}!`,
-            status: 'success',
-          }),
-        );
-        removeQuestion();
-      })
-      .catch((err) => {
-        console.log('Update Error', err);
-        toast(
-          getToast({
-            title: 'Error',
-            description: 'Some Error Occured!',
-            status: 'error',
-          }),
-        );
-      });
+  const handleUpdate = async (status, feedback) => {
+    try {
+      await trigger({ feedback, id, status: status.toLowerCase() });
+      toast(
+        getToast({
+          title: 'Success',
+          description: `Question ${status}!`,
+          status: 'success',
+        }),
+      );
+      removeQuestion();
+    } catch (err) {
+      console.log('Update Error', err);
+      toast(
+        getToast({
+          title: 'Error',
+          description: 'Some Error Occured!',
+          status: 'error',
+        }),
+      );
+    }
   };
+
+  const reportQues = async ({ userId, quesId }) => {
+    try {
+      await triggerToggleStatus({ userId, quesId });
+      await triggerGetUser();
+      toast(
+        getToast({
+          title: 'Success',
+          description: `Question rejected and reported!`,
+          status: 'success',
+        }),
+      );
+      removeQuestion();
+    } catch (err) {
+      console.log('Toggle Error', err);
+      toast(
+        getToast({
+          title: 'Error',
+          description: 'Some Error Occured!',
+          status: 'error',
+        }),
+      );
+    }
+  };
+
   const deleteQuestion = () => {
     triggerDelete({ id })
       .then(() => {
@@ -112,7 +150,7 @@ const QuestionAccordion = ({
         removeQuestion();
       })
       .catch((err) => {
-        console.log('Update Error', err);
+        console.log('Delete Error', err);
         toast(
           getToast({
             title: 'Error',
@@ -122,6 +160,7 @@ const QuestionAccordion = ({
         );
       });
   };
+
   return (
     <Box>
       <FeedbackModal
@@ -130,7 +169,6 @@ const QuestionAccordion = ({
         onConfirm={(feedback) => handleUpdate('Rejected', feedback)}
         id={id}
       />
-
       <Accordion allowMultiple w='full'>
         <AccordionItem
           borderTop='none'
@@ -316,12 +354,26 @@ const QuestionAccordion = ({
                         </>
                       )}
                       <Flex ml='auto' alignItems='center'>
+                        <WarningModal
+                          isOpen={isWarnOpen}
+                          onClose={onWarnClose}
+                          onConfirm={warnModalData.onConfirm}
+                          title={warnModalData.title}
+                          body={warnModalData.body}
+                        />
                         <Tooltip label='Delete' fontSize='xs'>
                           <IconButton
                             icon={<MdDelete />}
                             bg='brand.300'
                             color='brand.600'
-                            onClick={() => deleteQuestion()}
+                            onClick={() => {
+                              setWarnModalData({
+                                title: 'Delete Question',
+                                body: 'Are you sure you want to delete this question?',
+                                onConfirm: () => deleteQuestion(),
+                              });
+                              onWarnOpen();
+                            }}
                             mr='4'
                           />
                         </Tooltip>
@@ -330,6 +382,19 @@ const QuestionAccordion = ({
                             icon={<AiFillFlag />}
                             bg='brand.300'
                             color='brand.600'
+                            onClick={() => {
+                              setWarnModalData({
+                                title: 'Report Question',
+                                body: `Are you sure you want to report this question? 
+                                This will freeze the author's account for further contributions.`,
+                                onConfirm: () =>
+                                  reportQues({
+                                    userId: data.userId,
+                                    quesId: data._id,
+                                  }),
+                              });
+                              onWarnOpen();
+                            }}
                           />
                         </Tooltip>
                       </Flex>

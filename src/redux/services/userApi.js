@@ -20,7 +20,7 @@ export const userApi = createApi({
     }),
     toggleStatus: builder.mutation({
       query: (data) => ({
-        url: ApiEndpoints.auth.user.toggleStatus,
+        url: ApiEndpoints.auth.toggleStatus.url,
         method: 'post',
         data,
       }),
@@ -33,6 +33,7 @@ export const userApi = createApi({
 
 export const {
   useGetUserDataQuery,
+  useLazyGetUserDataQuery,
   useLogoutUserMutation,
   useToggleStatusMutation,
 } = userApi;
