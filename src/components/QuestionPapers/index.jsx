@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Box, Flex, IconButton, Text, Tooltip } from '@chakra-ui/react';
-import { RiFileDownloadFill } from 'react-icons/ri';
-import { BsBoxArrowInRight } from 'react-icons/bs';
+import {
+  Box,
+  Flex,
+  IconButton,
+  Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from '@chakra-ui/react';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import Tag from './tag';
 import TagDivider from '../QuestionAccordion/Tags/divider';
 import DifficultyTag from '../QuestionAccordion/Tags/difficulty';
@@ -64,44 +72,42 @@ const QuesPaper = ({ data }) => {
         </Flex>
       </Box>
       <Flex ml='auto' alignItems='center'>
-        <Tooltip label='Preview' fontSize='xs'>
-          <IconButton
-            aria-label='Preview question paper'
+        <Menu>
+          <MenuButton
             fontSize='22px'
-            icon={<BsBoxArrowInRight />}
             bg='brand.100'
             color='brand.600'
             _hover={{ backgroundColor: 'brand.400' }}
             transition='opacity ease-in-out 200ms'
-            mr='4'
-            onClick={() => {
-              const linkElement = document.createElement('a');
-              linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.questionKey}`;
-              linkElement.target = '_blank';
-              linkElement.click();
-              linkElement.remove();
-            }}
+            as={IconButton}
+            aria-label='Preview Options'
+            icon={<BsThreeDotsVertical />}
           />
-        </Tooltip>
-        <Tooltip label='Download' fontSize='xs'>
-          <IconButton
-            aria-label='Download question paper'
-            fontSize='22px'
-            icon={<RiFileDownloadFill />}
-            bg='brand.100'
-            color='brand.600'
-            _hover={{ backgroundColor: 'brand.400' }}
-            transition='opacity ease-in-out 200ms'
-            mr='4'
-            onClick={() => {
-              const linkElement = document.createElement('a');
-              linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.answerKey}`;
-              linkElement.target = '_blank';
-              linkElement.click();
-              linkElement.remove();
-            }}
-          />
-        </Tooltip>
+          <MenuList>
+            <MenuItem
+              onClick={() => {
+                const linkElement = document.createElement('a');
+                linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.questionKey}`;
+                linkElement.target = '_blank';
+                linkElement.click();
+                linkElement.remove();
+              }}
+            >
+              Preview Question Paper
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                const linkElement = document.createElement('a');
+                linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.answerKey}`;
+                linkElement.target = '_blank';
+                linkElement.click();
+                linkElement.remove();
+              }}
+            >
+              Preview Answer Key
+            </MenuItem>
+          </MenuList>
+        </Menu>
       </Flex>
     </Flex>
   );
