@@ -4,7 +4,7 @@ import Question from '../../components/QuestionAccordion';
 import Filter from '../../components/Filters';
 import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
-import Page from '../../components/Pagination';
+import Pagination from '../../components/Pagination';
 import Empty from '../../components/Empty';
 
 const Pending = () => {
@@ -45,7 +45,7 @@ const Pending = () => {
       ) : (
         <>
           {questions.length === 0 && <Empty textContent='No Data Found!' />}
-          {questions.length !== 0 ? (
+          {questions.length !== 0 && (
             <>
               {questions.map((ques) => (
                 <Question
@@ -61,7 +61,7 @@ const Pending = () => {
                   show
                 />
               ))}
-              <Page
+              <Pagination
                 pageNumber={filter.page}
                 setPageNumber={(page) => {
                   setfilter((prev) => ({ ...prev, page }));
@@ -69,7 +69,7 @@ const Pending = () => {
                 metadata={metadata}
               />
             </>
-          ) : null}
+          )}
         </>
       )}
     </Box>

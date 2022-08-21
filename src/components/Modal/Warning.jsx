@@ -9,18 +9,14 @@ import {
   Button,
 } from '@chakra-ui/react';
 
-const WarningModal = ({ onClose, isOpen, onConfirm }) => {
+const WarningModal = ({ onClose, isOpen, onConfirm, title, body }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent top='8rem'>
-        <ModalHeader>Warning ⚠️</ModalHeader>
+        <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-          This may lead to resetting other depended input fields. Are you sure
-          you want to continue?
-        </ModalBody>
-
+        <ModalBody>{body}</ModalBody>
         <ModalFooter>
           <Button mr={3} onClick={onClose}>
             No
@@ -42,3 +38,8 @@ const WarningModal = ({ onClose, isOpen, onConfirm }) => {
 };
 
 export default WarningModal;
+
+WarningModal.defaultProps = {
+  title: 'Warning ⚠️',
+  body: 'This may lead to resetting other depended input fields. Are you sure you want to continue?',
+};

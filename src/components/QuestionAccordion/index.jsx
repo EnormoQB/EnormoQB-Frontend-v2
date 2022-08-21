@@ -19,20 +19,28 @@ import {
   Box,
   useToast,
   IconButton,
+  Tooltip,
 } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BiExpand } from 'react-icons/bi';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import { AiFillFlag } from 'react-icons/ai';
 import Option from './option';
 import Tag from './Tags/tag';
 import DifficultyTag from './Tags/difficulty';
 import FeedbackModal from '../Modal/Feedback';
-import SimilarQuestion from './similarQuestion';
+import SimilarQuesModal from '../Modal/SimilarQues';
 import {
   useFeedbackupdateMutation,
   useDeleteQuestionMutation,
 } from '../../redux/services/questionApi';
 import { getToast } from '../../utils/helpers';
+import WarningModal from '../Modal/Warning';
+import {
+  useLazyGetUserDataQuery,
+  useToggleStatusMutation,
+} from '../../redux/services/userApi';
 
 const QuestionAccordion = ({
   data,
@@ -41,7 +49,36 @@ const QuestionAccordion = ({
   similarQues,
   showEdit,
 }) => {
+  const user = useSelector((state) => state.userState.user);
+  const toast = useToast();
   const [similarArray, setSimilarArray] = useState([]);
+  const [warnModalData, setWarnModalData] = useState({
+    title: 'Title',
+    body: 'Body',
+    onConfirm: () => {},
+  });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+  const {
+    isOpen: modalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: modalOpenSimilarQuestion,
+    onOpen: onModalOpenSimilarQuestion,
+    onClose: onModalCloseSimilarQuestion,
+  } = useDisclosure();
+  const {
+    isOpen: isWarnOpen,
+    onOpen: onWarnOpen,
+    onClose: onWarnClose,
+  } = useDisclosure();
+  const id = data._id;
+  const [trigger] = useFeedbackupdateMutation();
+  const [triggerDelete] = useDeleteQuestionMutation();
+  const [triggerToggleStatus] = useToggleStatusMutation();
+  const [triggerGetUser] = useLazyGetUserDataQuery();
 
   useEffect(() => {
     if (similarQues) {
@@ -55,48 +92,53 @@ const QuestionAccordion = ({
     }
   }, [similarQues]);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
-  const {
-    isOpen: modalOpen,
-    onOpen: onModalOpen,
-    onClose: onModalClose,
-  } = useDisclosure();
-
-  const {
-    isOpen: modalOpenSimilarQuestion,
-    onOpen: onModalOpenSimilarQuestion,
-    onClose: onModalCloseSimilarQuestion,
-  } = useDisclosure();
-
-  const id = data._id;
-  const [trigger] = useFeedbackupdateMutation();
-  const [triggerDelete] = useDeleteQuestionMutation();
-  const toast = useToast();
-
-  const handleUpdate = (status, feedback) => {
-    trigger({ feedback, id, status: status.toLowerCase() })
-      .then(() => {
-        toast(
-          getToast({
-            title: 'Success',
-            description: `Question ${status}!`,
-            status: 'success',
-          }),
-        );
-        removeQuestion();
-      })
-      .catch((err) => {
-        console.log('Update Error', err);
-        toast(
-          getToast({
-            title: 'Error',
-            description: 'Some Error Occured!',
-            status: 'error',
-          }),
-        );
-      });
+  const handleUpdate = async (status, feedback) => {
+    try {
+      await trigger({ feedback, id, status: status.toLowerCase() });
+      toast(
+        getToast({
+          title: 'Success',
+          description: `Question ${status}!`,
+          status: 'success',
+        }),
+      );
+      removeQuestion();
+    } catch (err) {
+      console.log('Update Error', err);
+      toast(
+        getToast({
+          title: 'Error',
+          description: 'Some Error Occured!',
+          status: 'error',
+        }),
+      );
+    }
   };
+
+  const reportQues = async ({ userId, quesId }) => {
+    try {
+      await triggerToggleStatus({ userId, quesId });
+      await triggerGetUser();
+      toast(
+        getToast({
+          title: 'Success',
+          description: `Question rejected and reported!`,
+          status: 'success',
+        }),
+      );
+      removeQuestion();
+    } catch (err) {
+      console.log('Toggle Error', err);
+      toast(
+        getToast({
+          title: 'Error',
+          description: 'Some Error Occured!',
+          status: 'error',
+        }),
+      );
+    }
+  };
+
   const deleteQuestion = () => {
     triggerDelete({ id })
       .then(() => {
@@ -110,7 +152,7 @@ const QuestionAccordion = ({
         removeQuestion();
       })
       .catch((err) => {
-        console.log('Update Error', err);
+        console.log('Delete Error', err);
         toast(
           getToast({
             title: 'Error',
@@ -120,6 +162,7 @@ const QuestionAccordion = ({
         );
       });
   };
+
   return (
     <Box>
       <FeedbackModal
@@ -128,13 +171,12 @@ const QuestionAccordion = ({
         onConfirm={(feedback) => handleUpdate('Rejected', feedback)}
         id={id}
       />
-
       <Accordion allowMultiple w='full'>
         <AccordionItem
           borderTop='none'
           borderBottom='none'
           borderRadius='lg'
-          my='2'
+          my='2.5'
           boxShadow='rgba(0, 0, 0, 0.16) 0px 1px 4px'
         >
           {({ isExpanded }) => (
@@ -182,11 +224,6 @@ const QuestionAccordion = ({
                         isAnswer={option === data.answer}
                       />
                     ))}
-                    {data.status === 'rejected' && data.feedback ? (
-                      <Text>
-                        <strong>Feedback :</strong> {data.feedback}
-                      </Text>
-                    ) : null}
                   </Flex>
                   {data.imageUrl && data.imageUrl !== '' && (
                     <Flex
@@ -249,121 +286,123 @@ const QuestionAccordion = ({
                     </Flex>
                   )}
                 </Flex>
-                {showEdit && (
-                  <Button
-                    fontSize='sm'
-                    fontWeight='medium'
-                    mr='4'
-                    bg='brand.600'
-                    _hover={{ backgroundColor: 'myGray.500' }}
-                    onClick={() =>
-                      navigate(`/dashboard/contribute?id=${data._id}`, {
-                        state: data,
-                      })
-                    }
-                  >
-                    Edit
-                  </Button>
-                )}
-                {show ? (
-                  <Box mt='3' w='full'>
-                    <Button
-                      fontSize='sm'
-                      fontWeight='medium'
-                      mr='4'
-                      bg='brand.600'
-                      _hover={{ backgroundColor: 'myGray.500' }}
-                      onClick={() => handleUpdate('Approved', null)}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      fontSize='sm'
-                      fontWeight='medium'
-                      bg='brand.400'
-                      color='brand.600'
-                      mr='4'
-                      _hover={{ backgroundColor: 'brand.450' }}
-                      onClick={onModalOpen}
-                    >
-                      Reject
-                    </Button>
-
-                    {similarArray.length !== 0 && (
+                <Flex mt='3' w='full'>
+                  {showEdit && (
+                    <Flex alignItems='center' w='full'>
+                      {data.status === 'rejected' && data.feedback && (
+                        <Text mr='4'>
+                          <strong>Feedback :</strong>&nbsp;
+                          <span>{data.feedback}</span>
+                        </Text>
+                      )}
                       <Button
                         fontSize='sm'
                         fontWeight='medium'
-                        bg='brand.300'
-                        color='brand.600'
-                        _hover={{ backgroundColor: 'brand.350' }}
-                        onClick={onModalOpenSimilarQuestion}
+                        ml={data.feedback && 'auto'}
+                        bg='brand.600'
+                        _hover={{ backgroundColor: 'myGray.500' }}
+                        rightIcon={<MdEdit />}
+                        flexShrink='0'
+                        onClick={() =>
+                          navigate(`/dashboard/contribute?id=${data._id}`, {
+                            state: data,
+                          })
+                        }
                       >
-                        {similarArray.length} Similar Questions
+                        <span>Edit</span>
                       </Button>
-                    )}
-                    <IconButton
-                      position='absolute'
-                      right='6.5%'
-                      bg='#ffbfbf'
-                      color='black'
-                      icon={<AiFillFlag />}
-                      _hover={{ backgroundColor: '#ff8080' }}
-                    />
-                    <Modal
-                      isOpen={modalOpenSimilarQuestion}
-                      onClose={onModalCloseSimilarQuestion}
-                      isCentered
-                      motionPreset='slideInBottom'
-                    >
-                      <ModalOverlay />
-                      <ModalContent
-                        sx={{
-                          height: '80vh',
-                          maxH: '80vh',
-                          width: '80vw',
-                          maxW: '80vw',
-                          backgroundColor: 'brand.100',
-                          display: 'flex',
-                          flexDir: 'column',
-                          position: 'fixed',
-                          padding: '30px',
-                        }}
+                    </Flex>
+                  )}
+                  {show && user.userType !== 'member' && (
+                    <>
+                      <Button
+                        fontSize='sm'
+                        fontWeight='medium'
+                        mr='4'
+                        bg='brand.600'
+                        _hover={{ backgroundColor: 'myGray.500' }}
+                        onClick={() => handleUpdate('Approved', null)}
                       >
-                        <ModalCloseButton _focus={{}} mr='1.5' mt='1.5' />
-                        <ModalBody p='0' h='100%'>
-                          <Text
-                            as='h3'
-                            fontWeight='600'
-                            fontSize='2xl'
-                            mb='3'
-                            pr={6}
-                            pl={3}
+                        Accept
+                      </Button>
+                      <Button
+                        fontSize='sm'
+                        fontWeight='medium'
+                        bg='brand.400'
+                        color='brand.600'
+                        mr='4'
+                        _hover={{ backgroundColor: 'brand.450' }}
+                        onClick={onModalOpen}
+                      >
+                        Reject
+                      </Button>
+                      {similarArray.length !== 0 && (
+                        <>
+                          <Button
+                            fontSize='sm'
+                            fontWeight='medium'
+                            bg='brand.300'
+                            color='brand.600'
+                            _hover={{ backgroundColor: 'brand.350' }}
+                            onClick={onModalOpenSimilarQuestion}
                           >
-                            Similar Questions
-                          </Text>
-                          <Box overflow='auto' h='92%' pr={6} pl={3}>
-                            {similarArray.map((ques) => (
-                              <SimilarQuestion
-                                key={ques._id.$oid}
-                                data={ques}
-                              />
-                            ))}
-                          </Box>
-                        </ModalBody>
-                      </ModalContent>
-                    </Modal>
-                    <Button
-                      fontSize='sm'
-                      fontWeight='medium'
-                      ml='auto'
-                      bg='brand.600'
-                      _hover={{ backgroundColor: 'myGray.500' }}
-                      onClick={() => deleteQuestion()}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                ) : null}
+                            {similarArray.length} Similar Questions
+                          </Button>
+                          <SimilarQuesModal
+                            modalOpen={modalOpenSimilarQuestion}
+                            onModalClose={onModalCloseSimilarQuestion}
+                            similarArray={similarArray}
+                          />
+                        </>
+                      )}
+                      <Flex ml='auto' alignItems='center'>
+                        <WarningModal
+                          isOpen={isWarnOpen}
+                          onClose={onWarnClose}
+                          onConfirm={warnModalData.onConfirm}
+                          title={warnModalData.title}
+                          body={warnModalData.body}
+                        />
+                        <Tooltip label='Delete' fontSize='xs'>
+                          <IconButton
+                            icon={<MdDelete />}
+                            bg='brand.300'
+                            color='brand.600'
+                            onClick={() => {
+                              setWarnModalData({
+                                title: 'Delete Question',
+                                body: 'Are you sure you want to delete this question?',
+                                onConfirm: () => deleteQuestion(),
+                              });
+                              onWarnOpen();
+                            }}
+                            mr='4'
+                          />
+                        </Tooltip>
+                        <Tooltip label='Report' fontSize='xs'>
+                          <IconButton
+                            icon={<AiFillFlag />}
+                            bg='brand.300'
+                            color='brand.600'
+                            onClick={() => {
+                              setWarnModalData({
+                                title: 'Report Question',
+                                body: `Are you sure you want to report this question? 
+                                This will freeze the author's account for further contributions.`,
+                                onConfirm: () =>
+                                  reportQues({
+                                    userId: data.userId,
+                                    quesId: data._id,
+                                  }),
+                              });
+                              onWarnOpen();
+                            }}
+                          />
+                        </Tooltip>
+                      </Flex>
+                    </>
+                  )}
+                </Flex>
               </AccordionPanel>
             </>
           )}

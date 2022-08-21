@@ -18,10 +18,22 @@ export const userApi = createApi({
         }
       },
     }),
+    toggleStatus: builder.mutation({
+      query: (data) => ({
+        url: ApiEndpoints.auth.toggleStatus.url,
+        method: 'post',
+        data,
+      }),
+    }),
     logoutUser: builder.mutation({
       query: () => ({ url: ApiEndpoints.auth.logout.url, method: 'get' }),
     }),
   }),
 });
 
-export const { useGetUserDataQuery, useLogoutUserMutation } = userApi;
+export const {
+  useGetUserDataQuery,
+  useLazyGetUserDataQuery,
+  useLogoutUserMutation,
+  useToggleStatusMutation,
+} = userApi;

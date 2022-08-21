@@ -46,20 +46,12 @@ const Perks = () => {
       <Flex>
         <Flex w='65%' flexWrap='wrap'>
           <PerkCard
-            imgSrc={Shirt}
-            imgTitle='Redeem Your Free T-Shirts'
-            perkHeading='EnormoQB T-Shirt'
-            perkSubHeading='Redeem our high quality t-shirts'
+            imgSrc={Voucher}
+            imgTitle='Redeem Your Vouchers'
+            perkHeading='EnormoQB Vouchers'
+            perkSubHeading='Redeem vouchers worth Rs.5000'
             points={points}
             coins='500'
-          />
-          <PerkCard
-            imgSrc={EnormoKit}
-            imgTitle='Exclusive EnormoQB Kit'
-            perkHeading='EnormoQB Kit'
-            perkSubHeading='Includes official t-shirt, keychain and sticker'
-            points={points}
-            coins='1000'
           />
           <PerkCard
             imgSrc={LaptopSleeve}
@@ -67,13 +59,21 @@ const Perks = () => {
             perkHeading='EnormoQB Laptop Sleeve'
             perkSubHeading="EnormoQB's exclusive laptop sleeve"
             points={points}
+            coins='1000'
+          />
+          <PerkCard
+            imgSrc={Shirt}
+            imgTitle='Redeem Your Free T-Shirts'
+            perkHeading='EnormoQB T-Shirt'
+            perkSubHeading='Redeem our high quality T-shirts'
+            points={points}
             coins='1500'
           />
           <PerkCard
-            imgSrc={Voucher}
-            imgTitle='Redeem Your Vouchers'
-            perkHeading='EnormoQB Vouchers'
-            perkSubHeading='Redeem vouchers worth Rs.5000'
+            imgSrc={EnormoKit}
+            imgTitle='Exclusive EnormoQB Kit'
+            perkHeading='EnormoQB Kit'
+            perkSubHeading='Includes official T-shirt, keychain and sticker'
             points={points}
             coins='3000'
           />
@@ -90,7 +90,7 @@ const Perks = () => {
           >
             <Flex alignItems='center'>
               <FaCoins style={{ marginRight: '8px' }} />
-              Your Coins{' '}
+              Your Coins
             </Flex>
             <Box>{points}</Box>
           </Flex>
