@@ -74,19 +74,22 @@ const QuestionPapers = () => {
                   showBoard={1}
                 />
                 {isLoading || isFetching ? (
-                  <DashboardLoader />
+                  <DashboardLoader height='55vh' />
                 ) : (
                   <>
                     {paper.length === 0 && (
-                      <Empty textContent='No Data Found!' />
+                      <Empty
+                        textContent='No Data Found!'
+                        containerHeight='55vh'
+                      />
                     )}
-                    {paper.length !== 0 ? (
+                    {paper.length !== 0 && (
                       <>
                         {paper.map((ques, index) => (
                           <QuesPaper key={index} data={ques} />
                         ))}
                       </>
-                    ) : null}
+                    )}
                   </>
                 )}
               </TabPanel>
@@ -97,19 +100,22 @@ const QuestionPapers = () => {
                   showBoard={1}
                 />
                 {isLoading || isFetching ? (
-                  <DashboardLoader />
+                  <DashboardLoader height='55vh' />
                 ) : (
                   <>
                     {history.length === 0 && (
-                      <Empty textContent='No Data Found!' />
+                      <Empty
+                        textContent='No Data Found!'
+                        containerHeight='55vh'
+                      />
                     )}
-                    {history.length !== 0 ? (
+                    {history.length !== 0 && (
                       <>
                         {history.map((ques, index) => (
                           <QuesPaper key={index} data={ques} />
                         ))}
                       </>
-                    ) : null}
+                    )}
                   </>
                 )}
               </TabPanel>
@@ -123,18 +129,18 @@ const QuestionPapers = () => {
               showBoard={1}
             />
             {isLoading || isFetching ? (
-              <DashboardLoader />
+              <DashboardLoader height='55vh' />
             ) : (
               <>
-                {paper.length === 0 && <Empty textContent='No Data Found!' />}
-                {paper.length !== 0 ? (
+                {paper.length === 0 && (
+                  <Empty textContent='No Data Found!' containerHeight='55vh' />
+                )}
+                {paper.length !== 0 && (
                   <>
                     {paper.map((ques, index) => (
                       <QuesPaper key={index} data={ques} />
                     ))}
                   </>
-                ) : (
-                  <br />
                 )}
               </>
             )}

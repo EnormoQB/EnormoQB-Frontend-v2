@@ -4,13 +4,13 @@ import EmptyFolder from '../assets/emptyFolder.svg';
 const Empty = ({
   imgSrc = EmptyFolder,
   textContent = 'No Data Found!',
-  imgHeight = '65vh',
+  containerHeight = '65vh',
 }) => {
   return (
     <Flex
       flexDirection='column'
       alignItems='center'
-      h={imgHeight}
+      h={containerHeight}
       justify='center'
     >
       <Image src={imgSrc} alt='Empty image' h='400px' />
