@@ -7,6 +7,7 @@ import userReducer from '../features/userSlice';
 import generateFormReducer from '../features/generateSlice';
 import { statsApi } from '../services/statsApi';
 import { subjectApi } from '../services/subjectApi';
+import { mailApi } from '../services/mailApi';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     [questionPaperApi.reducerPath]: questionPaperApi.reducer,
     [statsApi.reducerPath]: statsApi.reducer,
     [subjectApi.reducerPath]: subjectApi.reducer,
+    [mailApi.reducerPath]: mailApi.reducer,
     generateState: generateFormReducer,
   },
   devTools: process.env.NODE_ENV === 'development',
@@ -26,6 +28,7 @@ export const store = configureStore({
     userApi.middleware,
     statsApi.middleware,
     subjectApi.middleware,
+    mailApi.middleware,
   ],
 });
 export const useAppDispatch = () => useDispatch();
