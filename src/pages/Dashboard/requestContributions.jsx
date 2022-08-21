@@ -17,6 +17,7 @@ const RequestContributions = () => {
   useEffect(() => {
     if (data) {
       setTopicData(data.data);
+      console.log(data.data);
     }
   }, [data]);
 
@@ -66,8 +67,10 @@ const RequestContributions = () => {
             <SendMailCard
               key={`${item.subject}${item.topic}${idx}`}
               needContributions={minQues >= item.count}
-              topicName={item.topic}
+              topic={item.topic}
               quesCount={item.count}
+              subject={item.subject}
+              standard={item.standard}
             />
           ))}
           {[...Array(4 - (topicData.length % 4)).keys()].map(() => (

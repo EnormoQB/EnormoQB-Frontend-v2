@@ -44,18 +44,6 @@ const LineGraph = ({ contribution }) => {
         borderColor: '#005CE6',
         backgroundColor: '#005CE6',
       },
-      {
-        label: 'Questions Rejected',
-        data: [29, 92, 50, 23, 60, 100, 225, 102, 40],
-        borderColor: '#b0c1f2',
-        backgroundColor: '#b0c1f2',
-      },
-      {
-        label: 'Questions Pending',
-        data: [50, 25, 30, 100, 200, 85, 90, 250, 210],
-        borderColor: '#7CAEF8',
-        backgroundColor: '#7CAEF8',
-      },
     ],
   };
 

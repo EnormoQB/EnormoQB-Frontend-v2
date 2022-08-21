@@ -50,6 +50,11 @@ const Rejected = () => {
                   key={ques._id}
                   data={ques}
                   questions={questions}
+                  removeQuestion={() => {
+                    setQuestions((prev) =>
+                      prev.filter((item) => item._id !== ques._id),
+                    );
+                  }}
                   showEdit
                 />
               ))}

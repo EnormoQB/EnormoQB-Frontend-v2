@@ -77,6 +77,12 @@ const ApiEndpoints = {
       url: 'api/subjectsData',
     },
   },
+  mail: {
+    requestmail: {
+      method: 'GET',
+      url: 'api/mail/request',
+    },
+  },
 };
 
 export default ApiEndpoints;

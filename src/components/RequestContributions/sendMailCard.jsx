@@ -9,12 +9,48 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { MdOutgoingMail } from 'react-icons/md';
 import { TiTick, TiTimes } from 'react-icons/ti';
+import { useLazySendMailQuery } from '../../redux/services/mailApi';
+import OverlayLoader from '../Loaders/OverlayLoader';
+import { getToast } from '../../utils/helpers';
 
-const SendMailCard = ({ needContributions, topicName, quesCount }) => {
+const SendMailCard = ({
+  needContributions,
+  topic,
+  quesCount,
+  subject,
+  standard,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const [trigger, { isFetching, isLoading }] = useLazySendMailQuery();
+
+  const sendMailsToUser = async () => {
+    try {
+      await trigger({ standard, subject, topic });
+      toast(
+        getToast({
+          title: 'Success',
+          description: 'Mail Sent Successfully!',
+          status: 'success',
+        }),
+      );
+    } catch (err) {
+      console.log('Update Error', err);
+      toast(
+        getToast({
+          title: 'Error',
+          description: 'Some Error Occured!',
+          status: 'error',
+        }),
+      );
+    }
+    onClose();
+  };
+
   return (
     <Flex
       flexDirection='column'
@@ -27,8 +63,9 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
       borderBottomColor={needContributions ? 'brand.500' : 'gray.300'}
       mb='5'
     >
+      {(isLoading || isFetching) && <OverlayLoader />}
       <Flex fontSize='sm' fontWeight='medium' color='gray.500' mb='auto'>
-        {topicName}
+        {topic}
       </Flex>
       <Flex mt='2' justifyContent='space-between' alignItems='center'>
         <Flex flexDirection='column'>
@@ -81,6 +118,7 @@ const SendMailCard = ({ needContributions, topicName, quesCount }) => {
                     rightIcon={<TiTick size='18px' />}
                     mx='2'
                     _hover={{ backgroundColor: 'brand.450' }}
+                    onClick={() => sendMailsToUser()}
                   >
                     Yes
                   </Button>
