@@ -21,6 +21,7 @@ import {
   IconButton,
   Tooltip,
 } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BiExpand } from 'react-icons/bi';
 import { MdDelete, MdEdit } from 'react-icons/md';
@@ -48,6 +49,7 @@ const QuestionAccordion = ({
   similarQues,
   showEdit,
 }) => {
+  const user = useSelector((state) => state.userState.user);
   const toast = useToast();
   const [similarArray, setSimilarArray] = useState([]);
   const [warnModalData, setWarnModalData] = useState({
@@ -311,7 +313,7 @@ const QuestionAccordion = ({
                       </Button>
                     </Flex>
                   )}
-                  {show && (
+                  {show && user.userType !== 'member' && (
                     <>
                       <Button
                         fontSize='sm'
