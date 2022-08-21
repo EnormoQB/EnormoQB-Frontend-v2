@@ -311,6 +311,29 @@ const QuestionAccordion = ({
                       >
                         <span>Edit</span>
                       </Button>
+                      <WarningModal
+                        isOpen={isWarnOpen}
+                        onClose={onWarnClose}
+                        onConfirm={warnModalData.onConfirm}
+                        title={warnModalData.title}
+                        body={warnModalData.body}
+                      />
+                      <Tooltip label='Delete' fontSize='xs'>
+                        <IconButton
+                          icon={<MdDelete />}
+                          bg='brand.300'
+                          color='brand.600'
+                          onClick={() => {
+                            setWarnModalData({
+                              title: 'Delete Question',
+                              body: 'Are you sure you want to delete this question?',
+                              onConfirm: () => deleteQuestion(),
+                            });
+                            onWarnOpen();
+                          }}
+                          ml='4'
+                        />
+                      </Tooltip>
                     </Flex>
                   )}
                   {show && user.userType !== 'member' && (
