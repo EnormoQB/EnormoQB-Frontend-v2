@@ -7,7 +7,7 @@ import ProcessBlock from '../components/Landing/ProcessBlock';
 import About from '../components/Landing/About';
 import FutureScopeCard from '../components/Landing/FutureScopeCard';
 import Footer from '../components/Landing/Footer';
-import SampleDashboard from '../assets/sample.png';
+import LandingDash from '../assets/LandingDash.png';
 import LoginImg from '../assets/login.svg';
 import PostQuestionsImg from '../assets/postQuestions.svg';
 import GenerateImg from '../assets/generatePaper.svg';
@@ -32,8 +32,10 @@ const Home = () => {
       <Hero />
       <Image
         mx={['4', '10', '16', '32']}
-        src={SampleDashboard}
-        alt='Sample Dashboard'
+        borderRadius='12'
+        src={LandingDash}
+        alt='Dashboard'
+        boxShadow='rgba(0, 0, 0, 0.16) 0px 1px 4px'
       />
       {/* Process Flow */}
       <Flex
