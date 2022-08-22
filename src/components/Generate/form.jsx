@@ -152,7 +152,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
     setTopic('');
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const data = {
       instituteName: instituteName.current.value,
       standard: standard.value,
@@ -201,27 +201,32 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
       };
 
       dispatch(setFormData(data));
-
-      trigger(previewData)
-        .then((res) => {
-          setLoading(false);
-          toast(
-            getToast({
-              title: 'Success',
-              description: 'Preview generated successfully!',
-              status: 'success',
-            }),
-          );
-          resetFields();
-          if (!isLoading && !isFetching) {
-            console.log(res);
-            dispatch(setPreviewData([...customQues, ...res.data.data]));
-            switchPreview();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const res = await trigger(previewData);
+      if (!res.isError) {
+        setLoading(false);
+        toast(
+          getToast({
+            title: 'Success',
+            description: 'Preview generated successfully!',
+            status: 'success',
+          }),
+        );
+        resetFields();
+        if (!isLoading && !isFetching) {
+          console.log(res);
+          dispatch(setPreviewData([...customQues, ...res.data.data]));
+          switchPreview();
+        }
+      } else {
+        setLoading(false);
+        toast(
+          getToast({
+            title: 'Error',
+            description: 'Some error occurred!',
+            status: 'error',
+          }),
+        );
+      }
     }
   };
 
