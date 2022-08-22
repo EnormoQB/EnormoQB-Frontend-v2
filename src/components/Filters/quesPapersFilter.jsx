@@ -11,16 +11,18 @@ const QuesPapersFilter = ({
   validateApply,
   noClear,
 }) => {
-  const [standard, setStandard] = useState(
-    filter.standard === '' ? '' : { value: filter.standard, label: 'X' },
-  );
-  const [subject, setSubject] = useState(
-    filter.subject === '' ? '' : { value: filter.subject, label: 'Maths' },
-  );
+  const [standard, setStandard] = useState({
+    value: filter.standard,
+    label: 'X',
+  });
+  const [subject, setSubject] = useState({
+    value: filter.subject,
+    label: 'Maths',
+  });
   const [board, setBoard] = useState('');
 
   const handleApply = () => {
-    if (!validateApply()) {
+    if (!validateApply(standard, subject)) {
       return;
     }
     setFilter((prev) => ({
@@ -84,9 +86,7 @@ const QuesPapersFilter = ({
             }),
           }}
           onChange={(e) => {
-            if (subject.value !== e.value) {
-              setSubject(e);
-            }
+            setSubject(e);
           }}
           value={subject}
         />

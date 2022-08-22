@@ -17,12 +17,11 @@ const RequestContributions = () => {
   useEffect(() => {
     if (data) {
       setTopicData(data.data);
-      console.log(data.data);
     }
   }, [data]);
 
-  const validateApply = () => {
-    if (filter.standard === '' || filter.subject === '') {
+  const validateApply = (standard, subject) => {
+    if (standard === '' || subject === '') {
       if (!toast.isActive('general')) {
         toast(
           getToast({
