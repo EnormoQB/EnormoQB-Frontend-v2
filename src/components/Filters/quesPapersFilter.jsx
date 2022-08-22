@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Flex, FormControl, Button } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { classOptions, boardOptions } from '../Generate/config';
-import classData from '../../data/classData';
 
 const QuesPapersFilter = ({
   setFilter,
@@ -11,6 +11,7 @@ const QuesPapersFilter = ({
   validateApply,
   noClear,
 }) => {
+  const subjectsData = useSelector((state) => state.userState.subjectsData);
   const [standard, setStandard] = useState({
     value: filter.standard,
     label: 'X',
@@ -77,7 +78,7 @@ const QuesPapersFilter = ({
         <Select
           options={
             standard && standard.value
-              ? Object.keys(classData[standard.value]).map((value) => ({
+              ? Object.keys(subjectsData[standard.value]).map((value) => ({
                   value,
                   label: value,
                 }))

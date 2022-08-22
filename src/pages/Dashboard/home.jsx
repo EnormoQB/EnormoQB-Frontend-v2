@@ -11,7 +11,6 @@ import Question from '../../components/QuestionAccordion';
 import { useGetStatsQuery } from '../../redux/services/statsApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
 import { useReservedQuestionsQuery } from '../../redux/services/questionApi';
-import { useGetSubjectsQuery } from '../../redux/services/subjectApi';
 import NightImage from '../../assets/night-bg.jpg';
 import MorningImage from '../../assets/sun-bg.jpg';
 
@@ -32,13 +31,11 @@ const hour = new Date().getHours();
 
 const DashboardHome = () => {
   const dayMode = useMemo(() => {
-    // console.log(hour);
     if (hour > 18 || hour < 6) return 'night';
     return 'day';
   }, [hour]);
   const user = useSelector((state) => state.userState.user);
   const { data, isLoading, isFetching } = useGetStatsQuery();
-  const { data: subdata } = useGetSubjectsQuery();
 
   const [stats, setStats] = useState(null);
   const {
@@ -54,13 +51,6 @@ const DashboardHome = () => {
       setStats(data.data);
     }
   }, [data]);
-
-  useEffect(() => {
-    if (subdata) {
-      //  All the Subjects and topics of each class
-      // console.log(subdata.data);
-    }
-  }, [subdata]);
 
   useEffect(() => {
     if (reservedData) {
