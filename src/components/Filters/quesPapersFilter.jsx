@@ -17,7 +17,7 @@ const QuesPapersFilter = ({
   });
   const [subject, setSubject] = useState({
     value: filter.subject,
-    label: 'Maths',
+    label: 'English',
   });
   const [board, setBoard] = useState('');
 
