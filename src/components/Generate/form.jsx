@@ -474,7 +474,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
           <Box w='55%' ml={4}>
             <NumberInput
               allowMouseWheel
-              min={1}
+              min={0}
               value={topicQuesCount}
               onChange={(val) => setTopicQuesCount(parseInt(val, 10))}
             >
