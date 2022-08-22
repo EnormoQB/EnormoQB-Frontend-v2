@@ -21,6 +21,7 @@ const Filter = ({ setfilter }) => {
       subject: '',
       topics: '',
       difficulty: '',
+      page: 1,
     }));
   };
 
@@ -41,6 +42,7 @@ const Filter = ({ setfilter }) => {
       setfilter((prev) => ({
         ...prev,
         difficulty: difficulty.value,
+        page: 1,
       }));
     } else {
       setfilter((prev) => ({
@@ -49,6 +51,7 @@ const Filter = ({ setfilter }) => {
         subject: subject.value,
         topics: topics.map((topic) => topic.value),
         difficulty: difficulty.value,
+        page: 1,
       }));
     }
   };
