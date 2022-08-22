@@ -287,6 +287,13 @@ const QuestionAccordion = ({
                   )}
                 </Flex>
                 <Flex mt='3' w='full'>
+                  <WarningModal
+                    isOpen={isWarnOpen}
+                    onClose={onWarnClose}
+                    onConfirm={warnModalData.onConfirm}
+                    title={warnModalData.title}
+                    body={warnModalData.body}
+                  />
                   {showEdit && (
                     <Flex alignItems='center' w='full'>
                       {data.status === 'rejected' && data.feedback && (
@@ -311,13 +318,6 @@ const QuestionAccordion = ({
                       >
                         <span>Edit</span>
                       </Button>
-                      <WarningModal
-                        isOpen={isWarnOpen}
-                        onClose={onWarnClose}
-                        onConfirm={warnModalData.onConfirm}
-                        title={warnModalData.title}
-                        body={warnModalData.body}
-                      />
                       <Tooltip label='Delete' fontSize='xs'>
                         <IconButton
                           icon={<MdDelete />}
@@ -379,29 +379,24 @@ const QuestionAccordion = ({
                         </>
                       )}
                       <Flex ml='auto' alignItems='center'>
-                        <WarningModal
-                          isOpen={isWarnOpen}
-                          onClose={onWarnClose}
-                          onConfirm={warnModalData.onConfirm}
-                          title={warnModalData.title}
-                          body={warnModalData.body}
-                        />
-                        <Tooltip label='Delete' fontSize='xs'>
-                          <IconButton
-                            icon={<MdDelete />}
-                            bg='brand.300'
-                            color='brand.600'
-                            onClick={() => {
-                              setWarnModalData({
-                                title: 'Delete Question',
-                                body: 'Are you sure you want to delete this question?',
-                                onConfirm: () => deleteQuestion(),
-                              });
-                              onWarnOpen();
-                            }}
-                            mr='4'
-                          />
-                        </Tooltip>
+                        {user.userType !== 'admin' && (
+                          <Tooltip label='Delete' fontSize='xs'>
+                            <IconButton
+                              icon={<MdDelete />}
+                              bg='brand.300'
+                              color='brand.600'
+                              onClick={() => {
+                                setWarnModalData({
+                                  title: 'Delete Question',
+                                  body: 'Are you sure you want to delete this question?',
+                                  onConfirm: () => deleteQuestion(),
+                                });
+                                onWarnOpen();
+                              }}
+                              mr='4'
+                            />
+                          </Tooltip>
+                        )}
                         <Tooltip label='Report' fontSize='xs'>
                           <IconButton
                             icon={<AiFillFlag />}
@@ -424,6 +419,27 @@ const QuestionAccordion = ({
                         </Tooltip>
                       </Flex>
                     </>
+                  )}
+                  {show && user.userType === 'member' && (
+                    <Button
+                      fontSize='sm'
+                      fontWeight='medium'
+                      mr='4'
+                      bg='brand.300'
+                      color='brand.600'
+                      rightIcon={<MdDelete />}
+                      flexShrink='0'
+                      onClick={() => {
+                        setWarnModalData({
+                          title: 'Delete Question',
+                          body: 'Are you sure you want to delete this question?',
+                          onConfirm: () => deleteQuestion(),
+                        });
+                        onWarnOpen();
+                      }}
+                    >
+                      <span>Delete</span>
+                    </Button>
                   )}
                 </Flex>
               </AccordionPanel>
