@@ -33,11 +33,11 @@ export const questionPaperApi = createApi({
       }),
     }),
     previousYearPaper: builder.query({
-      query: ({ subject, standard, board }) => {
+      query: ({ subject, standard, board, initialLoad }) => {
         const params = new URLSearchParams({
-          ...(standard ? { standard } : {}),
-          ...(subject ? { subject } : {}),
-          ...(board ? { board } : {}),
+          ...(!initialLoad && standard ? { standard } : {}),
+          ...(!initialLoad && subject ? { subject } : {}),
+          ...(!initialLoad && board ? { board } : {}),
         });
         return {
           url: `${
@@ -49,11 +49,11 @@ export const questionPaperApi = createApi({
       },
     }),
     userPaperHistory: builder.query({
-      query: ({ subject, standard, board }) => {
+      query: ({ subject, standard, board, initialLoad }) => {
         const params = new URLSearchParams({
-          ...(standard ? { standard } : {}),
-          ...(subject ? { subject } : {}),
-          ...(board ? { board } : {}),
+          ...(!initialLoad && standard ? { standard } : {}),
+          ...(!initialLoad && subject ? { subject } : {}),
+          ...(!initialLoad && board ? { board } : {}),
         });
         return {
           url: `${

@@ -30,6 +30,7 @@ const QuesPapersFilter = ({
       standard: standard ? standard.value : '',
       subject: subject ? subject.value : '',
       board: board ? board.value : '',
+      initialLoad: false,
     }));
   };
 
@@ -58,18 +59,24 @@ const QuesPapersFilter = ({
               border: 'none',
             }),
           }}
-          value={standard}
+          value={filter.initialLoad ? '' : standard}
           onChange={(e) => {
             setStandard(e);
             setSubject('');
             setBoard('');
+            if (filter.initialLoad) {
+              setFilter((prev) => ({
+                ...prev,
+                initialLoad: false,
+              }));
+            }
           }}
         />
       </FormControl>
       <FormControl w='15%' flexShrink='0'>
         <Select
           options={
-            standard !== ''
+            standard && standard.value
               ? Object.keys(classData[standard.value]).map((value) => ({
                   value,
                   label: value,
@@ -87,8 +94,14 @@ const QuesPapersFilter = ({
           }}
           onChange={(e) => {
             setSubject(e);
+            if (filter.initialLoad) {
+              setFilter((prev) => ({
+                ...prev,
+                initialLoad: false,
+              }));
+            }
           }}
-          value={subject}
+          value={filter.initialLoad ? '' : subject}
         />
       </FormControl>
 
