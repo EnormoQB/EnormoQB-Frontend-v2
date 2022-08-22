@@ -225,9 +225,9 @@ const QuestionAccordion = ({
                       />
                     ))}
                   </Flex>
-                  {data.imageUrl && data.imageUrl !== '' && (
+                  {data.imageKey && data.imageKey !== '' && (
                     <Flex
-                      display={data.imageUrl !== '' ? 'flex' : 'none'}
+                      display={data.imageKey !== '' ? 'flex' : 'none'}
                       position='relative'
                       alignItems='center'
                       role='group'
@@ -235,7 +235,7 @@ const QuestionAccordion = ({
                     >
                       <Image
                         h='150px'
-                        src={data.imageUrl}
+                        src={`${process.env.REACT_APP_SERVER_URL}/api/assets/${data.imageKey}`}
                         alt='Question'
                         _groupHover={{
                           cursor: 'pointer',
@@ -279,7 +279,10 @@ const QuestionAccordion = ({
                               marginLeft: '-150px',
                             }}
                           >
-                            <Image src={data.imageUrl} alt='Question' />
+                            <Image
+                              src={`${process.env.REACT_APP_SERVER_URL}/api/assets/${data.imageKey}`}
+                              alt='Question'
+                            />
                           </ModalBody>
                         </ModalContent>
                       </Modal>
