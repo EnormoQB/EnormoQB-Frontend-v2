@@ -347,7 +347,14 @@ const QuestionAccordion = ({
                         mr='4'
                         bg='brand.600'
                         _hover={{ backgroundColor: 'myGray.500' }}
-                        onClick={() => handleUpdate('Approved', null)}
+                        onClick={() => {
+                          setWarnModalData({
+                            title: 'Accept Question',
+                            body: 'Are you sure you want to accept this question?',
+                            onConfirm: () => handleUpdate('Approved', null),
+                          });
+                          onWarnOpen();
+                        }}
                       >
                         Accept
                       </Button>
