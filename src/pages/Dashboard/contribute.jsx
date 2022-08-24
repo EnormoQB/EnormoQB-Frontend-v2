@@ -192,7 +192,7 @@ const Contribute = () => {
 
       addQuestion(formData)
         .then((res) => {
-          if (res?.data.status === 1) {
+          if (res?.data?.status === 1) {
             setImage(null);
             setOptions([
               { value: '', isCorrect: false, id: Math.random() * 100 },
@@ -208,6 +208,9 @@ const Contribute = () => {
             setDifficulty('Easy');
             setLoading(false);
             onOpen();
+          } else {
+            setLoading(false);
+            errorToast('Some error occured!');
           }
         })
         .catch((err) => {
