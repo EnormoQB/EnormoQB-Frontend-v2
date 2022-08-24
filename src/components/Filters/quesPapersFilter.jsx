@@ -77,7 +77,7 @@ const QuesPapersFilter = ({
       <FormControl w='15%' flexShrink='0'>
         <Select
           options={
-            standard && standard.value
+            standard && standard.value && subjectsData
               ? Object.keys(subjectsData[standard.value]).map((value) => ({
                   value,
                   label: value,
