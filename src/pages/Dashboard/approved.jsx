@@ -16,6 +16,7 @@ const Approved = () => {
 
   useEffect(() => {
     if (data) {
+      console.log(data.data);
       setQuestions(data.data.questions || []);
       setMetaData(data.data.meta || []);
       isInitialLoad.current = false;

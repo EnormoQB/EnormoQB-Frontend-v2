@@ -10,12 +10,13 @@ import Empty from '../../components/Empty';
 const Custom = () => {
   const isInitialLoad = useRef(true);
   const [questions, setQuestions] = useState([]);
-  const [filter, setfilter] = useState({ status: 'approved', page: 1 });
+  const [filter, setfilter] = useState({ status: 'custom', page: 1 });
   const [metadata, setMetaData] = useState([]);
   const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
 
   useEffect(() => {
     if (data) {
+      console.log(data.data);
       setQuestions(data.data.questions || []);
       setMetaData(data.data.meta || []);
       isInitialLoad.current = false;

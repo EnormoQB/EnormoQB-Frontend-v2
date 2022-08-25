@@ -6,7 +6,7 @@ import {
 import { AiFillHome, AiFillFileUnknown, AiFillGift } from 'react-icons/ai';
 import { BsFillFilePdfFill } from 'react-icons/bs';
 import { RiFileEditFill, RiAdminFill } from 'react-icons/ri';
-import { FaStarOfLife } from 'react-icons/fa';
+import { FaAsterisk } from 'react-icons/fa';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navItems = [
@@ -41,7 +41,7 @@ export const navItems = [
   {
     id: 5,
     name: 'Custom Questions',
-    icon: FaStarOfLife,
+    icon: FaAsterisk,
     link: '/custom',
     roles: ['developer', 'reviewer', 'exam-setter'],
   },

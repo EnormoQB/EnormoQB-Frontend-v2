@@ -65,9 +65,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   return user &&
-    allowedRoutes[user.userType.role.toLowerCase()].includes(
-      location.pathname,
-    ) ? (
+    allowedRoutes[user.userType.toLowerCase()].includes(location.pathname) ? (
     children
   ) : (
     <Navigate to='/' state={{ from: location }} replace />
