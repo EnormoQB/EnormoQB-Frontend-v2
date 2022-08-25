@@ -15,8 +15,10 @@ import RequestContributions from './Dashboard/requestContributions';
 import NotFound from './NotFound';
 import Home from './Home';
 import AnonContribution from './anonContribution';
+import { useGetSubjectsQuery } from '../redux/services/subjectApi';
 
 const App = () => {
+  const { isLoading, isFetching } = useGetSubjectsQuery();
   return (
     <ChakraProvider theme={theme}>
       <Helmet>
