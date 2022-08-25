@@ -43,6 +43,7 @@ import OverlayLoader from '../../components/Loaders/OverlayLoader';
 import { difficulties } from '../../components/Generate/config';
 import { getToast, titleCase } from '../../utils/helpers';
 import { useLazyGetUserDataQuery } from '../../redux/services/userApi';
+import OcrReader from '../../components/Ocr/OcrReader';
 
 const Contribute = () => {
   const subjectsData = useSelector((state) => state.userState.subjectsData);
@@ -74,6 +75,19 @@ const Contribute = () => {
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [triggerGetUser] = useLazyGetUserDataQuery();
+  const [ocrData, setOcrData] = useState('');
+
+  // Receive OCR data as a prop from the child component
+  const onReadOcrData = (ocrTempData) => {
+    setOcrData(ocrTempData);
+    console.log(ocrTempData);
+    question.current.value = ocrTempData;
+  };
+
+  // Prop detects that the change image button was clicked
+  const onRemoveClicked = () => {
+    setOcrData('');
+  };
 
   const errorToast = (description) => {
     if (!toast.isActive('error')) {
@@ -142,6 +156,22 @@ const Contribute = () => {
     );
   };
 
+  const resetFields = () => {
+    setImage(null);
+    setOptions([
+      { value: '', isCorrect: false, id: Math.random() * 100 },
+      { value: '', isCorrect: false, id: Math.random() * 100 },
+      { value: '', isCorrect: false, id: Math.random() * 100 },
+      { value: '', isCorrect: false, id: Math.random() * 100 },
+    ]);
+    setStandard({ value: '10', label: 'X' });
+    setSubject('');
+    setTopics([]);
+    question.current.value = '';
+    explanation.current.value = '';
+    setDifficulty('Easy');
+  };
+
   const onSubmit = async () => {
     let answer = '';
     const opts = [];
@@ -193,19 +223,7 @@ const Contribute = () => {
       addQuestion(formData)
         .then((res) => {
           if (res?.data?.status === 1) {
-            setImage(null);
-            setOptions([
-              { value: '', isCorrect: false, id: Math.random() * 100 },
-              { value: '', isCorrect: false, id: Math.random() * 100 },
-              { value: '', isCorrect: false, id: Math.random() * 100 },
-              { value: '', isCorrect: false, id: Math.random() * 100 },
-            ]);
-            setStandard({ value: '10', label: 'X' });
-            setSubject('');
-            setTopics([]);
-            question.current.value = '';
-            explanation.current.value = '';
-            setDifficulty('Easy');
+            resetFields();
             setLoading(false);
             onOpen();
           } else {
@@ -312,9 +330,22 @@ const Contribute = () => {
                 Question
               </mark>
             </Heading>
-            <Button disabled={loading} onClick={onSubmit} w={150} h={45}>
-              SUBMIT
-            </Button>
+            <Flex>
+              <Button
+                disabled={loading}
+                onClick={resetFields}
+                w={150}
+                h={45}
+                bg='brand.300'
+                color='brand.600'
+                mr='4'
+              >
+                Clear All
+              </Button>
+              <Button disabled={loading} onClick={onSubmit} w={150} h={45}>
+                SUBMIT
+              </Button>
+            </Flex>
             <Modal isOpen={isOpen} onClose={onClose} size='lg'>
               <ModalOverlay />
               <ModalContent m='auto'>
@@ -355,9 +386,15 @@ const Contribute = () => {
           <Flex justify='space-between'>
             <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
               <FormControl isRequired mb={6}>
-                <FormLabel fontSize={18} htmlFor='question'>
-                  Question
-                </FormLabel>
+                <Flex justifyContent='space-between' alignItems='center'>
+                  <FormLabel fontSize={18} htmlFor='question'>
+                    Question
+                  </FormLabel>
+                  <OcrReader
+                    onReadOcrData={onReadOcrData}
+                    onRemoveClicked={onRemoveClicked}
+                  />
+                </Flex>
                 <Textarea
                   id='question'
                   placeholder='Enter Question'
