@@ -30,6 +30,7 @@ const QuestionPapers = () => {
     standard: '',
     subject: '',
     board: '',
+    initialLoad: true,
   });
 
   const { data, isLoading, isFetching } = usePreviousYearPaperQuery(filter);

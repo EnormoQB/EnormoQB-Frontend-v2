@@ -213,7 +213,7 @@ const QuestionAccordion = ({
                   flexDir='row'
                   width='100%'
                   justifyContent='space-between'
-                  alignItems='center'
+                  alignItems='flex-start'
                 >
                   <Flex fontWeight='medium' flexDir='column' w='70%'>
                     {data.options.map((option, idx) => (
@@ -260,29 +260,26 @@ const QuestionAccordion = ({
                         isOpen={isOpen}
                         onClose={onClose}
                         isCentered
+                        size='xl'
                         motionPreset='slideInBottom'
-                        w='55vw'
-                        h='55vh'
-                        maxH='85vh'
                       >
                         <ModalOverlay />
-                        <ModalContent bg='Transparent'>
+                        <ModalContent bg='brand.100'>
                           <ModalCloseButton _focus={{}} />
-                          <ModalBody
-                            sx={{
-                              height: '60vh',
-                              width: '50vw',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              textAlign: 'center',
-                              marginLeft: '-150px',
-                            }}
-                          >
-                            <Image
-                              src={`${process.env.REACT_APP_SERVER_URL}/api/assets/${data.imageKey}`}
-                              alt='Question'
-                            />
+                          <ModalBody py='8' px='10'>
+                            <Flex
+                              w='full'
+                              h='full'
+                              maxH='full'
+                              justify='center'
+                              alignItems='center'
+                            >
+                              <Image
+                                src={`${process.env.REACT_APP_SERVER_URL}/api/assets/${data.imageKey}`}
+                                alt='Question'
+                                w='full'
+                              />
+                            </Flex>
                           </ModalBody>
                         </ModalContent>
                       </Modal>
@@ -347,7 +344,14 @@ const QuestionAccordion = ({
                         mr='4'
                         bg='brand.600'
                         _hover={{ backgroundColor: 'myGray.500' }}
-                        onClick={() => handleUpdate('Approved', null)}
+                        onClick={() => {
+                          setWarnModalData({
+                            title: 'Accept Question',
+                            body: 'Are you sure you want to accept this question?',
+                            onConfirm: () => handleUpdate('Approved', null),
+                          });
+                          onWarnOpen();
+                        }}
                       >
                         Accept
                       </Button>

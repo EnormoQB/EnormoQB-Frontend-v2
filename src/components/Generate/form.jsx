@@ -27,13 +27,13 @@ import {
   setFormData,
   setPreviewData,
 } from '../../redux/features/generateSlice';
-import classData from '../../data/classData';
 import { boardOptions, classOptions, difficulties } from './config';
 import WarningModal from '../Modal/Warning';
 import OverlayLoader from '../Loaders/OverlayLoader';
 import { getToast } from '../../utils/helpers';
 
 const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
+  const subjectsData = useSelector((state) => state.userState.subjectsData);
   const toast = useToast();
   const { generateForm: formDetails, customQues } = useSelector(
     (state) => state.generateState,
@@ -94,7 +94,6 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
   };
 
   useEffect(() => {
-    console.log(formDetails);
     if (formDetails) onLoad();
     else resetFields();
   }, [formDetails]);
@@ -152,7 +151,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
     setTopic('');
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const data = {
       instituteName: instituteName.current.value,
       standard: standard.value,
@@ -185,7 +184,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
     } else {
       setLoading(true);
       const neededTopics = topicsList.map((item) => item.name);
-      const completeTopicList = classData[data.standard][data.subject]
+      const completeTopicList = subjectsData[data.standard][data.subject]
         .filter((item) => !neededTopics.includes(item))
         .map((item) => {
           return { name: item, count: -1 };
@@ -201,27 +200,32 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
       };
 
       dispatch(setFormData(data));
-
-      trigger(previewData)
-        .then((res) => {
-          setLoading(false);
-          toast(
-            getToast({
-              title: 'Success',
-              description: 'Preview generated successfully!',
-              status: 'success',
-            }),
-          );
-          resetFields();
-          if (!isLoading && !isFetching) {
-            console.log(res);
-            dispatch(setPreviewData([...customQues, ...res.data.data]));
-            switchPreview();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const res = await trigger(previewData);
+      if (!res.isError) {
+        setLoading(false);
+        toast(
+          getToast({
+            title: 'Success',
+            description: 'Preview generated successfully!',
+            status: 'success',
+          }),
+        );
+        resetFields();
+        if (!isLoading && !isFetching) {
+          console.log(res);
+          dispatch(setPreviewData([...customQues, ...res.data.data]));
+          switchPreview();
+        }
+      } else {
+        setLoading(false);
+        toast(
+          getToast({
+            title: 'Error',
+            description: 'Some error occurred!',
+            status: 'error',
+          }),
+        );
+      }
     }
   };
 
@@ -297,10 +301,13 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
               Subject
             </FormLabel>
             <Select
-              options={Object.keys(classData[standard.value]).map((value) => ({
-                value,
-                label: value,
-              }))}
+              options={
+                subjectsData &&
+                Object.keys(subjectsData[standard.value]).map((value) => ({
+                  value,
+                  label: value,
+                }))
+              }
               placeholder='Select Subject'
               chakraStyles={{
                 control: (provided) => ({ ...provided, boxShadow: 'base' }),
@@ -450,13 +457,15 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
           <Box w='85%'>
             <Select
               options={
-                classData &&
-                classData[standard.value] &&
-                classData[standard.value][subject.value]
-                  ? classData[standard.value][subject.value].map((value) => ({
-                      value,
-                      label: value,
-                    }))
+                subjectsData &&
+                subjectsData[standard.value] &&
+                subjectsData[standard.value][subject.value]
+                  ? subjectsData[standard.value][subject.value].map(
+                      (value) => ({
+                        value,
+                        label: value,
+                      }),
+                    )
                   : []
               }
               placeholder='Select Topics'

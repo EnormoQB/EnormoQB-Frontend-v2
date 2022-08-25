@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import ApiEndpoints from '../../utils/ApiEndpoints';
+import { setSubjectsData } from '../features/userSlice';
 import axiosBaseQuery from './axiosBaseQuery';
 
 export const subjectApi = createApi({
@@ -9,10 +10,17 @@ export const subjectApi = createApi({
   endpoints: (builder) => ({
     getSubjects: builder.query({
       query: () => ({
-        url: ApiEndpoints.subjects.sub.url,
+        url: ApiEndpoints.subjects.getData.url,
         method: 'get',
-        headers: {},
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setSubjectsData(data.data.subjects));
+        } catch (error) {
+          console.error(error);
+        }
+      },
     }),
   }),
 });

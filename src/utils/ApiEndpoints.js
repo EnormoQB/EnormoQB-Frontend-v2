@@ -72,7 +72,7 @@ const ApiEndpoints = {
     },
   },
   subjects: {
-    sub: {
+    getData: {
       method: 'GET',
       url: 'api/subjectsData',
     },

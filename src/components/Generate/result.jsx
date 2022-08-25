@@ -172,7 +172,7 @@ const GenerateResult = ({ switchForm }) => {
             <Text as='p' fontSize='md' fontWeight='500'>
               Exam Instructions:
             </Text>
-            <Text as='p' sx={{ whiteSpace: 'pre' }} fontSize='15px'>
+            <Text as='p' sx={{ whiteSpace: 'pre-wrap' }} fontSize='15px'>
               {JSON.parse(formDetails.instructions)}
             </Text>
           </Box>

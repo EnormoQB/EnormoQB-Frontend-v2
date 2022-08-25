@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Flex, FormControl, Button } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { classOptions, difficulties } from '../Generate/config';
-import classData from '../../data/classData';
 
 const Filter = ({ setfilter }) => {
+  const subjectsData = useSelector((state) => state.userState.subjectsData);
   const [standard, setStandard] = useState('');
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
@@ -82,7 +83,7 @@ const Filter = ({ setfilter }) => {
         <Select
           options={
             standard !== ''
-              ? Object.keys(classData[standard.value]).map((value) => ({
+              ? Object.keys(subjectsData[standard.value]).map((value) => ({
                   value,
                   label: value,
                 }))
@@ -128,10 +129,10 @@ const Filter = ({ setfilter }) => {
           selectedOptionStyle='check'
           size='sm'
           options={
-            classData &&
-            classData[standard.value] &&
-            classData[standard.value][subject.value]
-              ? classData[standard.value][subject.value].map((value) => ({
+            subjectsData &&
+            subjectsData[standard.value] &&
+            subjectsData[standard.value][subject.value]
+              ? subjectsData[standard.value][subject.value].map((value) => ({
                   value,
                   label: value,
                 }))

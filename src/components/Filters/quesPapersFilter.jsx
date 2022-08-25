@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Flex, FormControl, Button } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { classOptions, boardOptions } from '../Generate/config';
-import classData from '../../data/classData';
 
 const QuesPapersFilter = ({
   setFilter,
@@ -11,13 +11,14 @@ const QuesPapersFilter = ({
   validateApply,
   noClear,
 }) => {
+  const subjectsData = useSelector((state) => state.userState.subjectsData);
   const [standard, setStandard] = useState({
     value: filter.standard,
     label: 'X',
   });
   const [subject, setSubject] = useState({
     value: filter.subject,
-    label: 'Maths',
+    label: 'English',
   });
   const [board, setBoard] = useState('');
 
@@ -30,6 +31,7 @@ const QuesPapersFilter = ({
       standard: standard ? standard.value : '',
       subject: subject ? subject.value : '',
       board: board ? board.value : '',
+      initialLoad: false,
     }));
   };
 
@@ -58,19 +60,25 @@ const QuesPapersFilter = ({
               border: 'none',
             }),
           }}
-          value={standard}
+          value={filter.initialLoad ? '' : standard}
           onChange={(e) => {
             setStandard(e);
             setSubject('');
             setBoard('');
+            if (filter.initialLoad) {
+              setFilter((prev) => ({
+                ...prev,
+                initialLoad: false,
+              }));
+            }
           }}
         />
       </FormControl>
       <FormControl w='15%' flexShrink='0'>
         <Select
           options={
-            standard !== ''
-              ? Object.keys(classData[standard.value]).map((value) => ({
+            standard && standard.value && subjectsData
+              ? Object.keys(subjectsData[standard.value]).map((value) => ({
                   value,
                   label: value,
                 }))
@@ -87,8 +95,14 @@ const QuesPapersFilter = ({
           }}
           onChange={(e) => {
             setSubject(e);
+            if (filter.initialLoad) {
+              setFilter((prev) => ({
+                ...prev,
+                initialLoad: false,
+              }));
+            }
           }}
-          value={subject}
+          value={filter.initialLoad ? '' : subject}
         />
       </FormControl>
 

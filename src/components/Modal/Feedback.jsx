@@ -17,6 +17,15 @@ import { useState } from 'react';
 const feedbackOptions = [
   { value: 'Irrelevant Question', label: 'Irrelevant Question' },
   { value: 'Wrong Subject/Topic', label: 'Wrong Subject/Topic' },
+  { value: 'Similar Question', label: 'Similar Question' },
+  {
+    value: 'Irrelevant/Duplicate options',
+    label: 'Irrelevant/Duplicate options',
+  },
+  {
+    value: 'Grammatical Error',
+    label: 'Grammatical Error',
+  },
   { value: 'Others', label: 'Others' },
 ];
 

@@ -36,7 +36,6 @@ import { FaCheck } from 'react-icons/fa';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import RadioCard from '../../components/Contribute/radioCard';
 import ImageUploader from '../../components/ImageUploader';
-import classData from '../../data/classData';
 import { useAddQuestionsMutation } from '../../redux/services/questionApi';
 import Congratulations from '../../assets/announcement.svg';
 import Locked from '../../assets/locked.svg';
@@ -46,6 +45,7 @@ import { getToast, titleCase } from '../../utils/helpers';
 import { useLazyGetUserDataQuery } from '../../redux/services/userApi';
 
 const Contribute = () => {
+  const subjectsData = useSelector((state) => state.userState.subjectsData);
   const user = useSelector((state) => state.userState.user);
   const toast = useToast();
   const {
@@ -192,7 +192,7 @@ const Contribute = () => {
 
       addQuestion(formData)
         .then((res) => {
-          if (res?.data.status === 1) {
+          if (res?.data?.status === 1) {
             setImage(null);
             setOptions([
               { value: '', isCorrect: false, id: Math.random() * 100 },
@@ -208,6 +208,9 @@ const Contribute = () => {
             setDifficulty('Easy');
             setLoading(false);
             onOpen();
+          } else {
+            setLoading(false);
+            errorToast('Some error occured!');
           }
         })
         .catch((err) => {
@@ -497,12 +500,13 @@ const Contribute = () => {
                   Subject
                 </FormLabel>
                 <Select
-                  options={Object.keys(classData[standard.value]).map(
-                    (value) => ({
+                  options={
+                    subjectsData &&
+                    Object.keys(subjectsData[standard.value]).map((value) => ({
                       value,
                       label: value,
-                    }),
-                  )}
+                    }))
+                  }
                   placeholder='Select Subject'
                   chakraStyles={{
                     control: (provided) => ({
@@ -524,10 +528,10 @@ const Contribute = () => {
                 <Select
                   isMulti
                   options={
-                    classData &&
-                    classData[standard.value] &&
-                    classData[standard.value][subject.value]
-                      ? classData[standard.value][subject.value].map(
+                    subjectsData &&
+                    subjectsData[standard.value] &&
+                    subjectsData[standard.value][subject.value]
+                      ? subjectsData[standard.value][subject.value].map(
                           (value) => ({
                             value,
                             label: value,

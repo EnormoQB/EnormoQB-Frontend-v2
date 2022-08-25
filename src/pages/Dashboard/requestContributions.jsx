@@ -11,7 +11,7 @@ const minQues = 10;
 const RequestContributions = () => {
   const toast = useToast();
   const [topicData, setTopicData] = useState([]);
-  const [filter, setFilter] = useState({ standard: '10', subject: 'Maths' });
+  const [filter, setFilter] = useState({ standard: '10', subject: 'English' });
   const { data, isLoading, isFetching } = useQuestionsPerTopicQuery(filter);
 
   useEffect(() => {

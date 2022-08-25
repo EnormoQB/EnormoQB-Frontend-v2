@@ -1,5 +1,5 @@
 import { Flex, Box, Image, Circle } from '@chakra-ui/react';
-import SampleDashboard from '../../assets/sample.png';
+import Contribute from '../../assets/Contribute.png';
 import NextGIF from '../../assets/next2.gif';
 
 const About = ({ aboutRef }) => (
@@ -49,18 +49,20 @@ const About = ({ aboutRef }) => (
 
     <Flex
       flexDirection='column'
-      width={['80%', '80%', '60%', '60%', '50%']}
+      width={['80%', '80%', '60%', '60%', '60%']}
       bgColor='blue.100'
       borderRadius='lg'
       position='absolute'
       top={['25rem', '28rem', '30rem']}
+      px='6'
+      pb='6'
     >
       <Flex p={['2', '2', '4']}>
         <Circle size={['3', '3', '4']} bgColor='brand.300' mx='1' />
         <Circle size={['3', '3', '4']} bgColor='brand.300' mx='1' />
         <Circle size={['3', '3', '4']} bgColor='brand.300' mx='1' />
       </Flex>
-      <Image src={SampleDashboard} alt='Sample Dashboard' />
+      <Image src={Contribute} alt='Sample Dashboard' borderRadius='10' />
     </Flex>
   </Flex>
 );
