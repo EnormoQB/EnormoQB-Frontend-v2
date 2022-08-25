@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
+import Question from '../../components/QuestionAccordion';
+import Filter from '../../components/Filters';
 import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import DashboardLoader from '../../components/Loaders/DashboardLoader';
-import Filter from '../../components/Filters';
-import Question from '../../components/QuestionAccordion';
 import Pagination from '../../components/Pagination';
 import Empty from '../../components/Empty';
 
-const Approved = () => {
+const Custom = () => {
   const isInitialLoad = useRef(true);
   const [questions, setQuestions] = useState([]);
-  const [filter, setfilter] = useState({ status: 'approved', page: 1 });
+  const [filter, setfilter] = useState({ status: 'custom', page: 1 });
   const [metadata, setMetaData] = useState([]);
   const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
 
@@ -22,7 +22,6 @@ const Approved = () => {
       isInitialLoad.current = false;
     }
   }, [data]);
-
   return (
     <Box>
       <Heading as='h1' fontSize='4xl' fontWeight='bold' mb={10}>
@@ -34,7 +33,7 @@ const Approved = () => {
             marginRight: '3px',
           }}
         >
-          Approved
+          Custom
         </mark>
         Questions
       </Heading>
@@ -47,7 +46,17 @@ const Approved = () => {
           {questions.length !== 0 && (
             <>
               {questions.map((ques) => (
-                <Question key={ques._id} data={ques} questions={questions} />
+                <Question
+                  key={ques._id}
+                  data={ques}
+                  questions={questions}
+                  removeQuestion={() => {
+                    setQuestions((prev) =>
+                      prev.filter((item) => item._id !== ques._id),
+                    );
+                  }}
+                  showEdit
+                />
               ))}
               <Pagination
                 pageNumber={filter.page}
@@ -64,4 +73,4 @@ const Approved = () => {
   );
 };
 
-export default Approved;
+export default Custom;
