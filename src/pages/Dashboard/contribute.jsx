@@ -500,12 +500,13 @@ const Contribute = () => {
                   Subject
                 </FormLabel>
                 <Select
-                  options={Object.keys(subjectsData[standard.value]).map(
-                    (value) => ({
+                  options={
+                    subjectsData &&
+                    Object.keys(subjectsData[standard.value]).map((value) => ({
                       value,
                       label: value,
-                    }),
-                  )}
+                    }))
+                  }
                   placeholder='Select Subject'
                   chakraStyles={{
                     control: (provided) => ({

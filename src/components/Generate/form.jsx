@@ -94,7 +94,6 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
   };
 
   useEffect(() => {
-    console.log(formDetails);
     if (formDetails) onLoad();
     else resetFields();
   }, [formDetails]);
@@ -302,12 +301,13 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
               Subject
             </FormLabel>
             <Select
-              options={Object.keys(subjectsData[standard.value]).map(
-                (value) => ({
+              options={
+                subjectsData &&
+                Object.keys(subjectsData[standard.value]).map((value) => ({
                   value,
                   label: value,
-                }),
-              )}
+                }))
+              }
               placeholder='Select Subject'
               chakraStyles={{
                 control: (provided) => ({ ...provided, boxShadow: 'base' }),
