@@ -24,7 +24,7 @@ import { titleCase } from '../../utils/helpers';
 
 const Sidebar = () => {
   const user = useSelector((state) => state.userState.user);
-  const userType = useMemo(() => user?.userType || 'contributor', [user]);
+  const userType = useMemo(() => user?.userType.role || 'contributor', [user]);
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);

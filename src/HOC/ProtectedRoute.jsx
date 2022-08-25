@@ -12,6 +12,14 @@ const allowedRoutes = {
     '/dashboard/questionpapers',
     '/dashboard/requestContributions',
   ],
+  'exam-setter': [
+    '/dashboard',
+    '/dashboard/pending',
+    '/dashboard/contribute',
+    '/dashboard/generate',
+    '/dashboard/questionpapers',
+    '/dashboard/requestContributions',
+  ],
   contributor: [
     '/dashboard',
     '/dashboard/pending',
@@ -60,7 +68,9 @@ const ProtectedRoute = ({ children }) => {
   }
 
   return user &&
-    allowedRoutes[user.userType.toLowerCase()].includes(location.pathname) ? (
+    allowedRoutes[user.userType.role.toLowerCase()].includes(
+      location.pathname,
+    ) ? (
     children
   ) : (
     <Navigate to='/' state={{ from: location }} replace />

@@ -336,7 +336,7 @@ const QuestionAccordion = ({
                       </Tooltip>
                     </Flex>
                   )}
-                  {show && user.userType !== 'contributor' && (
+                  {show && user.userType.role !== 'contributor' && (
                     <>
                       <Button
                         fontSize='sm'
@@ -386,7 +386,7 @@ const QuestionAccordion = ({
                         </>
                       )}
                       <Flex ml='auto' alignItems='center'>
-                        {user.userType !== 'reviewer' && (
+                        {user.userType.role !== 'reviewer' && (
                           <Tooltip label='Delete' fontSize='xs'>
                             <IconButton
                               icon={<MdDelete />}

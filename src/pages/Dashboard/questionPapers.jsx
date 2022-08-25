@@ -23,7 +23,7 @@ const QuestionPapers = () => {
   const [history, sethistory] = useState([]);
   const user = useSelector((state) => state.userState.user);
   const userType = useMemo(
-    () => user?.userType.toLowerCase() || 'contributor',
+    () => user?.userType.role.toLowerCase() || 'contributor',
     [user],
   );
   const [filter, setFilter] = useState({
