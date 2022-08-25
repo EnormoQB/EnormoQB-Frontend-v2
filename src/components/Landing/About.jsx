@@ -1,5 +1,5 @@
 import { Flex, Box, Image, Circle } from '@chakra-ui/react';
-import LandingDash from '../../assets/LandingDash.png';
+import Contribute from '../../assets/Contribute.png';
 import NextGIF from '../../assets/next2.gif';
 
 const About = ({ aboutRef }) => (
@@ -62,7 +62,7 @@ const About = ({ aboutRef }) => (
         <Circle size={['3', '3', '4']} bgColor='brand.300' mx='1' />
         <Circle size={['3', '3', '4']} bgColor='brand.300' mx='1' />
       </Flex>
-      <Image src={LandingDash} alt='Sample Dashboard' borderRadius='10' />
+      <Image src={Contribute} alt='Sample Dashboard' borderRadius='10' />
     </Flex>
   </Flex>
 );
