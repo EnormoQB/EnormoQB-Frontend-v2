@@ -1,15 +1,9 @@
 import { Button, Flex, Box, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { userApi } from '../../redux/services/userApi';
 import HeroImg from '../../assets/landing.svg';
 
 const Hero = () => {
   const navigate = useNavigate();
-  const { data, isLoading, isFetching } =
-    userApi.endpoints.getUserData.useQuery(null, {
-      skip: false,
-      refetchOnMountOrArgChange: true,
-    });
 
   return (
     <Flex
@@ -41,31 +35,14 @@ const Hero = () => {
           with a variety of customizations.
         </Flex>
 
-        {!data ? (
-          <Button
-            w='fit-content'
-            mt={['8', '10', '12', '12', '16']}
-            fontSize={['small', 'md']}
-            onClick={async () => {
-              window.open(
-                `${process.env.REACT_APP_SERVER_URL}/auth/google`,
-                '_self',
-              );
-            }}
-            isLoading={isFetching || isLoading}
-          >
-            Login with Google
-          </Button>
-        ) : (
-          <Button
-            mt={['8', '10', '12', '12', '16']}
-            fontSize={['small', 'md']}
-            onClick={() => navigate('/dashboard')}
-            isLoading={isFetching}
-          >
-            Go to Dashboard
-          </Button>
-        )}
+        <Button
+          w='fit-content'
+          mt={['8', '10', '12', '12', '16']}
+          fontSize={['small', 'md']}
+          onClick={() => navigate('/anonymously')}
+        >
+          Contribute Anonymously
+        </Button>
       </Flex>
       <Image
         src={HeroImg}

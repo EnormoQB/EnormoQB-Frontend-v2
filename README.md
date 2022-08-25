@@ -52,26 +52,31 @@ You don't have to worry because board question papers have a new QB introducing 
 # Features
 
 - Unified website with different privileges (members / admin / super admin).
+
 - For Member
-  - Login/signup through Google email address maintaining member's anonymity.
-  - Member can contribute questions by filling out required details to get it approved by the admins.
+
+  - Login/signup through a Google email address maintaining member's anonymity.
+  - Member can contribute questions by filling out required details to get them approved by the admins.
   - Member can view their pending, rejected and approved questions.
-  - On rejection member can edit the question according to the feedback provided by the admin and resubmit it.
-  - On approval member will earn a point that will be stored in their wallet and they can use their points to buy vouchers and EnormoQB swags from the store.
+  - On rejection, member can edit the question according to the feedback provided by the admin and resubmit it.
+  - On approval, member will earn a point that will be stored in their wallet and they can use their points to buy vouchers and EnormoQB swags from the store.
   - Member can delete questions from pending and rejected questions.
+
 - For Admin
 
-  - Login/signup through Google email address.
+  - Login/signup through a Google email address.
   - Admin will be responsible for approving or rejecting the questions submitted by the members.
-  - On reviewing a question number of similar questions will be displayed and admin can check the list of similar questions and approve/reject the question accordingly.
-  - Admin will be able to send a feedback on rejection.
-  - Admin can flag a question if they find it inappropriate. Once flagged the member's account would be freezed for 7 days.
+  - On reviewing a question number of similar questions will be displayed and the admin can check the list of similar questions and approve/reject the question accordingly.
+  - Admin will be able to send feedback on rejection.
+  - Admin can flag a question if they find it inappropriate. Once flagged the member's account would be frozen for 7 days.
   - Admin can also contribute questions.
   - Admin can generate question papers by filling out required details.
-  - Admin can preview the generated paper, add more questions, reorder the qyestions and print the question paper.
+  - Admin can preview the generated paper, add more questions, reorder the questions and print the question paper.
   - Admin can also view and download the previously generated question papers.
+  - Admin can request members to contribute questions if there are less questions in any topic.
 
 - For Super Admin
+
   - Super admin is responsible for converting role of a member to an admin and vice versa.
   - Super admin can manage the question bank and question papers.
 
@@ -125,6 +130,35 @@ You don't have to worry because board question papers have a new QB introducing 
 
    ```sh
    npm start
+   ```
+
+## Backend
+
+1. Add .env in the root directory. Here's an example env file for you.
+
+   ```sh
+   MONGODB_URL
+   GOOGLE_CLIENT_ID
+   GOOGLE_CLIENT_SECRET
+   GOOGLE_REFRESH_TOKEN
+   SMTP_PASSWORD
+   CLIENT_URL
+   SECRET
+   AWS_ACCESS_KEY_ID
+   AWS_SECRET_ACCESS_KEY
+   AWS_ENDPOINT
+   S3_BUCKET
+   ADMIN_EMAIL
+   ADMIN_PASSWORD
+   NODE_ENV
+   BASE_PATH
+   SIMILARITY_API
+   ```
+
+2. Start the backend server
+
+   ```sh
+   npm run dev
    ```
 
 <a id="working-model-ss"></a>
