@@ -7,6 +7,8 @@ const allowedRoutes = {
   reviewer: [
     '/dashboard',
     '/dashboard/pending',
+    '/dashboard/approved',
+    '/dashboard/rejected',
     '/dashboard/contribute',
     '/dashboard/generate',
     '/dashboard/questionpapers',
@@ -15,6 +17,8 @@ const allowedRoutes = {
   'exam-setter': [
     '/dashboard',
     '/dashboard/pending',
+    '/dashboard/approved',
+    '/dashboard/rejected',
     '/dashboard/contribute',
     '/dashboard/generate',
     '/dashboard/questionpapers',

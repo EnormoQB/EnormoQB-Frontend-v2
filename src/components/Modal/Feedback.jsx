@@ -7,12 +7,14 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
+  useToast,
   Text,
   FormControl,
   Textarea,
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { useState } from 'react';
+import { getToast } from '../../utils/helpers';
 
 const feedbackOptions = [
   { value: 'Irrelevant Question', label: 'Irrelevant Question' },
@@ -30,8 +32,25 @@ const feedbackOptions = [
 ];
 
 const FeedbackModal = ({ onClose, isOpen, onConfirm }) => {
+  const toast = useToast();
   const [feed, setFeed] = useState('');
   const [feedText, setFeedText] = useState('');
+  const validate = () => {
+    if (feed === '' || (feed.value === 'Others' && feedText === '')) {
+      toast(
+        getToast({
+          id: 'error',
+          title: 'Error',
+          description: 'Please enter a feedback',
+          status: 'error',
+        }),
+      );
+      return;
+    }
+    const feedback = feed.value === 'Others' ? feedText : feed.value;
+    onConfirm(feedback);
+    onClose();
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size='lg'>
@@ -80,9 +99,7 @@ const FeedbackModal = ({ onClose, isOpen, onConfirm }) => {
             bg='brand.200'
             color='brand.600'
             onClick={() => {
-              const feedback = feed.value === 'Others' ? feedText : feed.value;
-              onConfirm(feedback);
-              onClose();
+              validate();
             }}
           >
             Submit

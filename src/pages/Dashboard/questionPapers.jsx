@@ -61,7 +61,7 @@ const QuestionPapers = () => {
         Papers
       </Heading>
       <Box w='full'>
-        {userType === 'reviewer' || userType === 'developer' ? (
+        {userType === 'exam-setter' || userType === 'developer' ? (
           <Tabs isLazy defaultIndex={0} size='lg'>
             <TabList>
               <CustomTab>Previous Year</CustomTab>
