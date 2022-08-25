@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { createWorker } from 'tesseract.js';
 import { IoCamera } from 'react-icons/io5';
 
-// OCR Statuses
 const STATUSES = {
   IDLE: '',
   FAILED: 'Failed to perform OCR',
@@ -63,39 +62,3 @@ const OcrReader = ({ onReadOcrData }) => {
 };
 
 export default OcrReader;
-
-// /* <div>
-//     {selectedImage && (
-//       <div>
-//         <img src={URL.createObjectURL(selectedImage)} alt='scanned file' />
-//       </div>
-//     )}
-//     <div>
-//       {selectedImage ? (
-//         <div className='button-container'>
-
-//           <button onClick={readImageText}>Extract question</button>
-
-//           <button
-//             className='remove-button'
-//             disabled={ocrState === STATUSES.PENDING}
-//             onClick={handleRemoveClicked}
-//           >
-//             Use another image
-//           </button>
-//         </div>
-//       ) : (
-//         <Input
-//           type='file'
-//           name='ocr-image'
-//           id='ocrInput'
-//           display='none'
-//           onChange={(event) => {
-//             setSelectedImage(event.target.files[0]);
-//           }}
-//         />
-//       )}
-//     </div>
-//     <div className='status'>{ocrState}</div>
-//     <br />
-//   </div> */

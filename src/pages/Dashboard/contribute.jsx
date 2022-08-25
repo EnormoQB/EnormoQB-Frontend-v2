@@ -75,18 +75,9 @@ const Contribute = () => {
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [triggerGetUser] = useLazyGetUserDataQuery();
-  const [ocrData, setOcrData] = useState('');
 
-  // Receive OCR data as a prop from the child component
   const onReadOcrData = (ocrTempData) => {
-    setOcrData(ocrTempData);
-    console.log(ocrTempData);
     question.current.value = ocrTempData;
-  };
-
-  // Prop detects that the change image button was clicked
-  const onRemoveClicked = () => {
-    setOcrData('');
   };
 
   const errorToast = (description) => {
@@ -390,10 +381,7 @@ const Contribute = () => {
                   <FormLabel fontSize={18} htmlFor='question'>
                     Question
                   </FormLabel>
-                  <OcrReader
-                    onReadOcrData={onReadOcrData}
-                    onRemoveClicked={onRemoveClicked}
-                  />
+                  <OcrReader onReadOcrData={onReadOcrData} />
                 </Flex>
                 <Textarea
                   id='question'
