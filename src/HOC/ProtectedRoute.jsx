@@ -4,15 +4,27 @@ import FullScreenLoader from '../components/Loaders/FullScreenLoader';
 import { useGetSubjectsQuery } from '../redux/services/subjectApi';
 
 const allowedRoutes = {
-  admin: [
+  reviewer: [
     '/dashboard',
     '/dashboard/pending',
+    '/dashboard/approved',
+    '/dashboard/rejected',
     '/dashboard/contribute',
     '/dashboard/generate',
     '/dashboard/questionpapers',
     '/dashboard/requestContributions',
   ],
-  member: [
+  'exam-setter': [
+    '/dashboard',
+    '/dashboard/pending',
+    '/dashboard/approved',
+    '/dashboard/rejected',
+    '/dashboard/contribute',
+    '/dashboard/generate',
+    '/dashboard/questionpapers',
+    '/dashboard/requestContributions',
+  ],
+  contributor: [
     '/dashboard',
     '/dashboard/pending',
     '/dashboard/approved',
@@ -60,7 +72,9 @@ const ProtectedRoute = ({ children }) => {
   }
 
   return user &&
-    allowedRoutes[user.userType.toLowerCase()].includes(location.pathname) ? (
+    allowedRoutes[user.userType.role.toLowerCase()].includes(
+      location.pathname,
+    ) ? (
     children
   ) : (
     <Navigate to='/' state={{ from: location }} replace />
