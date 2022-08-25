@@ -15,6 +15,7 @@ import {
 import { useState, useEffect } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { useNavigate } from 'react-router-dom';
+import { GrGoogle } from 'react-icons/gr';
 import { userApi } from '../../redux/services/userApi';
 import Logo from '../../assets/mainLogo.svg';
 
@@ -101,7 +102,13 @@ const NavBar = ({
               );
             }}
             isLoading={isFetching || isLoading}
+            styles={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
+            <GrGoogle style={{ marginRight: '10px' }} />
             Login
           </Button>
         ) : (
@@ -181,7 +188,13 @@ const NavBar = ({
                   );
                 }}
                 isLoading={isFetching || isLoading}
+                styles={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
+                <GrGoogle style={{ marginRight: '10px' }} />
                 Login
               </Button>
             ) : (

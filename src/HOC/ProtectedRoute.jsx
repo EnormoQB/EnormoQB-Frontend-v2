@@ -4,7 +4,7 @@ import FullScreenLoader from '../components/Loaders/FullScreenLoader';
 import { useGetSubjectsQuery } from '../redux/services/subjectApi';
 
 const allowedRoutes = {
-  admin: [
+  reviewer: [
     '/dashboard',
     '/dashboard/pending',
     '/dashboard/contribute',
@@ -12,7 +12,7 @@ const allowedRoutes = {
     '/dashboard/questionpapers',
     '/dashboard/requestContributions',
   ],
-  member: [
+  contributor: [
     '/dashboard',
     '/dashboard/pending',
     '/dashboard/approved',

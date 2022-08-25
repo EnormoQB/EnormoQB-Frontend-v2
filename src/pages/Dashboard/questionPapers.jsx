@@ -23,7 +23,7 @@ const QuestionPapers = () => {
   const [history, sethistory] = useState([]);
   const user = useSelector((state) => state.userState.user);
   const userType = useMemo(
-    () => user?.userType.toLowerCase() || 'member',
+    () => user?.userType.toLowerCase() || 'contributor',
     [user],
   );
   const [filter, setFilter] = useState({
@@ -61,7 +61,7 @@ const QuestionPapers = () => {
         Papers
       </Heading>
       <Box w='full'>
-        {userType === 'admin' || userType === 'developer' ? (
+        {userType === 'reviewer' || userType === 'developer' ? (
           <Tabs isLazy defaultIndex={0} size='lg'>
             <TabList>
               <CustomTab>Previous Year</CustomTab>
