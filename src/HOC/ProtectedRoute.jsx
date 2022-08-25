@@ -12,6 +12,7 @@ const allowedRoutes = {
     '/dashboard/generate',
     '/dashboard/questionpapers',
     '/dashboard/requestContributions',
+    '/dashboard/custom',
   ],
   'exam-setter': [
     '/dashboard',
@@ -22,6 +23,7 @@ const allowedRoutes = {
     '/dashboard/generate',
     '/dashboard/questionpapers',
     '/dashboard/requestContributions',
+    '/dashboard/custom',
   ],
   contributor: [
     '/dashboard',
@@ -42,6 +44,7 @@ const allowedRoutes = {
     '/dashboard/questionpapers',
     '/dashboard/perks',
     '/dashboard/requestContributions',
+    '/dashboard/custom',
   ],
 };
 

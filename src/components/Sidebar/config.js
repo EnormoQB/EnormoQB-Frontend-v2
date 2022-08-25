@@ -6,6 +6,7 @@ import {
 import { AiFillHome, AiFillFileUnknown, AiFillGift } from 'react-icons/ai';
 import { BsFillFilePdfFill } from 'react-icons/bs';
 import { RiFileEditFill, RiAdminFill } from 'react-icons/ri';
+import { FaStarOfLife } from 'react-icons/fa';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navItems = [
@@ -39,34 +40,41 @@ export const navItems = [
   },
   {
     id: 5,
+    name: 'Custom Questions',
+    icon: FaStarOfLife,
+    link: '/custom',
+    roles: ['developer', 'reviewer', 'exam-setter'],
+  },
+  {
+    id: 6,
     name: 'Contribute Question',
     icon: RiFileEditFill,
     link: '/contribute',
     roles: ['developer', 'contributor', 'reviewer', 'exam-setter'],
   },
   {
-    id: 6,
+    id: 7,
     name: 'Generate Question Paper',
     icon: BsFillFilePdfFill,
     link: '/generate',
     roles: ['developer', 'exam-setter'],
   },
   {
-    id: 7,
+    id: 8,
     name: 'Question Papers',
     icon: AiFillFileUnknown,
     link: '/questionpapers',
     roles: ['developer', 'contributor', 'reviewer', 'exam-setter'],
   },
   {
-    id: 8,
+    id: 9,
     name: 'Perks',
     icon: AiFillGift,
     link: '/perks',
     roles: ['developer', 'contributor'],
   },
   {
-    id: 9,
+    id: 10,
     name: 'Request Contributions',
     icon: RiAdminFill,
     link: '/requestContributions',

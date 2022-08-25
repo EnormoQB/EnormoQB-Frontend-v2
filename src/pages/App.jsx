@@ -16,6 +16,7 @@ import NotFound from './NotFound';
 import Home from './Home';
 import AnonContribution from './anonContribution';
 import { useGetSubjectsQuery } from '../redux/services/subjectApi';
+import Custom from './Dashboard/custom';
 
 const App = () => {
   const { isLoading, isFetching } = useGetSubjectsQuery();
@@ -33,6 +34,7 @@ const App = () => {
             <Route path='pending' element={<Pending />} />
             <Route path='approved' element={<Approved />} />
             <Route path='rejected' element={<Rejected />} />
+            <Route path='custom' element={<Custom />} />
             <Route path='generate' element={<Generate />} />
             <Route path='contribute' element={<Contribute />} />
             <Route path='questionpapers' element={<QuestionPapers />} />
