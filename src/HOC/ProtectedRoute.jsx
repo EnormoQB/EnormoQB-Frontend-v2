@@ -1,7 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { userApi } from '../redux/services/userApi';
 import FullScreenLoader from '../components/Loaders/FullScreenLoader';
-import { useGetSubjectsQuery } from '../redux/services/subjectApi';
 
 const allowedRoutes = {
   reviewer: [
@@ -53,21 +52,12 @@ const ProtectedRoute = ({ children }) => {
     null,
     { skip: false },
   );
-  const {
-    isLoading: isSubjectsDataLoading,
-    isFetching: isSubjectsDataFetching,
-  } = useGetSubjectsQuery();
 
   const user = userApi.endpoints.getUserData.useQueryState(null, {
     selectFromResult: ({ data }) => data,
   });
 
-  if (
-    isLoading ||
-    isFetching ||
-    isSubjectsDataLoading ||
-    isSubjectsDataFetching
-  ) {
+  if (isLoading || isFetching) {
     return <FullScreenLoader />;
   }
 
