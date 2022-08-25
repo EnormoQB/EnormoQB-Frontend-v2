@@ -25,6 +25,12 @@ ChartJS.defaults.font.family = 'Poppins';
 
 const LineGraph = ({ contribution }) => {
   const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+
     responsive: true,
     legend: { display: false },
     plugins: {
