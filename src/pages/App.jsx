@@ -14,6 +14,7 @@ import Perks from './Dashboard/perks';
 import RequestContributions from './Dashboard/requestContributions';
 import NotFound from './NotFound';
 import Home from './Home';
+import AnonContribution from './anonContribution';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
       <Routes>
         <Route path='/'>
           <Route index element={<Home />} />
+          <Route path='anonymously' element={<AnonContribution />} />
           <Route path='dashboard' element={<Dashboard />}>
             <Route index element={<DashboardHome />} />
             <Route path='pending' element={<Pending />} />
