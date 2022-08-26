@@ -168,7 +168,8 @@ const CustomQuestion = ({ addQues }) => {
       answer,
       options: opts,
       difficulty,
-      custom: true,
+      status: 'custom',
+      topics: [],
       _id: `${Math.floor(Math.random() * 10e10)}`,
     };
     if (data.question.length < 1) {
