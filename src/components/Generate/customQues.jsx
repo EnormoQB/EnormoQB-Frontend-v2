@@ -20,6 +20,16 @@ import {
   Text,
   HStack,
   useRadioGroup,
+  Wrap,
+  WrapItem,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from '@chakra-ui/react';
 import debounce from 'lodash.debounce';
 import { Fragment, useMemo, useRef, useState } from 'react';
@@ -47,6 +57,21 @@ const CustomQuestion = ({ addQues }) => {
   const [options, setOptions] = useState(optionInitialState);
   const [openIndex, setOpenIndex] = useState(-1);
   const question = useRef();
+  const {
+    isOpen: isOpen1,
+    onOpen: onOpen1,
+    onClose: onClose1,
+  } = useDisclosure();
+  const {
+    isOpen: isOpen2,
+    onOpen: onOpen2,
+    onClose: onClose2,
+  } = useDisclosure();
+  const {
+    isOpen: isOpen3,
+    onOpen: onOpen3,
+    onClose: onClose3,
+  } = useDisclosure();
 
   const errorToast = (description) => {
     if (!toast.isActive('error')) {
@@ -155,6 +180,7 @@ const CustomQuestion = ({ addQues }) => {
     } else {
       addQues(data);
       resetFields();
+      onClose1();
       setOpenIndex(-1);
     }
   };
@@ -188,135 +214,277 @@ const CustomQuestion = ({ addQues }) => {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4} borderBottom='2px' borderColor='brand.300'>
-          <Box>
-            <FormControl isRequired mb={6} mt='2'>
-              <FormLabel fontSize={18} htmlFor='question'>
-                Question
-              </FormLabel>
-              <Textarea
-                id='question'
-                placeholder='Enter Question'
-                w='100%'
-                rows='3'
-                boxShadow='base'
-                resize='none'
-                ref={question}
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <Flex alignItems='center' justify='space-between' mb='2'>
-                <Box>
-                  <FormLabel fontSize={18} htmlFor='options' mb='1'>
-                    Options
-                  </FormLabel>
-                  <FormHelperText mb={3} fontSize='sm' mt='0'>
-                    Minimum 2 options are required
-                  </FormHelperText>
-                </Box>
-                {options.length < 4 && (
-                  <Button
-                    p={3}
-                    onClick={handleAddOption}
-                    bg='brand.300'
-                    color='brand.600'
-                    _hover={{ backgroundColor: 'brand.400' }}
-                    size='sm'
-                  >
-                    Add Option
-                  </Button>
-                )}
-              </Flex>
-              <Flex justify='space-between' wrap='wrap'>
-                {options.map((option, idx) => (
-                  <Fragment key={option.id}>
-                    <Box w='43%' mb={7}>
-                      <Flex
-                        alignItems='center'
-                        justify='space-between'
-                        mb='1.5'
-                      >
-                        <FormLabel htmlFor={`options[${idx + 1}]`} mb='0'>
-                          {`Option ${idx + 1}`}
-                        </FormLabel>
-                        <IconButton
-                          aria-label='Delete option'
-                          icon={<MdDelete />}
-                          borderRadius='full'
-                          onClick={() => handleRemoveOption(idx)}
-                          size='xs'
-                          bg='gray.100'
-                          color='gray.400'
-                          _hover={{
-                            backgroundColor: 'gray.200',
-                            color: 'gray.600',
-                          }}
-                        />
-                      </Flex>
-                      <InputGroup>
-                        <Input
-                          placeholder={`Option ${idx + 1}`}
-                          w='full'
-                          minW='unset'
-                          boxShadow='base'
-                          // value={option.value}
-                          onChange={(e) => handleOptionChange(idx, e)}
-                          pr='0'
-                        />
-                        <InputRightElement>
-                          <Tooltip
-                            label='Mark this as correct answer'
-                            fontSize='10px'
-                          >
-                            <IconButton
-                              aria-label='Select Answer'
-                              icon={<FaCheck />}
-                              bg={option.isCorrect ? 'green.300' : 'gray.300'}
-                              color={
-                                option.isCorrect ? 'brand.100' : 'brand.100'
-                              }
-                              _hover={{ backgroundColor: 'green.300' }}
-                              borderLeftRadius='0'
-                              onClick={() => handleAnswer(idx)}
-                            />
-                          </Tooltip>
-                        </InputRightElement>
-                      </InputGroup>
-                    </Box>
-                  </Fragment>
-                ))}
-              </Flex>
-            </FormControl>
-            <FormControl mb={6}>
-              <FormLabel fontSize={18} htmlFor='difficulty'>
-                Difficulty Level
-              </FormLabel>
-              <HStack {...group} size='sm'>
-                {difficulties.map((value) => {
-                  const radio = getRadioProps({ value });
-                  return (
-                    <RadioCard key={value} {...radio}>
-                      {value}
-                    </RadioCard>
-                  );
-                })}
-              </HStack>
-            </FormControl>
-            <Flex gap='4' alignItems='center'>
+          <Wrap spacing='20px' justify='center' mt={4} mb={2}>
+            <WrapItem>
               <Button
-                bg='brand.400'
+                border='2px'
+                borderColor='brand.450'
+                bg='brand.100'
+                h={16}
+                borderRadius='unset'
+                w='200px'
                 color='brand.600'
-                _hover={{ backgroundColor: 'brand.600', color: 'brand.100' }}
-                size='sm'
-                onClick={handleSubmit}
+                onClick={onOpen1}
               >
-                Add
+                Add Manually
               </Button>
-              <Text fontSize='sm'>
-                <strong>Note: </strong>You can reorder questions using drag
-                option.
-              </Text>
-            </Flex>
-          </Box>
+              <Modal isOpen={isOpen1} onClose={onClose1} size='xl'>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Add Question</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Box>
+                      <FormControl isRequired mb={6} mt='2'>
+                        <FormLabel fontSize={18} htmlFor='question'>
+                          Question
+                        </FormLabel>
+                        <Textarea
+                          id='question'
+                          placeholder='Enter Question'
+                          w='100%'
+                          rows='3'
+                          boxShadow='base'
+                          resize='none'
+                          ref={question}
+                        />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <Flex
+                          alignItems='center'
+                          justify='space-between'
+                          mb='2'
+                        >
+                          <Box>
+                            <FormLabel fontSize={18} htmlFor='options' mb='1'>
+                              Options
+                            </FormLabel>
+                            <FormHelperText mb={3} fontSize='sm' mt='0'>
+                              Minimum 2 options are required
+                            </FormHelperText>
+                          </Box>
+                          {options.length < 4 && (
+                            <Button
+                              p={3}
+                              onClick={handleAddOption}
+                              bg='brand.300'
+                              color='brand.600'
+                              _hover={{ backgroundColor: 'brand.400' }}
+                              size='sm'
+                            >
+                              Add Option
+                            </Button>
+                          )}
+                        </Flex>
+                        <Flex justify='space-between' wrap='wrap'>
+                          {options.map((option, idx) => (
+                            <Fragment key={option.id}>
+                              <Box w='43%' mb={7}>
+                                <Flex
+                                  alignItems='center'
+                                  justify='space-between'
+                                  mb='1.5'
+                                >
+                                  <FormLabel
+                                    htmlFor={`options[${idx + 1}]`}
+                                    mb='0'
+                                  >
+                                    {`Option ${idx + 1}`}
+                                  </FormLabel>
+                                  <IconButton
+                                    aria-label='Delete option'
+                                    icon={<MdDelete />}
+                                    borderRadius='full'
+                                    onClick={() => handleRemoveOption(idx)}
+                                    size='xs'
+                                    bg='gray.100'
+                                    color='gray.400'
+                                    _hover={{
+                                      backgroundColor: 'gray.200',
+                                      color: 'gray.600',
+                                    }}
+                                  />
+                                </Flex>
+                                <InputGroup>
+                                  <Input
+                                    placeholder={`Option ${idx + 1}`}
+                                    w='full'
+                                    minW='unset'
+                                    boxShadow='base'
+                                    onChange={(e) => handleOptionChange(idx, e)}
+                                    pr='0'
+                                  />
+                                  <InputRightElement>
+                                    <Tooltip
+                                      label='Mark this as correct answer'
+                                      fontSize='10px'
+                                    >
+                                      <IconButton
+                                        aria-label='Select Answer'
+                                        icon={<FaCheck />}
+                                        bg={
+                                          option.isCorrect
+                                            ? 'green.300'
+                                            : 'gray.300'
+                                        }
+                                        color={
+                                          option.isCorrect
+                                            ? 'brand.100'
+                                            : 'brand.100'
+                                        }
+                                        _hover={{
+                                          backgroundColor: 'green.300',
+                                        }}
+                                        borderLeftRadius='0'
+                                        onClick={() => handleAnswer(idx)}
+                                      />
+                                    </Tooltip>
+                                  </InputRightElement>
+                                </InputGroup>
+                              </Box>
+                            </Fragment>
+                          ))}
+                        </Flex>
+                      </FormControl>
+                      <FormControl mb={6}>
+                        <FormLabel fontSize={18} htmlFor='difficulty'>
+                          Difficulty Level
+                        </FormLabel>
+                        <HStack {...group} size='sm'>
+                          {difficulties.map((value) => {
+                            const radio = getRadioProps({ value });
+                            return (
+                              <RadioCard key={value} {...radio}>
+                                {value}
+                              </RadioCard>
+                            );
+                          })}
+                        </HStack>
+                      </FormControl>
+                      <Flex gap='4' alignItems='center'>
+                        <Text fontSize='sm'>
+                          <strong>Note: </strong>You can reorder questions using
+                          drag option.
+                        </Text>
+                      </Flex>
+                    </Box>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button
+                      bg='brand.400'
+                      color='brand.600'
+                      _hover={{
+                        backgroundColor: 'brand.600',
+                        color: 'brand.100',
+                      }}
+                      onClick={handleSubmit}
+                      mr={2}
+                    >
+                      Add
+                    </Button>
+                    <Button
+                      variant='Ghost'
+                      _hover={{
+                        backgroundColor: 'brand.200',
+                      }}
+                      onClick={onClose1}
+                    >
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </WrapItem>
+            <WrapItem>
+              <Button
+                border='2px'
+                borderColor='brand.450'
+                bg='brand.100'
+                h={16}
+                borderRadius='unset'
+                w='200px'
+                color='brand.600'
+                onClick={onOpen2}
+              >
+                Import From CSV
+              </Button>
+              <Modal isOpen={isOpen2} onClose={onClose2}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>CSV Questions</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>Yo</ModalBody>
+                  <ModalFooter>
+                    <Button
+                      bg='brand.400'
+                      color='brand.600'
+                      _hover={{
+                        backgroundColor: 'brand.600',
+                        color: 'brand.100',
+                      }}
+                      mr={2}
+                    >
+                      Add
+                    </Button>
+                    <Button
+                      variant='Ghost'
+                      _hover={{
+                        backgroundColor: 'brand.200',
+                      }}
+                      onClick={onClose2}
+                    >
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </WrapItem>
+            <WrapItem>
+              <Button
+                border='2px'
+                borderColor='brand.450'
+                bg='brand.100'
+                h={16}
+                borderRadius='unset'
+                color='brand.600'
+                w='200px'
+                whiteSpace='unset'
+                onClick={onOpen3}
+              >
+                Choose From Custom Questions
+              </Button>
+              <Modal isOpen={isOpen3} onClose={onClose3}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Custom Questions</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>Yo</ModalBody>
+                  <ModalFooter>
+                    <Button
+                      bg='brand.400'
+                      color='brand.600'
+                      _hover={{
+                        backgroundColor: 'brand.600',
+                        color: 'brand.100',
+                      }}
+                      mr={2}
+                    >
+                      Add
+                    </Button>
+                    <Button
+                      variant='Ghost'
+                      _hover={{
+                        backgroundColor: 'brand.200',
+                      }}
+                      onClick={onClose3}
+                    >
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </WrapItem>
+          </Wrap>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
