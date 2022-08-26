@@ -191,8 +191,13 @@ const QuestionAccordion = ({
                 role='group'
               >
                 <Flex flexDir='column' textAlign='left' grow='1'>
-                  <Text as='h2' fontWeight='600' fontSize='lg'>
-                    {`Q. ${data.question}`}
+                  <Text
+                    as='h2'
+                    fontWeight='600'
+                    fontSize='lg'
+                    dangerouslySetInnerHTML={{ __html: data.question }}
+                  >
+                    {/* {`Q. ${data.question}`} */}
                   </Text>
                   <Flex mt='2' alignItems='center' wrap='wrap'>
                     <Tag content={`Class ${data.standard}`} />

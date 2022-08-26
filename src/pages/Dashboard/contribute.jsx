@@ -43,7 +43,7 @@ import OverlayLoader from '../../components/Loaders/OverlayLoader';
 import { difficulties } from '../../components/Generate/config';
 import { getToast, titleCase } from '../../utils/helpers';
 import { useLazyGetUserDataQuery } from '../../redux/services/userApi';
-import OcrReader from '../../components/Ocr/OcrReader';
+import Editor from '../../components/Editor';
 
 const Contribute = () => {
   const subjectsData = useSelector((state) => state.userState.subjectsData);
@@ -75,10 +75,6 @@ const Contribute = () => {
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [triggerGetUser] = useLazyGetUserDataQuery();
-
-  const onReadOcrData = (ocrTempData) => {
-    question.current.value = ocrTempData;
-  };
 
   const errorToast = (description) => {
     if (!toast.isActive('error')) {
@@ -374,15 +370,17 @@ const Contribute = () => {
               </ModalContent>
             </Modal>
           </Flex>
+          <Editor
+            setQuestion={(e) => {
+              question.current = e;
+            }}
+          />
           <Flex justify='space-between'>
             <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
-              <FormControl isRequired mb={6}>
-                <Flex justifyContent='space-between' alignItems='center'>
+              {/* <FormControl isRequired mb={6}>
                   <FormLabel fontSize={18} htmlFor='question'>
                     Question
                   </FormLabel>
-                  <OcrReader onReadOcrData={onReadOcrData} />
-                </Flex>
                 <Textarea
                   id='question'
                   placeholder='Enter Question'
@@ -392,7 +390,7 @@ const Contribute = () => {
                   resize='none'
                   ref={question}
                 />
-              </FormControl>
+              </FormControl> */}
               <FormControl isRequired>
                 <Flex alignItems='center' justify='space-between' mb='2'>
                   <Box>
@@ -479,6 +477,21 @@ const Contribute = () => {
                     </Fragment>
                   ))}
                 </Flex>
+              </FormControl>
+              <FormControl mb={6}>
+                <FormLabel fontSize={18} htmlFor='difficulty'>
+                  Difficulty Level
+                </FormLabel>
+                <HStack {...group} size='sm'>
+                  {difficulties.map((value) => {
+                    const radio = getRadioProps({ value });
+                    return (
+                      <RadioCard key={value} {...radio}>
+                        {value}
+                      </RadioCard>
+                    );
+                  })}
+                </HStack>
               </FormControl>
               <FormControl>
                 <FormLabel fontSize={18} htmlFor='explanation'>
@@ -579,21 +592,6 @@ const Contribute = () => {
                   selectedOptionStyle='check'
                   hideSelectedOptions={false}
                 />
-              </FormControl>
-              <FormControl mb={6}>
-                <FormLabel fontSize={18} htmlFor='difficulty'>
-                  Difficulty Level
-                </FormLabel>
-                <HStack {...group} size='sm'>
-                  {difficulties.map((value) => {
-                    const radio = getRadioProps({ value });
-                    return (
-                      <RadioCard key={value} {...radio}>
-                        {value}
-                      </RadioCard>
-                    );
-                  })}
-                </HStack>
               </FormControl>
               <FormControl mb={6}>
                 <FormLabel fontSize={18} htmlFor='difficulty'>
