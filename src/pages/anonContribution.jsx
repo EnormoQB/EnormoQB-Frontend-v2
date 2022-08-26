@@ -164,6 +164,7 @@ const AnonContribution = () => {
       question: question.current.value.trim(),
       answerExplanation: explanation.current.value.trim(),
       answer,
+      userId: null,
       options: opts,
       ...(searchParams.get('id') && { id: searchParams.get('id') }),
     };
