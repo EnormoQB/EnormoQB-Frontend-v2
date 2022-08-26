@@ -274,6 +274,7 @@ const Contribute = () => {
       console.log(err);
     }
   };
+
   const freezeCondition = useMemo(() => {
     if (user?.status?.freezedDetails.lastFreezed === null) return false;
     const isFreezed = user?.status?.value !== 'active';
