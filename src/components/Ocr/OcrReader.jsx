@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { createWorker } from 'tesseract.js';
 import { IoCamera } from 'react-icons/io5';
 
-// OCR Statuses
 const STATUSES = {
   IDLE: '',
   FAILED: 'Failed to perform OCR',
