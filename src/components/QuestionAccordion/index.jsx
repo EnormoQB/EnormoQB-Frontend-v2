@@ -429,6 +429,7 @@ const QuestionAccordion = ({
                                 });
                                 onWarnOpen();
                               }}
+                              ml={custom ? 'auto' : null}
                               mr='4'
                             />
                           </Tooltip>
