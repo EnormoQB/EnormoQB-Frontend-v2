@@ -56,6 +56,7 @@ const CustomQuestion = ({ addQues }) => {
   const group = getRootProps();
 
   const [options, setOptions] = useState(optionInitialState);
+  const [file, setFile] = useState(null);
   const [openIndex, setOpenIndex] = useState(-1);
   const question = useRef();
   const {
@@ -68,11 +69,11 @@ const CustomQuestion = ({ addQues }) => {
     onOpen: onOpen2,
     onClose: onClose2,
   } = useDisclosure();
-  const {
-    isOpen: isOpen3,
-    onOpen: onOpen3,
-    onClose: onClose3,
-  } = useDisclosure();
+  // const {
+  //   isOpen: isOpen3,
+  //   onOpen: onOpen3,
+  //   onClose: onClose3,
+  // } = useDisclosure();
   const {
     isOpen: modalOpenSimilarQuestion,
     onOpen: onModalOpenSimilarQuestion,
@@ -420,7 +421,14 @@ const CustomQuestion = ({ addQues }) => {
                 <ModalContent>
                   <ModalHeader>CSV Questions</ModalHeader>
                   <ModalCloseButton />
-                  <ModalBody>Yo</ModalBody>
+                  <ModalBody>
+                    <Input
+                      type='file'
+                      onChange={(event) => {
+                        setFile(event.target.files[0]);
+                      }}
+                    />
+                  </ModalBody>
                   <ModalFooter>
                     <Button
                       bg='brand.400'
