@@ -48,6 +48,7 @@ const QuestionAccordion = ({
   removeQuestion,
   similarQues,
   showEdit,
+  custom,
 }) => {
   const user = useSelector((state) => state.userState.user);
   const toast = useToast();
@@ -312,27 +313,30 @@ const QuestionAccordion = ({
                           <span>{data.feedback}</span>
                         </Text>
                       )}
-                      <Button
-                        fontSize='sm'
-                        fontWeight='medium'
-                        ml={data.feedback && 'auto'}
-                        bg='brand.600'
-                        _hover={{ backgroundColor: 'myGray.500' }}
-                        rightIcon={<MdEdit />}
-                        flexShrink='0'
-                        onClick={() =>
-                          navigate(`/dashboard/contribute?id=${data._id}`, {
-                            state: data,
-                          })
-                        }
-                      >
-                        <span>Edit</span>
-                      </Button>
+                      {!custom && (
+                        <Button
+                          fontSize='sm'
+                          fontWeight='medium'
+                          ml={data.feedback && 'auto'}
+                          bg='brand.600'
+                          _hover={{ backgroundColor: 'myGray.500' }}
+                          rightIcon={<MdEdit />}
+                          flexShrink='0'
+                          onClick={() =>
+                            navigate(`/dashboard/contribute?id=${data._id}`, {
+                              state: data,
+                            })
+                          }
+                        >
+                          <span>Edit</span>
+                        </Button>
+                      )}
                       <Tooltip label='Delete' fontSize='xs'>
                         <IconButton
                           icon={<MdDelete />}
                           bg='brand.300'
                           color='brand.600'
+                          ml={custom === null || custom === '' ? '4' : 'auto'}
                           onClick={() => {
                             setWarnModalData({
                               title: 'Delete Question',
@@ -341,7 +345,6 @@ const QuestionAccordion = ({
                             });
                             onWarnOpen();
                           }}
-                          ml='4'
                         />
                       </Tooltip>
                     </Flex>
