@@ -1,7 +1,14 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Checkbox, Flex, Text } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 import { titleCase } from '../../utils/helpers';
 
-const SimilarQuestion = ({ data }) => {
+const SimilarQuestion = ({ data, isSimilarQues, setCheckedIds, index }) => {
+  const [quesSelected, setQuesSelected] = useState(false);
+
+  useEffect(() => {
+    setCheckedIds((prev) => ({ ...prev, [index]: quesSelected }));
+  }, [quesSelected]);
+
   return (
     <Flex
       px='6'
@@ -13,6 +20,10 @@ const SimilarQuestion = ({ data }) => {
       role='group'
       justify='space-between'
       alignItems='flex-start'
+      onClick={(e) => {
+        setQuesSelected((prev) => !prev);
+      }}
+      cursor='pointer'
     >
       <Box>
         <Text as='h3' fontWeight='semibold' fontSize='17px' mr='2'>
@@ -26,11 +37,23 @@ const SimilarQuestion = ({ data }) => {
           ))}
         </Flex>
       </Box>
-      <Box bg='brand.400' borderRadius='5' px='2.5' py='1.5'>
-        {titleCase(data.status)}
-      </Box>
+      {isSimilarQues ? (
+        <Box bg='brand.400' borderRadius='5' px='2.5' py='1.5'>
+          {titleCase(data.status)}
+        </Box>
+      ) : (
+        <Checkbox
+          isChecked={quesSelected}
+          onChange={(e) => setQuesSelected(!e.target.checked)}
+          _checked={{}}
+        />
+      )}
     </Flex>
   );
 };
 
 export default SimilarQuestion;
+
+SimilarQuestion.defaultProps = {
+  isSimilarQues: true,
+};
