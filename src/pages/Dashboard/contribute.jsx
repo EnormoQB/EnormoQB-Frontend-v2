@@ -288,17 +288,26 @@ const Contribute = () => {
   const onReadOcrData = (ocrData) => {
     const [ques, remaining] = ocrData.split('(a)');
     question.current.value = ques;
-    const opts = [];
     console.log(ques, remaining);
-    // const [opt1] = ques[1].split('(b)');
+    const [opt1, rem1] = remaining.split('(b)');
     // const opt1 = mcqs[0];
     // console.log(opt1.trim());
-    // const opt2 = mcqs[1].split('(c)');
+    const [opt2, rem2] = rem1.split('(c)');
     // console.log(opt2[0].trim());
-    // const opt3 = opt2[1].split('(d)');
-    // console.log(opt3[0].trim());
-    // const opt4 = opt3[1];
-    // console.log(opt4.trim());
+    const [opt3, opt4] = rem2.split('(d)');
+    const opts = [opt1.trim(), opt2.trim(), opt3.trim(), opt4.trim()];
+    console.log(opts);
+    setOptions((prev) => {
+      const newOptions = opts.map((option, idx) => {
+        document.querySelector(`#option${idx + 1}`).value = option;
+        return {
+          value: option,
+          isCorrect: false,
+          id: prev[idx].id,
+        };
+      });
+      return newOptions;
+    });
   };
 
   return (
