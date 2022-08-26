@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo, useEffect } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Box, Flex, Text, Button, useToast, Select } from '@chakra-ui/react';
@@ -21,7 +21,7 @@ import {
 } from '../../redux/services/questionPaperApi';
 
 import languages from './config';
-import FullScreenLoader from '../Loaders/FullScreenLoader';
+import DashboardLoader from '../Loaders/DashboardLoader';
 
 const GenerateResult = ({ switchForm }) => {
   const [addQuestion] = useAddQuestionsMutation();
@@ -170,6 +170,10 @@ const GenerateResult = ({ switchForm }) => {
 
   const handleLangChange = async (event) => {
     const lang = event.target.value;
+    if (lang === 'English') {
+      setRespData(previewData);
+      return;
+    }
     const questionList = previewData;
     const res = trigger({ questionList, lang })
       .then((resp) => {
@@ -196,129 +200,134 @@ const GenerateResult = ({ switchForm }) => {
 
   return (
     <Box>
-      {isLoading || isFetching ? <FullScreenLoader /> : null}
-      <CustomQuestion addQues={addCustomQues} />
-      <Box mt='6' mb='6'>
-        {formDetails && (
-          <Box textAlign='center'>
-            {formDetails.instituteName && (
-              <Text as='h2' fontSize='xl' fontWeight='500'>
-                {formDetails.instituteName}
-              </Text>
+      {isLoading || isFetching ? (
+        <DashboardLoader />
+      ) : (
+        <>
+          <CustomQuestion addQues={addCustomQues} />
+          <Box mt='6' mb='6'>
+            {formDetails && (
+              <Box textAlign='center'>
+                {formDetails.instituteName && (
+                  <Text as='h2' fontSize='xl' fontWeight='500'>
+                    {formDetails.instituteName}
+                  </Text>
+                )}
+                {formDetails.board && (
+                  <Text as='h2' fontSize='lg' fontWeight='500'>
+                    {formDetails.board}
+                    {` - Class ${formDetails.standard}`}
+                  </Text>
+                )}
+                {formDetails.examType && (
+                  <Text as='h2' fontSize='lg' fontWeight='500'>
+                    {formDetails.examType}
+                  </Text>
+                )}
+                {formDetails.subject && (
+                  <Text as='h2' fontSize='lg' fontWeight='500'>
+                    {formDetails.subject}
+                  </Text>
+                )}
+              </Box>
             )}
-            {formDetails.board && (
-              <Text as='h2' fontSize='lg' fontWeight='500'>
-                {formDetails.board}
-                {` - Class ${formDetails.standard}`}
+            <Flex justify='space-between' alignItems='center' mt='3' px='4'>
+              {formDetails.time && (
+                <Text as='p' fontSize='md'>
+                  <Text as='span' fontWeight='500'>
+                    Time allowed:&nbsp;
+                  </Text>
+                  {`${formDetails.time} mins`}
+                </Text>
+              )}
+              <Text as='p' fontSize='md'>
+                <Text as='span' fontWeight='500'>
+                  Maximum Marks:&nbsp;
+                </Text>
+                {calculateMarks}
               </Text>
-            )}
-            {formDetails.examType && (
-              <Text as='h2' fontSize='lg' fontWeight='500'>
-                {formDetails.examType}
-              </Text>
-            )}
-            {formDetails.subject && (
-              <Text as='h2' fontSize='lg' fontWeight='500'>
-                {formDetails.subject}
-              </Text>
+            </Flex>
+            {formDetails.instructions && (
+              <Box mt='3' px='4'>
+                <Text as='p' fontSize='md' fontWeight='500'>
+                  Exam Instructions:
+                </Text>
+                <Text as='p' sx={{ whiteSpace: 'pre-wrap' }} fontSize='15px'>
+                  {JSON.parse(formDetails.instructions)}
+                </Text>
+              </Box>
             )}
           </Box>
-        )}
-        <Flex justify='space-between' alignItems='center' mt='3' px='4'>
-          {formDetails.time && (
-            <Text as='p' fontSize='md'>
-              <Text as='span' fontWeight='500'>
-                Time allowed:&nbsp;
-              </Text>
-              {`${formDetails.time} mins`}
-            </Text>
-          )}
-          <Text as='p' fontSize='md'>
-            <Text as='span' fontWeight='500'>
-              Maximum Marks:&nbsp;
-            </Text>
-            {calculateMarks}
-          </Text>
-        </Flex>
-        {formDetails.instructions && (
-          <Box mt='3' px='4'>
-            <Text as='p' fontSize='md' fontWeight='500'>
-              Exam Instructions:
-            </Text>
-            <Text as='p' sx={{ whiteSpace: 'pre-wrap' }} fontSize='15px'>
-              {JSON.parse(formDetails.instructions)}
-            </Text>
-          </Box>
-        )}
-      </Box>
-      <DragDropContext
-        onDragEnd={handleOnDragEnd}
-        onDragStart={handleOnDragStart}
-      >
-        <Droppable droppableId='list'>
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              {respData.length === 0 &&
-                previewData.map((ques, idx) => (
-                  <QuestionTab
-                    key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
-                    index={idx}
-                    data={ques}
-                    isDragging={isDragging}
-                    onDelete={() => handleDelete(idx, ques._id)}
-                    handleSwitch={() => handleSwitch(ques._id, idx)}
-                  />
-                ))}
-              {respData &&
-                respData.map((ques, idx) => (
-                  <QuestionTab
-                    key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
-                    index={idx}
-                    data={ques}
-                    isDragging={isDragging}
-                    onDelete={() => handleDelete(idx, ques._id)}
-                    // handleSwitch={() => handleSwitch(ques._id, idx)}
-                    hide
-                  />
-                ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <Flex justify='space-between' alignItems='center' mt={7}>
-        <Select
-          placeholder='Select language'
-          rightIcon={<BiChevronDown />}
-          w={200}
-          h={50}
-          onChange={(e) => {
-            handleLangChange(e);
-          }}
-          // onClick={() => console.log(langData)}
-        >
-          {languages.map((langData, index) => (
-            <option
-              key={index}
-              value={langData.name}
-              // onClick={(event) => handleLangChange(event)}
-            >
-              {langData.name}
-            </option>
-          ))}
-        </Select>
-        {previewData.length > 0 && (
-          <Button
-            w={200}
-            h={50}
-            onClick={generatePdf}
-            isLoading={isPdfLoading || isPdfFetching}
-            loadingText='Generating'
+          <DragDropContext
+            onDragEnd={handleOnDragEnd}
+            onDragStart={handleOnDragStart}
           >
-            Generate PDF
-          </Button>
-        )}
-      </Flex>
+            <Droppable droppableId='list'>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {respData.length === 0 &&
+                    previewData.map((ques, idx) => (
+                      <QuestionTab
+                        key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
+                        index={idx}
+                        data={ques}
+                        isDragging={isDragging}
+                        onDelete={() => handleDelete(idx, ques._id)}
+                        handleSwitch={() => handleSwitch(ques._id, idx)}
+                      />
+                    ))}
+                  {respData &&
+                    respData.map((ques, idx) => (
+                      <QuestionTab
+                        key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
+                        index={idx}
+                        data={ques}
+                        isDragging={isDragging}
+                        onDelete={() => handleDelete(idx, ques._id)}
+                        // handleSwitch={() => handleSwitch(ques._id, idx)}
+                        hide
+                      />
+                    ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          <Flex justify='space-between' alignItems='center' mt={7}>
+            <Select
+              placeholder='Select language'
+              rightIcon={<BiChevronDown />}
+              w={200}
+              h={50}
+              onChange={(e) => {
+                handleLangChange(e);
+              }}
+              // onClick={() => console.log(langData)}
+            >
+              {languages.map((langData, index) => (
+                <option
+                  key={index}
+                  value={langData.name}
+                  // onClick={(event) => handleLangChange(event)}
+                >
+                  {langData.name}
+                </option>
+              ))}
+            </Select>
+            {previewData.length > 0 && (
+              <Button
+                w={200}
+                h={50}
+                onClick={generatePdf}
+                isLoading={isPdfLoading || isPdfFetching}
+                loadingText='Generating'
+              >
+                Generate PDF
+              </Button>
+            )}
+          </Flex>
+        </>
+      )}
     </Box>
   );
 };
