@@ -43,6 +43,7 @@ import OverlayLoader from '../../components/Loaders/OverlayLoader';
 import { difficulties } from '../../components/Generate/config';
 import { getToast, titleCase } from '../../utils/helpers';
 import { useLazyGetUserDataQuery } from '../../redux/services/userApi';
+import OcrReader from '../../components/Ocr/OcrReader';
 import Editor from '../../components/Editor';
 
 const Contribute = () => {
@@ -65,6 +66,7 @@ const Contribute = () => {
   ]);
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
+  const [equation, setEquation] = useState(null);
   const [topics, setTopics] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -74,6 +76,11 @@ const Contribute = () => {
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isEqOpen,
+    onOpen: onEqOpen,
+    onClose: onEqClose,
+  } = useDisclosure();
   const [triggerGetUser] = useLazyGetUserDataQuery();
 
   const errorToast = (description) => {
@@ -155,6 +162,7 @@ const Contribute = () => {
     setSubject('');
     setTopics([]);
     question.current.value = '';
+    setEquation(null);
     explanation.current.value = '';
     setDifficulty('Easy');
   };
@@ -182,6 +190,7 @@ const Contribute = () => {
       topics: topics.map((topic) => topic.value),
       difficulty,
       question: question.current.value.trim(),
+      equation: equation.trim(),
       answerExplanation: explanation.current.value.trim(),
       answer,
       options: opts,
@@ -265,6 +274,7 @@ const Contribute = () => {
       console.log(err);
     }
   };
+
   const freezeCondition = useMemo(() => {
     if (user?.status?.freezedDetails.lastFreezed === null) return false;
     const isFreezed = user?.status?.value !== 'active';
@@ -274,6 +284,22 @@ const Contribute = () => {
     const currTime = new Date().getTime();
     return isFreezed && currTime - lastFreezeTime < 6.048e8;
   }, [user]);
+
+  const onReadOcrData = (ocrData) => {
+    const [ques, remaining] = ocrData.split('(a)');
+    question.current.value = ques;
+    const opts = [];
+    console.log(ques, remaining);
+    // const [opt1] = ques[1].split('(b)');
+    // const opt1 = mcqs[0];
+    // console.log(opt1.trim());
+    // const opt2 = mcqs[1].split('(c)');
+    // console.log(opt2[0].trim());
+    // const opt3 = opt2[1].split('(d)');
+    // console.log(opt3[0].trim());
+    // const opt4 = opt3[1];
+    // console.log(opt4.trim());
+  };
 
   return (
     <Box>
@@ -370,27 +396,48 @@ const Contribute = () => {
               </ModalContent>
             </Modal>
           </Flex>
-          <Editor
-            setQuestion={(e) => {
-              question.current = e;
-            }}
-          />
+          <FormControl isRequired mb={6}>
+            <Flex justify='space-between'>
+              <FormLabel fontSize={18} htmlFor='question'>
+                Question
+              </FormLabel>
+              <Flex>
+                <Button
+                  size='xs'
+                  mr='3'
+                  bg='brand.300'
+                  color='brand.600'
+                  onClick={() => {
+                    if (isEqOpen) {
+                      setEquation(null);
+                      onEqClose();
+                    } else {
+                      onEqOpen();
+                    }
+                  }}
+                >
+                  {`${
+                    !isEqOpen ? 'Add' : 'Remove'
+                  } Equation / Special Characters`}
+                </Button>
+                <OcrReader onReadOcrData={onReadOcrData} />
+              </Flex>
+            </Flex>
+            <Textarea
+              id='question'
+              placeholder='Enter Question'
+              w='100%'
+              rows='3'
+              boxShadow='base'
+              resize='none'
+              ref={question}
+            />
+          </FormControl>
+          {isEqOpen && (
+            <Editor reset={equation === null} setEquation={setEquation} />
+          )}
           <Flex justify='space-between'>
             <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
-              {/* <FormControl isRequired mb={6}>
-                  <FormLabel fontSize={18} htmlFor='question'>
-                    Question
-                  </FormLabel>
-                <Textarea
-                  id='question'
-                  placeholder='Enter Question'
-                  w='100%'
-                  rows='3'
-                  boxShadow='base'
-                  resize='none'
-                  ref={question}
-                />
-              </FormControl> */}
               <FormControl isRequired>
                 <Flex alignItems='center' justify='space-between' mb='2'>
                   <Box>

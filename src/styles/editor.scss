@@ -1,7 +1,7 @@
 .fr-box {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   border: 1px solid #e2e8f0;
-  overflow: hidden;
+  //   overflow: hidden;
 
   .fr-toolbar,
   .fr-second-toolbar {
@@ -17,4 +17,6 @@
 .fr-box.fr-basic .fr-wrapper {
   background-color: #f9fbff;
   border: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
