@@ -190,7 +190,7 @@ const Contribute = () => {
       topics: topics.map((topic) => topic.value),
       difficulty,
       question: question.current.value.trim(),
-      equation: equation.trim(),
+      equation,
       answerExplanation: explanation.current.value.trim(),
       answer,
       options: opts,
@@ -219,7 +219,16 @@ const Contribute = () => {
       addQuestion(formData)
         .then((res) => {
           if (res?.data?.status === 1) {
-            resetFields();
+            setImage(null);
+            setOptions([
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+            ]);
+            question.current.value = '';
+            setEquation(null);
+            explanation.current.value = '';
             setLoading(false);
             onOpen();
           } else {
