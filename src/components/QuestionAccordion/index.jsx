@@ -93,15 +93,6 @@ const QuestionAccordion = ({
     }
   }, [similarQues]);
 
-  useEffect(() => {
-    if (data) {
-      if (data.userId === '' || data.userId === null) {
-        // console.log(data);
-        console.log('Hello Here');
-      }
-    }
-  }, [data]);
-
   const handleUpdate = async (status, feedback) => {
     try {
       await trigger({ feedback, id, status: status.toLowerCase() });
