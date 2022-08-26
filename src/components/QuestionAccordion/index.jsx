@@ -332,7 +332,11 @@ const QuestionAccordion = ({
                           icon={<MdDelete />}
                           bg='brand.300'
                           color='brand.600'
-                          ml={custom === null || custom === '' ? '4' : 'auto'}
+                          ml={
+                            custom === null || custom === '' || data.feedback
+                              ? '4'
+                              : 'auto'
+                          }
                           onClick={() => {
                             setWarnModalData({
                               title: 'Delete Question',
@@ -425,6 +429,7 @@ const QuestionAccordion = ({
                                 });
                                 onWarnOpen();
                               }}
+                              ml={custom ? 'auto' : null}
                               mr='4'
                             />
                           </Tooltip>

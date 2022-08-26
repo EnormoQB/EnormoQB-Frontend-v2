@@ -44,6 +44,8 @@ import { difficulties } from './config';
 const optionInitialState = [
   { value: '', isCorrect: false, id: Math.random() * 100 },
   { value: '', isCorrect: false, id: Math.random() * 100 },
+  { value: '', isCorrect: false, id: Math.random() * 100 },
+  { value: '', isCorrect: false, id: Math.random() * 100 },
 ];
 
 const CustomQuestion = ({ addQues }) => {
@@ -67,6 +69,7 @@ const CustomQuestion = ({ addQues }) => {
     }
   }, [questionData]);
   const [options, setOptions] = useState(optionInitialState);
+  const [file, setFile] = useState(null);
   const [openIndex, setOpenIndex] = useState(-1);
   const question = useRef();
   const {
@@ -79,11 +82,11 @@ const CustomQuestion = ({ addQues }) => {
     onOpen: onOpen2,
     onClose: onClose2,
   } = useDisclosure();
-  const {
-    isOpen: isOpen3,
-    onOpen: onOpen3,
-    onClose: onClose3,
-  } = useDisclosure();
+  // const {
+  //   isOpen: isOpen3,
+  //   onOpen: onOpen3,
+  //   onClose: onClose3,
+  // } = useDisclosure();
   const {
     isOpen: modalOpenSimilarQuestion,
     onOpen: onModalOpenSimilarQuestion,
@@ -251,7 +254,7 @@ const CustomQuestion = ({ addQues }) => {
                 <ModalContent>
                   <ModalHeader>Add Question</ModalHeader>
                   <ModalCloseButton />
-                  <ModalBody>
+                  <ModalBody maxH='450px' overflow='auto'>
                     <Box>
                       <FormControl isRequired mb={6} mt='2'>
                         <FormLabel fontSize={18} htmlFor='question'>
@@ -431,7 +434,14 @@ const CustomQuestion = ({ addQues }) => {
                 <ModalContent>
                   <ModalHeader>CSV Questions</ModalHeader>
                   <ModalCloseButton />
-                  <ModalBody>Yo</ModalBody>
+                  <ModalBody>
+                    <Input
+                      type='file'
+                      onChange={(event) => {
+                        setFile(event.target.files[0]);
+                      }}
+                    />
+                  </ModalBody>
                   <ModalFooter>
                     <Button
                       bg='brand.400'
