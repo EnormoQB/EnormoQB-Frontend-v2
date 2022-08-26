@@ -26,6 +26,17 @@ const GenerateResult = ({ switchForm }) => {
   const [triggerPdf, { isLoading: isPdfLoading, isFetching: isPdfFetching }] =
     useLazyGeneratePdfQuery();
 
+  const [customPushData, setCustomPushData] = useState({
+    standard: formDetails.standard,
+    subject: formDetails.subject,
+    topics: [],
+    difficulty: '',
+    question: '',
+    answerExplanation: '',
+    answer: '',
+    options: [],
+    status: 'custom',
+  });
   const handleOnDragStart = (e) => {
     setIsDragging(e.source.index);
   };
@@ -62,6 +73,14 @@ const GenerateResult = ({ switchForm }) => {
   );
 
   const addCustomQues = (data) => {
+    setCustomPushData((prev) => ({
+      question: data.question,
+      difficulty: data.difficulty,
+      options: data.options,
+      answer: data.answer,
+      standard: formDetails.standard,
+      subject: formDetails.subject,
+    }));
     const newArray = Array.from(customQues);
     const finalPreview = Array.from(previewData);
     newArray.push(data);
