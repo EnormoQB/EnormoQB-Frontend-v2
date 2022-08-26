@@ -120,7 +120,7 @@ const GenerateResult = ({ switchForm }) => {
   const generatePdf = () => {
     const data = {
       ...formDetails,
-      questionList: respData.length !== 0 ? respData : previewData,
+      questionList: previewData,
     };
     triggerPdf(data).then(() => {
       switchForm();
