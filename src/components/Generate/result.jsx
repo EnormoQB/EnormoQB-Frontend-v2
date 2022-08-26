@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo } from 'react';
+import { useCallback, useState, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Box, Flex, Text, Button, useToast, Select } from '@chakra-ui/react';
@@ -11,11 +11,20 @@ import {
   setFormData,
 } from '../../redux/features/generateSlice';
 import { getToast, titleCase } from '../../utils/helpers';
-import { useLazySwitchQuestionQuery } from '../../redux/services/questionApi';
-import { useLazyGeneratePdfQuery } from '../../redux/services/questionPaperApi';
+import {
+  useLazySwitchQuestionQuery,
+  useAddQuestionsMutation,
+} from '../../redux/services/questionApi';
+import {
+  useLanguageConvertMutation,
+  useLazyGeneratePdfQuery,
+} from '../../redux/services/questionPaperApi';
+
 import languages from './config';
+import FullScreenLoader from '../Loaders/FullScreenLoader';
 
 const GenerateResult = ({ switchForm }) => {
+  const [addQuestion] = useAddQuestionsMutation();
   const toast = useToast();
   const {
     generateForm: formDetails,
@@ -28,20 +37,25 @@ const GenerateResult = ({ switchForm }) => {
   const [triggerPdf, { isLoading: isPdfLoading, isFetching: isPdfFetching }] =
     useLazyGeneratePdfQuery();
 
-  const [customPushData, setCustomPushData] = useState({
-    standard: formDetails.standard,
-    subject: formDetails.subject,
-    topics: [],
-    difficulty: '',
-    question: '',
-    answerExplanation: '',
-    answer: '',
-    options: [],
-    status: 'custom',
-  });
   const handleOnDragStart = (e) => {
     setIsDragging(e.source.index);
   };
+
+  const errorToast = (description) => {
+    if (!toast.isActive('error')) {
+      toast(
+        getToast({
+          id: 'error',
+          title: 'Error',
+          description,
+          status: 'error',
+        }),
+      );
+    }
+  };
+
+  const [trigger, { isLoading, isFetching }] = useLanguageConvertMutation();
+  const [respData, setRespData] = useState([]);
 
   const handleOnDragEnd = (result) => {
     setIsDragging(null);
@@ -75,16 +89,28 @@ const GenerateResult = ({ switchForm }) => {
   );
 
   const addCustomQues = (data) => {
-    setCustomPushData((prev) => ({
-      question: data.question,
-      difficulty: data.difficulty,
-      options: data.options,
-      answer: data.answer,
+    const customData = {
+      ...data,
       standard: formDetails.standard,
       subject: formDetails.subject,
-    }));
-    const newArray = Array.from(customQues);
-    const finalPreview = Array.from(previewData);
+      topics: [],
+    };
+    delete customData._id;
+    console.log(customData);
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(customData));
+    addQuestion(formData)
+      .then((res) => {
+        if (res?.data?.status !== 1) {
+          errorToast('Some error occured!');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorToast('Some error occured!');
+      });
+    const newArray = [...customQues];
+    const finalPreview = [...previewData];
     newArray.push(data);
     finalPreview.unshift(data);
     dispatch(setCustomQues(newArray));
@@ -143,8 +169,35 @@ const GenerateResult = ({ switchForm }) => {
       });
   };
 
+  const handleLangChange = async (event) => {
+    const lang = event.target.value;
+    const questionList = previewData;
+    const res = trigger({ questionList, lang })
+      .then((resp) => {
+        setRespData(resp.data.data);
+        toast(
+          getToast({
+            title: 'Success',
+            description: `Language Updated!`,
+            status: 'success',
+          }),
+        );
+      })
+      .catch((err) => {
+        console.log('Delete Error', err);
+        toast(
+          getToast({
+            title: 'Error',
+            description: 'Some Error Occured!',
+            status: 'error',
+          }),
+        );
+      });
+  };
+
   return (
     <Box>
+      {isLoading || isFetching ? <FullScreenLoader /> : null}
       <CustomQuestion addQues={addCustomQues} />
       <Box mt='6' mb='6'>
         {formDetails && (
@@ -206,16 +259,29 @@ const GenerateResult = ({ switchForm }) => {
         <Droppable droppableId='list'>
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              {previewData.map((ques, idx) => (
-                <QuestionTab
-                  key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
-                  index={idx}
-                  data={ques}
-                  isDragging={isDragging}
-                  onDelete={() => handleDelete(idx, ques._id)}
-                  handleSwitch={() => handleSwitch(ques._id, idx)}
-                />
-              ))}
+              {respData.length === 0 &&
+                previewData.map((ques, idx) => (
+                  <QuestionTab
+                    key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
+                    index={idx}
+                    data={ques}
+                    isDragging={isDragging}
+                    onDelete={() => handleDelete(idx, ques._id)}
+                    handleSwitch={() => handleSwitch(ques._id, idx)}
+                  />
+                ))}
+              {respData &&
+                respData.map((ques, idx) => (
+                  <QuestionTab
+                    key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
+                    index={idx}
+                    data={ques}
+                    isDragging={isDragging}
+                    onDelete={() => handleDelete(idx, ques._id)}
+                    // handleSwitch={() => handleSwitch(ques._id, idx)}
+                    hide
+                  />
+                ))}
               {provided.placeholder}
             </div>
           )}
@@ -227,9 +293,17 @@ const GenerateResult = ({ switchForm }) => {
           rightIcon={<BiChevronDown />}
           w={200}
           h={50}
+          onChange={(e) => {
+            handleLangChange(e);
+          }}
+          // onClick={() => console.log(langData)}
         >
-          {languages.map((langData) => (
-            <option key={langData.id} value={langData.name}>
+          {languages.map((langData, index) => (
+            <option
+              key={index}
+              value={langData.name}
+              // onClick={(event) => handleLangChange(event)}
+            >
               {langData.name}
             </option>
           ))}

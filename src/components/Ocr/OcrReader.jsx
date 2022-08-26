@@ -1,4 +1,4 @@
-import { IconButton, Input } from '@chakra-ui/react';
+import { IconButton, Input, Tooltip } from '@chakra-ui/react';
 import { useState } from 'react';
 import { createWorker } from 'tesseract.js';
 import { IoCamera } from 'react-icons/io5';
@@ -47,16 +47,18 @@ const OcrReader = ({ onReadOcrData }) => {
         display='none'
         onChange={uploadImageFunction}
       />
-      <IconButton
-        aria-label='Upload question'
-        icon={<IoCamera />}
-        size='xs'
-        bg='gray.100'
-        color='gray.400'
-        _hover={{ backgroundColor: 'gray.200', color: 'gray.600' }}
-        onClick={() => document.querySelector('#ocrInput').click()}
-        isLoading={ocrState === STATUSES.PENDING}
-      />
+      <Tooltip label='Read text from Image' placement='left' size='xs'>
+        <IconButton
+          aria-label='Upload question'
+          icon={<IoCamera />}
+          size='xs'
+          bg='brand.300'
+          color='brand.600'
+          _hover={{ backgroundColor: 'brand.400', color: 'brand.600' }}
+          onClick={() => document.querySelector('#ocrInput').click()}
+          isLoading={ocrState === STATUSES.PENDING}
+        />
+      </Tooltip>
     </>
   );
 };
