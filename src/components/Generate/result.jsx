@@ -1,7 +1,8 @@
 import { useCallback, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Box, Flex, Text, Button, useToast } from '@chakra-ui/react';
+import { Box, Flex, Text, Button, useToast, Select } from '@chakra-ui/react';
+import { BiChevronDown } from 'react-icons/bi';
 import CustomQuestion from './customQues';
 import QuestionTab from './questionTab';
 import {
@@ -12,6 +13,7 @@ import {
 import { getToast, titleCase } from '../../utils/helpers';
 import { useLazySwitchQuestionQuery } from '../../redux/services/questionApi';
 import { useLazyGeneratePdfQuery } from '../../redux/services/questionPaperApi';
+import languages from './config';
 
 const GenerateResult = ({ switchForm }) => {
   const toast = useToast();
@@ -200,10 +202,21 @@ const GenerateResult = ({ switchForm }) => {
           )}
         </Droppable>
       </DragDropContext>
-      <Flex justify='center'>
+      <Flex justify='space-between' alignItems='center' mt={7}>
+        <Select
+          placeholder='Select language'
+          rightIcon={<BiChevronDown />}
+          w={200}
+          h={50}
+        >
+          {languages.map((langData) => (
+            <option key={langData.id} value={langData.name}>
+              {langData.name}
+            </option>
+          ))}
+        </Select>
         {previewData.length > 0 && (
           <Button
-            mt={7}
             w={200}
             h={50}
             onClick={generatePdf}
