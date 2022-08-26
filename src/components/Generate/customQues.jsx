@@ -42,6 +42,8 @@ import { difficulties } from './config';
 const optionInitialState = [
   { value: '', isCorrect: false, id: Math.random() * 100 },
   { value: '', isCorrect: false, id: Math.random() * 100 },
+  { value: '', isCorrect: false, id: Math.random() * 100 },
+  { value: '', isCorrect: false, id: Math.random() * 100 },
 ];
 
 const CustomQuestion = ({ addQues }) => {
@@ -233,7 +235,7 @@ const CustomQuestion = ({ addQues }) => {
                 <ModalContent>
                   <ModalHeader>Add Question</ModalHeader>
                   <ModalCloseButton />
-                  <ModalBody>
+                  <ModalBody maxH='450px' overflow='auto'>
                     <Box>
                       <FormControl isRequired mb={6} mt='2'>
                         <FormLabel fontSize={18} htmlFor='question'>
