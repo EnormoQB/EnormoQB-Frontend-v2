@@ -285,8 +285,20 @@ const Contribute = () => {
     return isFreezed && currTime - lastFreezeTime < 6.048e8;
   }, [user]);
 
-  const onReadOcrData = (ocrTempData) => {
-    question.current.value = ocrTempData;
+  const onReadOcrData = (ocrData) => {
+    const [ques, remaining] = ocrData.split('(a)');
+    question.current.value = ques;
+    const opts = [];
+    console.log(ques, remaining);
+    // const [opt1] = ques[1].split('(b)');
+    // const opt1 = mcqs[0];
+    // console.log(opt1.trim());
+    // const opt2 = mcqs[1].split('(c)');
+    // console.log(opt2[0].trim());
+    // const opt3 = opt2[1].split('(d)');
+    // console.log(opt3[0].trim());
+    // const opt4 = opt3[1];
+    // console.log(opt4.trim());
   };
 
   return (
@@ -404,7 +416,9 @@ const Contribute = () => {
                     }
                   }}
                 >
-                  Add Equation / Special Characters
+                  {`${
+                    !isEqOpen ? 'Add' : 'Remove'
+                  } Equation / Special Characters`}
                 </Button>
                 <OcrReader onReadOcrData={onReadOcrData} />
               </Flex>
