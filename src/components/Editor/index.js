@@ -5,13 +5,12 @@ import '../../styles/editor.scss';
 import 'froala-editor/js/third_party/spell_checker.min.js';
 import 'froala-editor/js/plugins.pkgd.min.js';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FroalaEditor from 'react-froala-wysiwyg';
-import { Box, Text, Flex } from '@chakra-ui/react';
-import OcrReader from '../Ocr/OcrReader';
+import { Box } from '@chakra-ui/react';
 
 const config = {
-  placeholderText: 'Please enter a question',
+  placeholderText: 'Please enter a equation',
   charCounterCount: false,
   toolbarButtons: {
     moreText: {
@@ -85,30 +84,20 @@ const config = {
   },
 };
 
-const Editor = ({ setQuestion }) => {
+const Editor = ({ setEquation, reset }) => {
   const [title, setTitle] = useState('');
-
-  const onReadOcrData = (ocrTempData) => {
-    console.log(ocrTempData);
-    setTitle(ocrTempData);
-  };
 
   const handleModelChange = (model) => {
     setTitle(model);
-    setQuestion(model);
+    setEquation(model);
   };
+
+  useEffect(() => {
+    if (reset) setTitle('');
+  }, [reset]);
 
   return (
     <Box mb='4'>
-      <Flex justifyContent='space-between' alignItems='center'>
-        <Text fontSize={18} htmlFor='question' fontWeight='500' mb='2'>
-          Question&nbsp;
-          <Text color='red.500' display='inline' as='span'>
-            *
-          </Text>
-        </Text>
-        <OcrReader onReadOcrData={onReadOcrData} />
-      </Flex>
       <FroalaEditor
         tag='textarea'
         config={config}
