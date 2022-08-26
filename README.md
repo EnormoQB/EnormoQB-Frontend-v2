@@ -13,10 +13,8 @@
 - [Solution](#solution)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
-- [Future Scope](#future-scope)
 - [Project Setup Guide](#setup)
 - [Working Model Screenshots](#working-model-ss)
-- [Bug Reporting/ Feature Requests](#bug-report-feature-requests)
 
 <a id="ps"></a>
 
@@ -51,34 +49,33 @@ You don't have to worry because board question papers have a new QB introducing 
 
 # Features
 
-- Unified website with different privileges (members / admin / super admin).
-
-- For Member
-
-  - Login/signup through a Google email address maintaining member's anonymity.
-  - Member can contribute questions by filling out required details to get them approved by the admins.
-  - Member can view their pending, rejected and approved questions.
-  - On rejection, member can edit the question according to the feedback provided by the admin and resubmit it.
-  - On approval, member will earn a point that will be stored in their wallet and they can use their points to buy vouchers and EnormoQB swags from the store.
-  - Member can delete questions from pending and rejected questions.
+- Unified website with different privileges (Admin / Reviewer / Exam-setter / Contributor).
 
 - For Admin
 
-  - Login/signup through a Google email address.
-  - Admin will be responsible for approving or rejecting the questions submitted by the members.
-  - On reviewing a question number of similar questions will be displayed and the admin can check the list of similar questions and approve/reject the question accordingly.
-  - Admin will be able to send feedback on rejection.
-  - Admin can flag a question if they find it inappropriate. Once flagged the member's account would be frozen for 7 days.
-  - Admin can also contribute questions.
-  - Admin can generate question papers by filling out required details.
-  - Admin can preview the generated paper, add more questions, reorder the questions and print the question paper.
-  - Admin can also view and download the previously generated question papers.
-  - Admin can request members to contribute questions if there are less questions in any topic.
+  - Maintain the question bank.
+  - Assign and change roles.
+  - Has all access rights.
 
-- For Super Admin
+- For Reviewer
 
-  - Super admin is responsible for converting role of a member to an admin and vice versa.
-  - Super admin can manage the question bank and question papers.
+  - Review submitted questions and give feedback on rejection.
+  - Freeze spam user's account.
+  - Contribute questions like any other contributor.
+  - Request contributions in topics having less number of questions.
+
+- For Exam-setter
+
+  - Have all rights of a reviewer.
+  - Generate question papers through an automatic system.
+  - The permission to generate the paper will be valid for 48 hours and after that exam setter's role will get demoted to the reviewer by the admin.
+  - View and download the previously generated question papers.
+  
+- For Contributor
+  - Contribute questions via a form.
+  - Manage their pending, rejected, and approved questions(View/Delete).
+  - View previous year's papers.
+  - Be rewarded for contributions through EnormoQB points system.
 
 <a id="tech-stack"></a>
 
@@ -95,16 +92,6 @@ You don't have to worry because board question papers have a new QB introducing 
 - Natural Language Processing(NLP)
 - Python
 - Amazon Web Services(AWS)
-
-<a id="future-scope"></a>
-
-# Future Scope
-
-- **Plagiarism**<br/>
-  The question submitted by the contributor would go through a plagiarism check so that the EnormoQB question bank will have original questions only.
-
-- **Optical Character Recognition(OCR)**<br/>
-  Contributor would be able to upload the picture of the their handwritten question and EnormoQB will extract the question from the picture uploaded.
 
 <a id="setup"></a>
 
@@ -165,6 +152,37 @@ You don't have to worry because board question papers have a new QB introducing 
 
 # Working Model Screenshots
 
-<a id="bug-report-feature-requests"></a>
+![image](https://user-images.githubusercontent.com/61985499/186919490-ede1174d-9390-4c68-8881-844c8ddc2b2d.png)
 
-# Bug Reporting/ Feature Requests
+<br />
+
+![screencapture-enormoqb-tech-anonymously-2022-08-26-19_24_26](https://user-images.githubusercontent.com/61985499/186919678-dcd6b0cc-a4e5-4812-a8fc-c595c6395c93.png)
+
+<br />
+
+![image](https://user-images.githubusercontent.com/61985499/186920522-68ddbd30-c539-4738-b7e8-f8b75feaf29a.png)
+
+<br />
+
+![image](https://user-images.githubusercontent.com/61985499/186920944-222c5f8b-6f52-47bf-8af1-a53789047a02.png)
+
+<br />
+
+![image](https://user-images.githubusercontent.com/61985499/186921049-c7549af1-3d91-4aa6-924d-d52a5341ddf1.png)
+
+<br />
+
+![image](https://user-images.githubusercontent.com/61985499/186921209-8e579cca-48f8-410e-9c5b-9eb3fcdbfead.png)
+
+<br />
+
+![image](https://user-images.githubusercontent.com/61985499/186921555-07fe95f7-6b47-4b74-975a-d6ee4eb74ae1.png)
+
+<br />
+
+![image](https://user-images.githubusercontent.com/61985499/186921679-ba018d90-5596-4af1-930b-9454155ea8db.png)
+
+<br />
+
+![image](https://user-images.githubusercontent.com/61985499/186921780-bcdaed21-a8c4-4c31-a948-f6613c383de3.png)
+
