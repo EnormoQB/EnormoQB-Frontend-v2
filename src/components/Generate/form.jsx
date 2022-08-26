@@ -62,6 +62,10 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
   const medium = quesDiffDetails.Medium.count * quesDiffDetails.Medium.marks;
   const hard = quesDiffDetails.Hard.count * quesDiffDetails.Hard.marks;
   let totalMarks = easy + medium + hard;
+  const totalQues =
+    quesDiffDetails.Easy.count +
+    quesDiffDetails.Medium.count +
+    quesDiffDetails.Hard.count;
 
   const onLoad = () => {
     instituteName.current.value = formDetails.instituteName;
@@ -399,7 +403,25 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
         </Flex>
       </FormControl>
       <Flex justify='space-between'>
-        <Box w='48%'>
+        <Box w='30%'>
+          <Text fontSize={18} mb='8px' fontWeight={500}>
+            Total Questions
+          </Text>
+          <Flex
+            px='2'
+            h='40px'
+            border='1px'
+            bg='gray.100'
+            borderColor='gray.200'
+            boxShadow='base'
+            alignItems='center'
+            fontSize='sm'
+            borderRadius='6px'
+          >
+            {totalQues}
+          </Flex>
+        </Box>
+        <Box w='30%'>
           <Text fontSize={18} mb='8px' fontWeight={500}>
             Total Marks
           </Text>
@@ -417,7 +439,7 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
             {totalMarks}
           </Flex>
         </Box>
-        <FormControl mb={6} isRequired w='48%'>
+        <FormControl mb={6} isRequired w='30%'>
           <FormLabel fontSize={18} htmlFor='examTime'>
             Total Time&nbsp;
             <Box display='inline' fontSize='15'>
@@ -485,7 +507,9 @@ const GenerateForm = ({ trigger, isLoading, isFetching, switchPreview }) => {
               allowMouseWheel
               min={0}
               value={topicQuesCount}
-              onChange={(val) => setTopicQuesCount(parseInt(val, 10))}
+              onChange={(val) => {
+                setTopicQuesCount(parseInt(val, 10));
+              }}
             >
               <NumberInputField
                 boxShadow='base'
