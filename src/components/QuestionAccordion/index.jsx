@@ -92,6 +92,15 @@ const QuestionAccordion = ({
     }
   }, [similarQues]);
 
+  useEffect(() => {
+    if (data) {
+      if (data.userId === '' || data.userId === null) {
+        // console.log(data);
+        console.log('Hello Here');
+      }
+    }
+  }, [data]);
+
   const handleUpdate = async (status, feedback) => {
     try {
       await trigger({ feedback, id, status: status.toLowerCase() });
@@ -170,6 +179,7 @@ const QuestionAccordion = ({
         onClose={onModalClose}
         onConfirm={(feedback) => handleUpdate('Rejected', feedback)}
         id={id}
+        userId={data.userId}
       />
       <Accordion allowMultiple w='full'>
         <AccordionItem
@@ -355,17 +365,32 @@ const QuestionAccordion = ({
                       >
                         Accept
                       </Button>
-                      <Button
-                        fontSize='sm'
-                        fontWeight='medium'
-                        bg='brand.400'
-                        color='brand.600'
-                        mr='4'
-                        _hover={{ backgroundColor: 'brand.450' }}
-                        onClick={onModalOpen}
-                      >
-                        Reject
-                      </Button>
+
+                      {data.userId === '' || data.userId === null ? (
+                        <Button
+                          fontSize='sm'
+                          fontWeight='medium'
+                          bg='brand.400'
+                          color='brand.600'
+                          mr='4'
+                          _hover={{ backgroundColor: 'brand.450' }}
+                          onClick={() => deleteQuestion()}
+                        >
+                          Reject
+                        </Button>
+                      ) : (
+                        <Button
+                          fontSize='sm'
+                          fontWeight='medium'
+                          bg='brand.400'
+                          color='brand.600'
+                          mr='4'
+                          _hover={{ backgroundColor: 'brand.450' }}
+                          onClick={onModalOpen}
+                        >
+                          Reject
+                        </Button>
+                      )}
                       {similarArray.length !== 0 && (
                         <>
                           <Button
@@ -404,26 +429,28 @@ const QuestionAccordion = ({
                             />
                           </Tooltip>
                         )}
-                        <Tooltip label='Report' fontSize='xs'>
-                          <IconButton
-                            icon={<AiFillFlag />}
-                            bg='brand.300'
-                            color='brand.600'
-                            onClick={() => {
-                              setWarnModalData({
-                                title: 'Report Question',
-                                body: `Are you sure you want to report this question? 
+                        {data.userId === '' || data.userId === null ? null : (
+                          <Tooltip label='Report' fontSize='xs'>
+                            <IconButton
+                              icon={<AiFillFlag />}
+                              bg='brand.300'
+                              color='brand.600'
+                              onClick={() => {
+                                setWarnModalData({
+                                  title: 'Report Question',
+                                  body: `Are you sure you want to report this question? 
                                 This will freeze the author's account for further contributions.`,
-                                onConfirm: () =>
-                                  reportQues({
-                                    userId: data.userId,
-                                    quesId: data._id,
-                                  }),
-                              });
-                              onWarnOpen();
-                            }}
-                          />
-                        </Tooltip>
+                                  onConfirm: () =>
+                                    reportQues({
+                                      userId: data.userId,
+                                      quesId: data._id,
+                                    }),
+                                });
+                                onWarnOpen();
+                              }}
+                            />
+                          </Tooltip>
+                        )}
                       </Flex>
                     </>
                   )}
