@@ -32,12 +32,13 @@ import {
   ModalFooter,
 } from '@chakra-ui/react';
 import debounce from 'lodash.debounce';
-import { Fragment, useMemo, useRef, useState } from 'react';
+import { Fragment, useMemo, useRef, useState, useEffect } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { getToast } from '../../utils/helpers';
 import RadioCard from '../Contribute/radioCard';
 import SimilarQuesModal from '../Modal/SimilarQues';
+import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import { difficulties } from './config';
 
 const optionInitialState = [
@@ -54,7 +55,17 @@ const CustomQuestion = ({ addQues }) => {
     setValue: setDifficulty,
   } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
   const group = getRootProps();
+  const [questions, setQuestions] = useState([]);
+  const { data: questionData } = useGetQuestionsQuery({
+    status: 'custom',
+    page: 1,
+  });
 
+  useEffect(() => {
+    if (questionData) {
+      setQuestions(questionData.data.questions || []);
+    }
+  }, [questionData]);
   const [options, setOptions] = useState(optionInitialState);
   const [openIndex, setOpenIndex] = useState(-1);
   const question = useRef();
@@ -463,190 +474,9 @@ const CustomQuestion = ({ addQues }) => {
               <SimilarQuesModal
                 modalOpen={modalOpenSimilarQuestion}
                 onModalClose={onModalCloseSimilarQuestion}
-                customArray={[
-                  {
-                    options: ['c/a', '0', '-b/a', '-c/a'],
-                    status: 'pending',
-                    topic: ['Polynomials'],
-                    difficulty: 'medium',
-                    years: [],
-                    imageKey: null,
-                    answerExplanation: null,
-                    feedback: null,
-                    similarQuestions: ['62ff91c797e7cf001f003386'],
-                    _id: '62f2acae83cc9c2e382cc260',
-                    question:
-                      'Given that one of the zeroes of the cubic polynomial ax3 + bx2 + cx + d is zero, the product of the other two zeroes is',
-                    answer: 'c/a',
-                    standard: '10',
-                    subject: 'Maths',
-                    userId: '6307611c6935cb135bf80786',
-                    createdAt: '2022-08-09T18:50:34.761Z',
-                    updatedAt: '2022-08-25T13:09:32.176Z',
-                  },
-                  {
-                    options: [
-                      'equal to 0',
-                      'can’t say',
-                      'greater than 0',
-                      'less than 0',
-                    ],
-                    status: 'pending',
-                    topic: ['Polynomials'],
-                    difficulty: 'hard',
-                    years: [],
-                    imageKey: null,
-                    answerExplanation: null,
-                    feedback: null,
-                    similarQuestions: ['62ff91c797e7cf001f003386'],
-                    _id: '62f2acae83cc9c2e382cc261',
-                    question:
-                      'Given that two of the zeroes of the cubic polynomial ax 3 + bx2 + cx + d are 0, the value of c is',
-                    answer: 'equal to 0',
-                    standard: '10',
-                    subject: 'Maths',
-                    userId: '63076d176935cb135bf80835',
-                    createdAt: '2022-08-09T18:50:34.761Z',
-                    updatedAt: '2022-08-25T13:09:32.176Z',
-                  },
-                  {
-                    options: [
-                      'c and a have the same sign',
-                      'c and b have the same sign',
-                      'c and a have opposite signs',
-                      'c and b have opposite signs',
-                    ],
-                    status: 'pending',
-                    topic: ['Polynomials'],
-                    difficulty: 'medium',
-                    years: [],
-                    imageKey: null,
-                    answerExplanation: null,
-                    feedback: null,
-                    similarQuestions: ['62ff91c797e7cf001f003386'],
-                    _id: '62f2acae83cc9c2e382cc262',
-                    question:
-                      'If the zeroes of the quadratic polynomial ax2 + bx + c, c ≠ 0 are equal, then',
-                    answer: 'c and a have the same sign',
-                    standard: '10',
-                    subject: 'Maths',
-                    userId: '630760dc324b6f12be817733',
-                    createdAt: '2022-08-09T18:50:34.761Z',
-                    updatedAt: '2022-08-25T13:09:32.176Z',
-                  },
-                  {
-                    options: [
-                      'cannot both be positive',
-                      'are always equal',
-                      'cannot both be negative',
-                      'are always unequal',
-                    ],
-                    status: 'pending',
-                    topic: ['Polynomials'],
-                    difficulty: 'medium',
-                    years: [],
-                    imageKey: null,
-                    answerExplanation: null,
-                    feedback: null,
-                    similarQuestions: ['62ff91c797e7cf001f003386'],
-                    _id: '62f2acae83cc9c2e382cc263',
-                    question:
-                      'The zeroes of the quadratic polynomial x2 + kx + k, k ¹ 0',
-                    answer: 'cannot both be positive',
-                    standard: '10',
-                    subject: 'Maths',
-                    userId: '6307558c5d4ca35627724177',
-                    createdAt: '2022-08-09T18:50:34.761Z',
-                    updatedAt: '2022-08-25T13:09:32.176Z',
-                  },
-                  {
-                    options: [
-                      'both negative',
-                      'both positive',
-                      'one positive one negative',
-                      'can’t say',
-                    ],
-                    status: 'approved',
-                    topic: ['Polynomials'],
-                    difficulty: 'medium',
-                    years: [
-                      2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022,
-                      2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022,
-                      2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022,
-                    ],
-                    imageKey: null,
-                    answerExplanation: null,
-                    feedback: null,
-                    similarQuestions: ['62ff91c797e7cf001f003386'],
-                    _id: '62f2acae83cc9c2e382cc264',
-                    question:
-                      'The zeroes of the quadratic polynomial x2 + ax + b a, b > 0 are',
-                    answer: 'both negative',
-                    standard: '10',
-                    subject: 'Maths',
-                    userId: '630760dc324b6f12be817733',
-                    createdAt: '2022-08-09T18:50:34.761Z',
-                    updatedAt: '2022-08-26T03:23:54.110Z',
-                    __v: 27,
-                  },
-                  {
-                    options: [
-                      'both negative',
-                      'both equal',
-                      'both positive',
-                      'one positive and one negative',
-                    ],
-                    status: 'pending',
-                    topic: ['Polynomials'],
-                    difficulty: 'medium',
-                    years: [],
-                    imageKey: null,
-                    answerExplanation: null,
-                    feedback: null,
-                    similarQuestions: ['62ff91c797e7cf001f003386'],
-                    _id: '62f2acae83cc9c2e382cc266',
-                    question:
-                      'The zeroes of the quadratic polynomial x2 +99x +127 are',
-                    answer: 'both negative',
-                    standard: '10',
-                    subject: 'Maths',
-                    userId: '6307558c5d4ca35627724177',
-                    createdAt: '2022-08-09T18:50:34.761Z',
-                    updatedAt: '2022-08-25T13:09:32.176Z',
-                  },
-                ]}
+                customArray={questions}
                 isSimilarModal={false}
               />
-              {/* <Modal isOpen={isOpen3} onClose={onClose3}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Custom Questions</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>Yo</ModalBody>
-                  <ModalFooter>
-                    <Button
-                      bg='brand.400'
-                      color='brand.600'
-                      _hover={{
-                        backgroundColor: 'brand.600',
-                        color: 'brand.100',
-                      }}
-                      mr={2}
-                    >
-                      Add
-                    </Button>
-                    <Button
-                      variant='Ghost'
-                      _hover={{
-                        backgroundColor: 'brand.200',
-                      }}
-                      onClick={onClose3}
-                    >
-                      Close
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal> */}
             </WrapItem>
           </Wrap>
         </AccordionPanel>

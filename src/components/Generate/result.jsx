@@ -88,7 +88,6 @@ const GenerateResult = ({ switchForm }) => {
       topics: [],
     };
     delete customData._id;
-    console.log(customData);
     const formData = new FormData();
     formData.append('data', JSON.stringify(customData));
     addQuestion(formData)
