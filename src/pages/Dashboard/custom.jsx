@@ -56,6 +56,7 @@ const Custom = () => {
                     );
                   }}
                   showEdit
+                  custom
                 />
               ))}
               <Pagination
