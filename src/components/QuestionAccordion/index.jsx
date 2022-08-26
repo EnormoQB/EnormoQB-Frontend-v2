@@ -405,7 +405,8 @@ const QuestionAccordion = ({
                           <SimilarQuesModal
                             modalOpen={modalOpenSimilarQuestion}
                             onModalClose={onModalCloseSimilarQuestion}
-                            similarArray={similarArray}
+                            customArray={similarArray}
+                            isSimilarModal
                           />
                         </>
                       )}
