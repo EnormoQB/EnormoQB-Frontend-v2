@@ -8,12 +8,14 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import CustomTab from '../../components/Generate/customTab';
 import GenerateForm from '../../components/Generate/form';
 import GenerateResult from '../../components/Generate/result';
 import { useLazyGeneratePreviewQuery } from '../../redux/services/questionPaperApi';
 
 const Generate = () => {
+  const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
   const formDetails = useSelector((state) => state.generateState.generateForm);
   const [trigger, { isLoading, isFetching }] = useLazyGeneratePreviewQuery();
@@ -55,7 +57,9 @@ const Generate = () => {
               />
             </TabPanel>
             <TabPanel>
-              <GenerateResult switchForm={() => setTabIndex(0)} />
+              <GenerateResult
+                switchForm={() => navigate('/dashboard/questionpapers')}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>
