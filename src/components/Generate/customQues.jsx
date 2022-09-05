@@ -48,7 +48,7 @@ const optionInitialState = [
   { value: '', isCorrect: false, id: Math.random() * 100 },
 ];
 
-const CustomQuestion = ({ addQues }) => {
+const CustomQuestion = ({ addQues, addToPreview }) => {
   const toast = useToast();
   const {
     getRootProps,
@@ -58,16 +58,11 @@ const CustomQuestion = ({ addQues }) => {
   } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
   const group = getRootProps();
   const [questions, setQuestions] = useState([]);
-  const { data: questionData } = useGetQuestionsQuery({
-    status: 'custom',
-    page: 1,
-  });
+  const { data: questionData } = useGetQuestionsQuery(
+    { status: 'custom', page: 1 },
+    { refetchOnMountOrArgChange: true },
+  );
 
-  useEffect(() => {
-    if (questionData) {
-      setQuestions(questionData.data.questions || []);
-    }
-  }, [questionData]);
   const [options, setOptions] = useState(optionInitialState);
   const [file, setFile] = useState(null);
   const [openIndex, setOpenIndex] = useState(-1);
@@ -82,16 +77,19 @@ const CustomQuestion = ({ addQues }) => {
     onOpen: onOpen2,
     onClose: onClose2,
   } = useDisclosure();
-  // const {
-  //   isOpen: isOpen3,
-  //   onOpen: onOpen3,
-  //   onClose: onClose3,
-  // } = useDisclosure();
   const {
     isOpen: modalOpenSimilarQuestion,
     onOpen: onModalOpenSimilarQuestion,
     onClose: onModalCloseSimilarQuestion,
   } = useDisclosure();
+  const [importData, setImportData] = useState(null);
+
+  useEffect(() => {
+    if (questionData) {
+      console.log(questionData?.data);
+      setQuestions(questionData?.data?.questions || []);
+    }
+  }, [questionData]);
 
   const errorToast = (description) => {
     if (!toast.isActive('error')) {
@@ -204,6 +202,20 @@ const CustomQuestion = ({ addQues }) => {
       onClose1();
       setOpenIndex(-1);
     }
+  };
+
+  const handleImport = (data) => {
+    console.log(data);
+    // addToPreview();
+    // setImportData(e);
+    // toast(
+    //   getToast({
+    //     title: 'Success',
+    //     description: 'Question imported successfully!',
+    //     status: 'success',
+    //   }),
+    // );
+    // onModalCloseSimilarQuestion();
   };
 
   return (
@@ -486,6 +498,7 @@ const CustomQuestion = ({ addQues }) => {
                 onModalClose={onModalCloseSimilarQuestion}
                 customArray={questions}
                 isSimilarModal={false}
+                onConfirm={handleImport}
               />
             </WrapItem>
           </Wrap>

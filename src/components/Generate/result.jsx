@@ -88,6 +88,15 @@ const GenerateResult = ({ switchForm }) => {
     [previewData, customQues],
   );
 
+  const addToPreview = (data) => {
+    const newArray = [...customQues];
+    const finalPreview = [...previewData];
+    newArray.push(data);
+    finalPreview.unshift(data);
+    dispatch(setCustomQues(newArray));
+    dispatch(setPreviewData(finalPreview));
+  };
+
   const addCustomQues = (data) => {
     const customData = {
       ...data,
@@ -108,12 +117,7 @@ const GenerateResult = ({ switchForm }) => {
         console.log(err);
         errorToast('Some error occured!');
       });
-    const newArray = [...customQues];
-    const finalPreview = [...previewData];
-    newArray.push(data);
-    finalPreview.unshift(data);
-    dispatch(setCustomQues(newArray));
-    dispatch(setPreviewData(finalPreview));
+    addToPreview(data);
   };
 
   const generatePdf = () => {
@@ -175,7 +179,7 @@ const GenerateResult = ({ switchForm }) => {
       return;
     }
     const questionList = previewData;
-    const res = trigger({ questionList, lang })
+    trigger({ questionList, lang })
       .then((resp) => {
         setRespData(resp.data.data);
         toast(
@@ -204,7 +208,7 @@ const GenerateResult = ({ switchForm }) => {
         <DashboardLoader />
       ) : (
         <>
-          <CustomQuestion addQues={addCustomQues} />
+          <CustomQuestion addQues={addCustomQues} addToPreview={addToPreview} />
           <Box mt='6' mb='6'>
             {formDetails && (
               <Box textAlign='center'>

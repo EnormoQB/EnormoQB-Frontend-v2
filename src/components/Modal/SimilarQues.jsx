@@ -17,6 +17,7 @@ const SimilarQuesModal = ({
   onModalClose,
   customArray,
   isSimilarModal,
+  onConfirm,
 }) => {
   const [checkedIds, setCheckedIds] = useState({});
   return (
@@ -69,7 +70,7 @@ const SimilarQuesModal = ({
                 mr='4'
                 bg='brand.600'
                 _hover={{ backgroundColor: 'myGray.500' }}
-                onClick={() => {}}
+                onClick={() => onConfirm(checkedIds)}
               >
                 Confirm
               </Button>
@@ -80,7 +81,7 @@ const SimilarQuesModal = ({
                 color='brand.600'
                 mr='4'
                 _hover={{ backgroundColor: 'brand.450' }}
-                onClick={() => {}}
+                onClick={onModalClose}
               >
                 Cancel
               </Button>
@@ -93,3 +94,7 @@ const SimilarQuesModal = ({
 };
 
 export default SimilarQuesModal;
+
+SimilarQuesModal.defaultProps = {
+  onConfirm: () => {},
+};
