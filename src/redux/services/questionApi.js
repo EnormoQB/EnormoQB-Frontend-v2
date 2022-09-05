@@ -48,7 +48,7 @@ export const questionsApi = createApi({
           ...(status ? { status } : {}),
           ...(standard ? { standard } : {}),
           ...(subject ? { subject } : {}),
-          ...(topics ? { topics } : {}),
+          ...(topics ? { topics: topics.join('#!') } : {}),
           ...(difficulty ? { difficulty } : {}),
           ...(page ? { page } : 1),
         });

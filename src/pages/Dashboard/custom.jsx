@@ -12,7 +12,9 @@ const Custom = () => {
   const [questions, setQuestions] = useState([]);
   const [filter, setfilter] = useState({ status: 'custom', page: 1 });
   const [metadata, setMetaData] = useState([]);
-  const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
+  const { data, isLoading, isFetching } = useGetQuestionsQuery(filter, {
+    refetchOnMountOrArgChange: true,
+  });
 
   useEffect(() => {
     if (data) {

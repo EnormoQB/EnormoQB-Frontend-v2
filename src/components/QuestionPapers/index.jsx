@@ -54,10 +54,6 @@ const QuesPaper = ({ data }) => {
           {data.name}
         </Text>
         <Flex wrap='wrap' mt='2.5' alignItems='center'>
-          {/* <Tag content={data.instituteName} />
-          <TagDivider />
-          <Tag content={data.examType || <span>Board Exam</span>} />
-          <TagDivider /> */}
           <Tag content={data.board} />
           <TagDivider />
           <Tag content={`Class ${data.standard}`} />
@@ -68,46 +64,55 @@ const QuesPaper = ({ data }) => {
           <TagDivider />
           <Tag content={`${data.time} Minutes`} />
           <TagDivider />
-          <DifficultyTag content={data.status} />
+          <DifficultyTag
+            content={data.status}
+            bgColor={
+              data.status.toLowerCase() === 'completed'
+                ? 'brand.400'
+                : 'orange.100'
+            }
+          />
         </Flex>
       </Box>
       <Flex ml='auto' alignItems='center'>
-        <Menu>
-          <MenuButton
-            fontSize='22px'
-            bg='brand.100'
-            color='brand.600'
-            _hover={{ backgroundColor: 'brand.400' }}
-            transition='opacity ease-in-out 200ms'
-            as={IconButton}
-            aria-label='Preview Options'
-            icon={<BsThreeDotsVertical />}
-          />
-          <MenuList>
-            <MenuItem
-              onClick={() => {
-                const linkElement = document.createElement('a');
-                linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.questionKey}`;
-                linkElement.target = '_blank';
-                linkElement.click();
-                linkElement.remove();
-              }}
-            >
-              Preview Question Paper
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                const linkElement = document.createElement('a');
-                linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.answerKey}`;
-                linkElement.target = '_blank';
-                linkElement.click();
-                linkElement.remove();
-              }}
-            >
-              Preview Answer Key
-            </MenuItem>
-          </MenuList>
-        </Menu>
+        {data.status.toLowerCase() === 'completed' && (
+          <Menu>
+            <MenuButton
+              fontSize='22px'
+              bg='brand.100'
+              color='brand.600'
+              _hover={{ backgroundColor: 'brand.400' }}
+              transition='opacity ease-in-out 200ms'
+              as={IconButton}
+              aria-label='Preview Options'
+              icon={<BsThreeDotsVertical />}
+            />
+            <MenuList>
+              <MenuItem
+                onClick={() => {
+                  const linkElement = document.createElement('a');
+                  linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.questionKey}`;
+                  linkElement.target = '_blank';
+                  linkElement.click();
+                  linkElement.remove();
+                }}
+              >
+                Preview Question Paper
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  const linkElement = document.createElement('a');
+                  linkElement.href = `${process.env.REACT_APP_SERVER_URL}/api/assets/${data.answerKey}`;
+                  linkElement.target = '_blank';
+                  linkElement.click();
+                  linkElement.remove();
+                }}
+              >
+                Preview Answer Key
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        )}
       </Flex>
     </Flex>
   );

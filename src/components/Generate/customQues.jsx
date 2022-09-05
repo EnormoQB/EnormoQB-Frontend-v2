@@ -32,19 +32,23 @@ import {
   ModalFooter,
 } from '@chakra-ui/react';
 import debounce from 'lodash.debounce';
-import { Fragment, useMemo, useRef, useState } from 'react';
+import { Fragment, useMemo, useRef, useState, useEffect } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { getToast } from '../../utils/helpers';
 import RadioCard from '../Contribute/radioCard';
+import SimilarQuesModal from '../Modal/SimilarQues';
+import { useGetQuestionsQuery } from '../../redux/services/questionApi';
 import { difficulties } from './config';
 
 const optionInitialState = [
   { value: '', isCorrect: false, id: Math.random() * 100 },
   { value: '', isCorrect: false, id: Math.random() * 100 },
+  { value: '', isCorrect: false, id: Math.random() * 100 },
+  { value: '', isCorrect: false, id: Math.random() * 100 },
 ];
 
-const CustomQuestion = ({ addQues }) => {
+const CustomQuestion = ({ addQues, addToPreview }) => {
   const toast = useToast();
   const {
     getRootProps,
@@ -53,8 +57,14 @@ const CustomQuestion = ({ addQues }) => {
     setValue: setDifficulty,
   } = useRadioGroup({ name: 'difficulty', defaultValue: 'Easy' });
   const group = getRootProps();
+  const [questions, setQuestions] = useState([]);
+  const { data: questionData } = useGetQuestionsQuery(
+    { status: 'custom', page: 1 },
+    { refetchOnMountOrArgChange: true },
+  );
 
   const [options, setOptions] = useState(optionInitialState);
+  const [file, setFile] = useState(null);
   const [openIndex, setOpenIndex] = useState(-1);
   const question = useRef();
   const {
@@ -68,10 +78,18 @@ const CustomQuestion = ({ addQues }) => {
     onClose: onClose2,
   } = useDisclosure();
   const {
-    isOpen: isOpen3,
-    onOpen: onOpen3,
-    onClose: onClose3,
+    isOpen: modalOpenSimilarQuestion,
+    onOpen: onModalOpenSimilarQuestion,
+    onClose: onModalCloseSimilarQuestion,
   } = useDisclosure();
+  const [importData, setImportData] = useState(null);
+
+  useEffect(() => {
+    if (questionData) {
+      console.log(questionData?.data);
+      setQuestions(questionData?.data?.questions || []);
+    }
+  }, [questionData]);
 
   const errorToast = (description) => {
     if (!toast.isActive('error')) {
@@ -168,7 +186,8 @@ const CustomQuestion = ({ addQues }) => {
       answer,
       options: opts,
       difficulty,
-      custom: true,
+      status: 'custom',
+      topics: [],
       _id: `${Math.floor(Math.random() * 10e10)}`,
     };
     if (data.question.length < 1) {
@@ -183,6 +202,20 @@ const CustomQuestion = ({ addQues }) => {
       onClose1();
       setOpenIndex(-1);
     }
+  };
+
+  const handleImport = (data) => {
+    console.log(data);
+    // addToPreview();
+    // setImportData(e);
+    // toast(
+    //   getToast({
+    //     title: 'Success',
+    //     description: 'Question imported successfully!',
+    //     status: 'success',
+    //   }),
+    // );
+    // onModalCloseSimilarQuestion();
   };
 
   return (
@@ -233,7 +266,7 @@ const CustomQuestion = ({ addQues }) => {
                 <ModalContent>
                   <ModalHeader>Add Question</ModalHeader>
                   <ModalCloseButton />
-                  <ModalBody>
+                  <ModalBody maxH='450px' overflow='auto'>
                     <Box>
                       <FormControl isRequired mb={6} mt='2'>
                         <FormLabel fontSize={18} htmlFor='question'>
@@ -405,15 +438,28 @@ const CustomQuestion = ({ addQues }) => {
                 w='200px'
                 color='brand.600'
                 onClick={onOpen2}
+                disabled
               >
-                Import From CSV
+                <Flex direction='column'>
+                  <span>Import From CSV</span>
+                  <span style={{ fontSize: 11, marginTop: 5 }}>
+                    (Coming Soon)
+                  </span>
+                </Flex>
               </Button>
               <Modal isOpen={isOpen2} onClose={onClose2}>
                 <ModalOverlay />
                 <ModalContent>
                   <ModalHeader>CSV Questions</ModalHeader>
                   <ModalCloseButton />
-                  <ModalBody>Yo</ModalBody>
+                  <ModalBody>
+                    <Input
+                      type='file'
+                      onChange={(event) => {
+                        setFile(event.target.files[0]);
+                      }}
+                    />
+                  </ModalBody>
                   <ModalFooter>
                     <Button
                       bg='brand.400'
@@ -449,40 +495,17 @@ const CustomQuestion = ({ addQues }) => {
                 color='brand.600'
                 w='200px'
                 whiteSpace='unset'
-                onClick={onOpen3}
+                onClick={onModalOpenSimilarQuestion}
               >
                 Choose From Custom Questions
               </Button>
-              <Modal isOpen={isOpen3} onClose={onClose3}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Custom Questions</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>Yo</ModalBody>
-                  <ModalFooter>
-                    <Button
-                      bg='brand.400'
-                      color='brand.600'
-                      _hover={{
-                        backgroundColor: 'brand.600',
-                        color: 'brand.100',
-                      }}
-                      mr={2}
-                    >
-                      Add
-                    </Button>
-                    <Button
-                      variant='Ghost'
-                      _hover={{
-                        backgroundColor: 'brand.200',
-                      }}
-                      onClick={onClose3}
-                    >
-                      Close
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
+              <SimilarQuesModal
+                modalOpen={modalOpenSimilarQuestion}
+                onModalClose={onModalCloseSimilarQuestion}
+                customArray={questions}
+                isSimilarModal={false}
+                onConfirm={handleImport}
+              />
             </WrapItem>
           </Wrap>
         </AccordionPanel>

@@ -1,7 +1,8 @@
 import { useCallback, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Box, Flex, Text, Button, useToast } from '@chakra-ui/react';
+import { Box, Flex, Text, Button, useToast, Select } from '@chakra-ui/react';
+import { BiChevronDown } from 'react-icons/bi';
 import CustomQuestion from './customQues';
 import QuestionTab from './questionTab';
 import {
@@ -10,10 +11,20 @@ import {
   setFormData,
 } from '../../redux/features/generateSlice';
 import { getToast, titleCase } from '../../utils/helpers';
-import { useLazySwitchQuestionQuery } from '../../redux/services/questionApi';
-import { useLazyGeneratePdfQuery } from '../../redux/services/questionPaperApi';
+import {
+  useLazySwitchQuestionQuery,
+  useAddQuestionsMutation,
+} from '../../redux/services/questionApi';
+import {
+  useLanguageConvertMutation,
+  useLazyGeneratePdfQuery,
+} from '../../redux/services/questionPaperApi';
+
+import languages from './config';
+import DashboardLoader from '../Loaders/DashboardLoader';
 
 const GenerateResult = ({ switchForm }) => {
+  const [addQuestion] = useAddQuestionsMutation();
   const toast = useToast();
   const {
     generateForm: formDetails,
@@ -26,20 +37,25 @@ const GenerateResult = ({ switchForm }) => {
   const [triggerPdf, { isLoading: isPdfLoading, isFetching: isPdfFetching }] =
     useLazyGeneratePdfQuery();
 
-  const [customPushData, setCustomPushData] = useState({
-    standard: formDetails.standard,
-    subject: formDetails.subject,
-    topics: [],
-    difficulty: '',
-    question: '',
-    answerExplanation: '',
-    answer: '',
-    options: [],
-    status: 'custom',
-  });
   const handleOnDragStart = (e) => {
     setIsDragging(e.source.index);
   };
+
+  const errorToast = (description) => {
+    if (!toast.isActive('error')) {
+      toast(
+        getToast({
+          id: 'error',
+          title: 'Error',
+          description,
+          status: 'error',
+        }),
+      );
+    }
+  };
+
+  const [trigger, { isLoading, isFetching }] = useLanguageConvertMutation();
+  const [respData, setRespData] = useState([]);
 
   const handleOnDragEnd = (result) => {
     setIsDragging(null);
@@ -72,21 +88,36 @@ const GenerateResult = ({ switchForm }) => {
     [previewData, customQues],
   );
 
-  const addCustomQues = (data) => {
-    setCustomPushData((prev) => ({
-      question: data.question,
-      difficulty: data.difficulty,
-      options: data.options,
-      answer: data.answer,
-      standard: formDetails.standard,
-      subject: formDetails.subject,
-    }));
-    const newArray = Array.from(customQues);
-    const finalPreview = Array.from(previewData);
+  const addToPreview = (data) => {
+    const newArray = [...customQues];
+    const finalPreview = [...previewData];
     newArray.push(data);
     finalPreview.unshift(data);
     dispatch(setCustomQues(newArray));
     dispatch(setPreviewData(finalPreview));
+  };
+
+  const addCustomQues = (data) => {
+    const customData = {
+      ...data,
+      standard: formDetails.standard,
+      subject: formDetails.subject,
+      topics: [],
+    };
+    delete customData._id;
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(customData));
+    addQuestion(formData)
+      .then((res) => {
+        if (res?.data?.status !== 1) {
+          errorToast('Some error occured!');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorToast('Some error occured!');
+      });
+    addToPreview(data);
   };
 
   const generatePdf = () => {
@@ -141,98 +172,168 @@ const GenerateResult = ({ switchForm }) => {
       });
   };
 
+  const handleLangChange = async (event) => {
+    const lang = event.target.value;
+    if (lang === 'English') {
+      setRespData(previewData);
+      return;
+    }
+    const questionList = previewData;
+    trigger({ questionList, lang })
+      .then((resp) => {
+        setRespData(resp.data.data);
+        toast(
+          getToast({
+            title: 'Success',
+            description: `Language Updated!`,
+            status: 'success',
+          }),
+        );
+      })
+      .catch((err) => {
+        console.log('Delete Error', err);
+        toast(
+          getToast({
+            title: 'Error',
+            description: 'Some Error Occured!',
+            status: 'error',
+          }),
+        );
+      });
+  };
+
   return (
     <Box>
-      <CustomQuestion addQues={addCustomQues} />
-      <Box mt='6' mb='6'>
-        {formDetails && (
-          <Box textAlign='center'>
-            {formDetails.instituteName && (
-              <Text as='h2' fontSize='xl' fontWeight='500'>
-                {formDetails.instituteName}
-              </Text>
+      {isLoading || isFetching ? (
+        <DashboardLoader />
+      ) : (
+        <>
+          <CustomQuestion addQues={addCustomQues} addToPreview={addToPreview} />
+          <Box mt='6' mb='6'>
+            {formDetails && (
+              <Box textAlign='center'>
+                {formDetails.instituteName && (
+                  <Text as='h2' fontSize='xl' fontWeight='500'>
+                    {formDetails.instituteName}
+                  </Text>
+                )}
+                {formDetails.board && (
+                  <Text as='h2' fontSize='lg' fontWeight='500'>
+                    {formDetails.board}
+                    {` - Class ${formDetails.standard}`}
+                  </Text>
+                )}
+                {formDetails.examType && (
+                  <Text as='h2' fontSize='lg' fontWeight='500'>
+                    {formDetails.examType}
+                  </Text>
+                )}
+                {formDetails.subject && (
+                  <Text as='h2' fontSize='lg' fontWeight='500'>
+                    {formDetails.subject}
+                  </Text>
+                )}
+              </Box>
             )}
-            {formDetails.board && (
-              <Text as='h2' fontSize='lg' fontWeight='500'>
-                {formDetails.board}
-                {` - Class ${formDetails.standard}`}
+            <Flex justify='space-between' alignItems='center' mt='3' px='4'>
+              {formDetails.time && (
+                <Text as='p' fontSize='md'>
+                  <Text as='span' fontWeight='500'>
+                    Time allowed:&nbsp;
+                  </Text>
+                  {`${formDetails.time} mins`}
+                </Text>
+              )}
+              <Text as='p' fontSize='md'>
+                <Text as='span' fontWeight='500'>
+                  Maximum Marks:&nbsp;
+                </Text>
+                {calculateMarks}
               </Text>
-            )}
-            {formDetails.examType && (
-              <Text as='h2' fontSize='lg' fontWeight='500'>
-                {formDetails.examType}
-              </Text>
-            )}
-            {formDetails.subject && (
-              <Text as='h2' fontSize='lg' fontWeight='500'>
-                {formDetails.subject}
-              </Text>
+            </Flex>
+            {formDetails.instructions && (
+              <Box mt='3' px='4'>
+                <Text as='p' fontSize='md' fontWeight='500'>
+                  Exam Instructions:
+                </Text>
+                <Text as='p' sx={{ whiteSpace: 'pre-wrap' }} fontSize='15px'>
+                  {JSON.parse(formDetails.instructions)}
+                </Text>
+              </Box>
             )}
           </Box>
-        )}
-        <Flex justify='space-between' alignItems='center' mt='3' px='4'>
-          {formDetails.time && (
-            <Text as='p' fontSize='md'>
-              <Text as='span' fontWeight='500'>
-                Time allowed:&nbsp;
-              </Text>
-              {`${formDetails.time} mins`}
-            </Text>
-          )}
-          <Text as='p' fontSize='md'>
-            <Text as='span' fontWeight='500'>
-              Maximum Marks:&nbsp;
-            </Text>
-            {calculateMarks}
-          </Text>
-        </Flex>
-        {formDetails.instructions && (
-          <Box mt='3' px='4'>
-            <Text as='p' fontSize='md' fontWeight='500'>
-              Exam Instructions:
-            </Text>
-            <Text as='p' sx={{ whiteSpace: 'pre-wrap' }} fontSize='15px'>
-              {JSON.parse(formDetails.instructions)}
-            </Text>
-          </Box>
-        )}
-      </Box>
-      <DragDropContext
-        onDragEnd={handleOnDragEnd}
-        onDragStart={handleOnDragStart}
-      >
-        <Droppable droppableId='list'>
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              {previewData.map((ques, idx) => (
-                <QuestionTab
-                  key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
-                  index={idx}
-                  data={ques}
-                  isDragging={isDragging}
-                  onDelete={() => handleDelete(idx, ques._id)}
-                  handleSwitch={() => handleSwitch(ques._id, idx)}
-                />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <Flex justify='center'>
-        {previewData.length > 0 && (
-          <Button
-            mt={7}
-            w={200}
-            h={50}
-            onClick={generatePdf}
-            isLoading={isPdfLoading || isPdfFetching}
-            loadingText='Generating'
+          <DragDropContext
+            onDragEnd={handleOnDragEnd}
+            onDragStart={handleOnDragStart}
           >
-            Generate PDF
-          </Button>
-        )}
-      </Flex>
+            <Droppable droppableId='list'>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {respData.length === 0 &&
+                    previewData.map((ques, idx) => (
+                      <QuestionTab
+                        key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
+                        index={idx}
+                        data={ques}
+                        isDragging={isDragging}
+                        onDelete={() => handleDelete(idx, ques._id)}
+                        handleSwitch={() => handleSwitch(ques._id, idx)}
+                      />
+                    ))}
+                  {respData &&
+                    respData.map((ques, idx) => (
+                      <QuestionTab
+                        key={`${ques._id}${ques?.switched ? 'switched' : ''}`}
+                        index={idx}
+                        data={ques}
+                        isDragging={isDragging}
+                        onDelete={() => handleDelete(idx, ques._id)}
+                        // handleSwitch={() => handleSwitch(ques._id, idx)}
+                        hide
+                      />
+                    ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          <Flex justify='space-between' alignItems='center' mt={7}>
+            <Select
+              placeholder='Select language'
+              rightIcon={<BiChevronDown />}
+              w={200}
+              h={50}
+              onChange={(e) => {
+                handleLangChange(e);
+              }}
+              // onClick={() => console.log(langData)}
+              opacity='0'
+              visibility='hidden'
+            >
+              {languages.map((langData, index) => (
+                <option
+                  key={index}
+                  value={langData.name}
+                  // onClick={(event) => handleLangChange(event)}
+                >
+                  {langData.name}
+                </option>
+              ))}
+            </Select>
+            {previewData.length > 0 && (
+              <Button
+                w={200}
+                h={50}
+                onClick={generatePdf}
+                isLoading={isPdfLoading || isPdfFetching}
+                loadingText='Generating'
+              >
+                Generate PDF
+              </Button>
+            )}
+          </Flex>
+        </>
+      )}
     </Box>
   );
 };

@@ -64,6 +64,10 @@ const ApiEndpoints = {
       method: 'GET',
       url: 'api/questionPapers/userpapers',
     },
+    convert: {
+      method: 'POST',
+      url: 'api/questionPapers/convert',
+    },
   },
   stats: {
     get: {

@@ -44,6 +44,7 @@ import { difficulties } from '../../components/Generate/config';
 import { getToast, titleCase } from '../../utils/helpers';
 import { useLazyGetUserDataQuery } from '../../redux/services/userApi';
 import OcrReader from '../../components/Ocr/OcrReader';
+import Editor from '../../components/Editor';
 
 const Contribute = () => {
   const subjectsData = useSelector((state) => state.userState.subjectsData);
@@ -65,6 +66,7 @@ const Contribute = () => {
   ]);
   const [standard, setStandard] = useState({ value: '10', label: 'X' });
   const [subject, setSubject] = useState('');
+  const [equation, setEquation] = useState(null);
   const [topics, setTopics] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -74,11 +76,12 @@ const Contribute = () => {
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isEqOpen,
+    onOpen: onEqOpen,
+    onClose: onEqClose,
+  } = useDisclosure();
   const [triggerGetUser] = useLazyGetUserDataQuery();
-
-  const onReadOcrData = (ocrTempData) => {
-    question.current.value = ocrTempData;
-  };
 
   const errorToast = (description) => {
     if (!toast.isActive('error')) {
@@ -159,6 +162,7 @@ const Contribute = () => {
     setSubject('');
     setTopics([]);
     question.current.value = '';
+    setEquation(null);
     explanation.current.value = '';
     setDifficulty('Easy');
   };
@@ -186,6 +190,7 @@ const Contribute = () => {
       topics: topics.map((topic) => topic.value),
       difficulty,
       question: question.current.value.trim(),
+      equation,
       answerExplanation: explanation.current.value.trim(),
       answer,
       options: opts,
@@ -214,7 +219,16 @@ const Contribute = () => {
       addQuestion(formData)
         .then((res) => {
           if (res?.data?.status === 1) {
-            resetFields();
+            setImage(null);
+            setOptions([
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+              { value: '', isCorrect: false, id: Math.random() * 100 },
+            ]);
+            question.current.value = '';
+            setEquation(null);
+            explanation.current.value = '';
             setLoading(false);
             onOpen();
           } else {
@@ -231,11 +245,14 @@ const Contribute = () => {
   };
 
   useEffect(() => {
+    console.log('check', user, quesEditData);
+
     if (
       user?.status?.value === 'active' &&
       quesEditData !== null &&
       searchParams.get('id') === quesEditData._id
     ) {
+      console.log(quesEditData, searchParams.get('id'));
       setImage(null);
       setOptions((prev) => {
         const newOptions = quesEditData.options.map((option, idx) => {
@@ -260,7 +277,7 @@ const Contribute = () => {
       explanation.current.value = quesEditData.answerExplanation;
       setDifficulty(titleCase(quesEditData.difficulty));
     }
-  }, [quesEditData]);
+  }, [quesEditData, user]);
 
   const refresh = async () => {
     try {
@@ -269,6 +286,7 @@ const Contribute = () => {
       console.log(err);
     }
   };
+
   const freezeCondition = useMemo(() => {
     if (user?.status?.freezedDetails.lastFreezed === null) return false;
     const isFreezed = user?.status?.value !== 'active';
@@ -278,6 +296,31 @@ const Contribute = () => {
     const currTime = new Date().getTime();
     return isFreezed && currTime - lastFreezeTime < 6.048e8;
   }, [user]);
+
+  const onReadOcrData = (ocrData) => {
+    const [ques, remaining] = ocrData.split('(a)');
+    question.current.value = ques;
+    console.log(ques, remaining);
+    const [opt1, rem1] = remaining.split('(b)');
+    // const opt1 = mcqs[0];
+    // console.log(opt1.trim());
+    const [opt2, rem2] = rem1.split('(c)');
+    // console.log(opt2[0].trim());
+    const [opt3, opt4] = rem2.split('(d)');
+    const opts = [opt1.trim(), opt2.trim(), opt3.trim(), opt4.trim()];
+    console.log(opts);
+    setOptions((prev) => {
+      const newOptions = opts.map((option, idx) => {
+        document.querySelector(`#option${idx + 1}`).value = option;
+        return {
+          value: option,
+          isCorrect: false,
+          id: prev[idx].id,
+        };
+      });
+      return newOptions;
+    });
+  };
 
   return (
     <Box>
@@ -374,25 +417,48 @@ const Contribute = () => {
               </ModalContent>
             </Modal>
           </Flex>
+          <FormControl isRequired mb={6}>
+            <Flex justify='space-between'>
+              <FormLabel fontSize={18} htmlFor='question'>
+                Question
+              </FormLabel>
+              <Flex>
+                <Button
+                  size='xs'
+                  mr='3'
+                  bg='brand.300'
+                  color='brand.600'
+                  onClick={() => {
+                    if (isEqOpen) {
+                      setEquation(null);
+                      onEqClose();
+                    } else {
+                      onEqOpen();
+                    }
+                  }}
+                >
+                  {`${
+                    !isEqOpen ? 'Add' : 'Remove'
+                  } Equation / Special Characters`}
+                </Button>
+                <OcrReader onReadOcrData={onReadOcrData} />
+              </Flex>
+            </Flex>
+            <Textarea
+              id='question'
+              placeholder='Enter Question'
+              w='100%'
+              rows='3'
+              boxShadow='base'
+              resize='none'
+              ref={question}
+            />
+          </FormControl>
+          {isEqOpen && (
+            <Editor reset={equation === null} setEquation={setEquation} />
+          )}
           <Flex justify='space-between'>
             <Box borderRadius='5px' w='48%' flexShrink={0} rounded='md'>
-              <FormControl isRequired mb={6}>
-                <Flex justifyContent='space-between' alignItems='center'>
-                  <FormLabel fontSize={18} htmlFor='question'>
-                    Question
-                  </FormLabel>
-                  <OcrReader onReadOcrData={onReadOcrData} />
-                </Flex>
-                <Textarea
-                  id='question'
-                  placeholder='Enter Question'
-                  w='100%'
-                  rows='3'
-                  boxShadow='base'
-                  resize='none'
-                  ref={question}
-                />
-              </FormControl>
               <FormControl isRequired>
                 <Flex alignItems='center' justify='space-between' mb='2'>
                   <Box>
@@ -479,6 +545,21 @@ const Contribute = () => {
                     </Fragment>
                   ))}
                 </Flex>
+              </FormControl>
+              <FormControl mb={6}>
+                <FormLabel fontSize={18} htmlFor='difficulty'>
+                  Difficulty Level
+                </FormLabel>
+                <HStack {...group} size='sm'>
+                  {difficulties.map((value) => {
+                    const radio = getRadioProps({ value });
+                    return (
+                      <RadioCard key={value} {...radio}>
+                        {value}
+                      </RadioCard>
+                    );
+                  })}
+                </HStack>
               </FormControl>
               <FormControl>
                 <FormLabel fontSize={18} htmlFor='explanation'>
@@ -579,21 +660,6 @@ const Contribute = () => {
                   selectedOptionStyle='check'
                   hideSelectedOptions={false}
                 />
-              </FormControl>
-              <FormControl mb={6}>
-                <FormLabel fontSize={18} htmlFor='difficulty'>
-                  Difficulty Level
-                </FormLabel>
-                <HStack {...group} size='sm'>
-                  {difficulties.map((value) => {
-                    const radio = getRadioProps({ value });
-                    return (
-                      <RadioCard key={value} {...radio}>
-                        {value}
-                      </RadioCard>
-                    );
-                  })}
-                </HStack>
               </FormControl>
               <FormControl mb={6}>
                 <FormLabel fontSize={18} htmlFor='difficulty'>

@@ -64,6 +64,13 @@ export const questionPaperApi = createApi({
         };
       },
     }),
+    languageConvert: builder.mutation({
+      query: ({ questionList, lang }) => ({
+        url: ApiEndpoints.questionPapers.convert.url,
+        method: 'post',
+        data: { questionList, lang },
+      }),
+    }),
   }),
 });
 
@@ -72,4 +79,5 @@ export const {
   useLazyGeneratePdfQuery,
   usePreviousYearPaperQuery,
   useUserPaperHistoryQuery,
+  useLanguageConvertMutation,
 } = questionPaperApi;
