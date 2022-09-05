@@ -307,6 +307,8 @@ const GenerateResult = ({ switchForm }) => {
                 handleLangChange(e);
               }}
               // onClick={() => console.log(langData)}
+              opacity='0'
+              visibility='hidden'
             >
               {languages.map((langData, index) => (
                 <option

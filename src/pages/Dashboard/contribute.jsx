@@ -245,11 +245,14 @@ const Contribute = () => {
   };
 
   useEffect(() => {
+    console.log('check', user, quesEditData);
+
     if (
       user?.status?.value === 'active' &&
       quesEditData !== null &&
       searchParams.get('id') === quesEditData._id
     ) {
+      console.log(quesEditData, searchParams.get('id'));
       setImage(null);
       setOptions((prev) => {
         const newOptions = quesEditData.options.map((option, idx) => {
@@ -274,7 +277,7 @@ const Contribute = () => {
       explanation.current.value = quesEditData.answerExplanation;
       setDifficulty(titleCase(quesEditData.difficulty));
     }
-  }, [quesEditData]);
+  }, [quesEditData, user]);
 
   const refresh = async () => {
     try {

@@ -438,8 +438,14 @@ const CustomQuestion = ({ addQues, addToPreview }) => {
                 w='200px'
                 color='brand.600'
                 onClick={onOpen2}
+                disabled
               >
-                Import From CSV
+                <Flex direction='column'>
+                  <span>Import From CSV</span>
+                  <span style={{ fontSize: 11, marginTop: 5 }}>
+                    (Coming Soon)
+                  </span>
+                </Flex>
               </Button>
               <Modal isOpen={isOpen2} onClose={onClose2}>
                 <ModalOverlay />

@@ -1,10 +1,10 @@
 import { Flex } from '@chakra-ui/react';
 import { titleCase } from '../../../utils/helpers';
 
-const DifficultyTag = ({ content, isExpanded }) => {
+const DifficultyTag = ({ content, isExpanded, bgColor }) => {
   return (
     <Flex
-      bgColor={isExpanded ? 'brand.600' : 'brand.400'}
+      bgColor={isExpanded ? 'brand.600' : bgColor}
       color={isExpanded ? 'brand.100' : 'brand.600'}
       fontSize='xs'
       fontWeight='400'
@@ -19,3 +19,7 @@ const DifficultyTag = ({ content, isExpanded }) => {
 };
 
 export default DifficultyTag;
+
+DifficultyTag.defaultProps = {
+  bgColor: 'brand.400',
+};
