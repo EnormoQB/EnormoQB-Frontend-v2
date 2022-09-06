@@ -12,7 +12,9 @@ const Rejected = () => {
   const [questions, setQuestions] = useState([]);
   const [filter, setfilter] = useState({ status: 'rejected', page: 1 });
   const [metadata, setMetaData] = useState([]);
-  const { data, isLoading, isFetching } = useGetQuestionsQuery(filter);
+  const { data, isLoading, isFetching } = useGetQuestionsQuery(filter, {
+    refetchOnMountOrArgChange: true,
+  });
 
   useEffect(() => {
     if (data) {

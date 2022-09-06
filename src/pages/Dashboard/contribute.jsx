@@ -29,7 +29,7 @@ import {
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { Select } from 'chakra-react-select';
 import { MdDelete } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
@@ -47,6 +47,9 @@ import OcrReader from '../../components/Ocr/OcrReader';
 import Editor from '../../components/Editor';
 
 const Contribute = () => {
+  const navigate = useNavigate();
+  const { state: quesEditData } = useLocation();
+  const [searchParams] = useSearchParams();
   const subjectsData = useSelector((state) => state.userState.subjectsData);
   const user = useSelector((state) => state.userState.user);
   const toast = useToast();
@@ -70,8 +73,6 @@ const Contribute = () => {
   const [topics, setTopics] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { state: quesEditData } = useLocation();
-  const [searchParams] = useSearchParams();
   const question = useRef();
   const explanation = useRef();
   const [addQuestion] = useAddQuestionsMutation();
@@ -231,6 +232,9 @@ const Contribute = () => {
             explanation.current.value = '';
             setLoading(false);
             onOpen();
+            if (searchParams.has('id')) {
+              navigate('/dashboard/contribute', { replace: true });
+            }
           } else {
             setLoading(false);
             errorToast('Some error occured!');
@@ -245,8 +249,6 @@ const Contribute = () => {
   };
 
   useEffect(() => {
-    console.log('check', user, quesEditData);
-
     if (
       user?.status?.value === 'active' &&
       quesEditData !== null &&
